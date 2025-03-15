@@ -57,30 +57,85 @@
 		table td:nth-child(n+12) {
 			background-color: #f0f0f0;
 		}
+		.grid-container {
+            display: grid;
+            grid-template-areas: 
+                "Gr-item1 Gr-item1 Gr-item1 Gr-item2 Gr-item2 Gr-item2"
+                "Gr-item3 Gr-item3 Gr-item3 Gr-item3 Gr-item3 Gr-item3"
+                "Gr-item4 Gr-item5 Gr-item6 Gr-item11 Gr-item12 Gr-item13"
+				"Gr-item4 Gr-item7 Gr-item8 Gr-item14 Gr-item14 Gr-item14"
+				"Gr-item4 Gr-item9 Gr-item10 Gr-item14 Gr-item14 Gr-item14";
+            grid-template-columns: 150px 150px 3fr 4fr 150px 150px;
+            grid-template-rows: auto;
+        }
+        .Gr-item1 { grid-area: Gr-item1;}
+        .Gr-item2 { grid-area: Gr-item2;}
+        .Gr-item3 { grid-area: Gr-item3;}
+        .Gr-item4 { grid-area: Gr-item4; padding: 2px;}
+        .Gr-item5 { grid-area: Gr-item5; padding: 2px;}
+        .Gr-item6 { grid-area: Gr-item6; padding: 2px;}
+        .Gr-item7 { grid-area: Gr-item7; padding: 2px;}
+        .Gr-item8 { grid-area: Gr-item8; padding: 2px;}
+        .Gr-item9 { grid-area: Gr-item9; padding: 2px;}
+        .Gr-item10 { grid-area: Gr-item10; padding: 2px;}
+        .Gr-item11 { grid-area: Gr-item11; padding: 2px;}
+        .Gr-item12 { grid-area: Gr-item12; padding: 2px;}
+        .Gr-item13 { grid-area: Gr-item13; padding: 2px;}
+        .Gr-item14 { grid-area: Gr-item14; padding: 2px;}
+		
+		.calcbut {
+            width: 100%; height: 100%; background: linear-gradient(to bottom, #d3d3d3, #a9a9a9); /* Light gray to slightly darker gray */
+            color: black;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-shadow: 0 0 2px white; /* White border effect for text */
+            box-shadow: inset 0 0 5px #888; /* Adds a subtle inset shadow for depth */
+            cursor: pointer;
+        }
+        .calcbut:hover {
+            background: linear-gradient(to bottom, #c0c0c0, #888888); /* Slightly changes gradient on hover */
+        }
+		.InpStr{width: 80%;}
     </style>
 </head>
 <script>
-	//Stack exchange and copilot helped me debug this bit a lot
 	function Save() {
-        const inputElements = document.querySelectorAll("input[type='number']");
-        const values = Array.from(inputElements).map(input => input.value || "0");
-        const uniqueString = btoa(values.join(",")); // Encode as a base64 string
-        document.getElementById("StringID").value = uniqueString; // Save to text input field
-    }
+		const inputElements = document.querySelectorAll("input[type='number']");
+		const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt3"];
+		const numberValues = Array.from(inputElements).map(input => input.value || "0");
+		const extraValues = extraFields.map(id => document.getElementById(id)?.value || "0");
+		const allValues = [...numberValues, ...extraValues];
+		const uniqueString = btoa(allValues.join(",")); // Encode as a base64 string
+		document.getElementById("StringID").value = uniqueString; // Save to text input field
+	}
 
-    function Load() {
-        const uniqueString = document.getElementById("StringID").value;
-        try {
-            const decodedValues = atob(uniqueString).split(",");
-            const inputElements = document.querySelectorAll("input[type='number']");
-            Array.from(inputElements).forEach((input, index) => {
-                input.value = decodedValues[index] || "0";
-            });
-            CalcOpt();
-        } catch (e) {
-            alert("Invalid... Sorry");
-        }
-    }
+	function Load() {
+		const uniqueString = document.getElementById("StringID").value;
+		try {
+			const decodedValues = atob(uniqueString).split(",");
+			const inputElements = document.querySelectorAll("input[type='number']");
+			const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt3"];
+			Array.from(inputElements).forEach((input, index) => {
+				input.value = decodedValues[index] || "0";
+			});
+			extraFields.forEach((id, index) => {
+				const fieldIndex = inputElements.length + index; // Offset for additional fields
+				const field = document.getElementById(id);
+				if (field) {
+					field.value = decodedValues[fieldIndex] || "0";
+				}
+			});
+			CalcOpt();
+		} catch (e) {
+			alert("Invalid... Sorry");
+		}
+	}
 
 	// If you want you can uplug one of the options. 
 	function CalcOpt() {
@@ -135,12 +190,23 @@
 					}
                 }
                 if (module.outputResource) {
-                    document.getElementById(`output_${module.name}_res${module.outputResource}`).textContent = module.outputVolume * multiplier;
-					if(module.outputVolume * multiplier  < 0){
-						document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = 'color: red;';
+					if(module.outputResource == 1){
+						const ExtrOpt1 = document.getElementById("ExtrOpt1").value;
+						document.getElementById(`output_${module.name}_res${module.outputResource}`).textContent = (module.outputVolume * multiplier / 100) * ExtrOpt1;
+						if(module.outputVolume * multiplier  < 0){
+							document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = 'color: red;';
+						} else {
+							document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = '';
+						}
 					} else {
-						document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = '';
+						document.getElementById(`output_${module.name}_res${module.outputResource}`).textContent = module.outputVolume * multiplier;
+						if(module.outputVolume * multiplier  < 0){
+							document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = 'color: red;';
+						} else {
+							document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = '';
+						}
 					}
+					
                 }
             });
         }
@@ -148,6 +214,7 @@
         // Math station
         function CalcStation() {
             const totals = {};
+			const ExtrOpt1 = document.getElementById("ExtrOpt1").value;
             resources.forEach(resource => {
                 totals[resource.id] = 0;
             });
@@ -155,13 +222,17 @@
             // Loop through modules and calculate total resource usage/production
             modules.forEach(module => {
                 const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}`).value) || 0;
-
+				if(module.outputResource == 1){}
                 totals[module.resource1] += module.volume1 * multiplier;
                 totals[module.resource2] += module.volume2 * multiplier;
                 totals[module.resource3] += module.volume3 * multiplier;
 				totals[module.resource4] += module.volume4 * multiplier;
 				totals[module.resource5] += module.volume5 * multiplier;
-                totals[module.outputResource] += module.outputVolume * multiplier;
+				if(module.outputResource == 1){
+					totals[module.outputResource] += (module.outputVolume * multiplier / 100) * ExtrOpt1;
+				} else {
+					totals[module.outputResource] += module.outputVolume * multiplier;
+				}
             });
 
             // Update the total row in the table and gives it color
@@ -174,22 +245,8 @@
                 document.getElementById(`total_${resource.id}`).textContent = Math.floor(totals[resource.id]);
             });
         }
-</script>
-<body>
-<div>
-    <label for="StringID">Store:</label>
-    <input type="text" id="StringID" placeholder="Unique string here">
-    <button onclick="Save()">Export</button>
-    <button onclick="Load()">Import</button>
-</div>
-<div>
-    <h1>Station calculator</h1>
-    <table id="managementTable">
-        <tr>
-            <th>Building Name</th>
-            <th>Input</th>
-            <script>
-                // All the resources i know off (found the sith ones later...)
+		
+		// All the resources i know off (found the sith ones later...)
                 const resources = [
                     { id: 1, name: "Energy Cells" },
 					{ id: 2, name: "Ice" },
@@ -215,17 +272,17 @@
 					{ id: 22, name: "Plasma conductor" }, duplicate - noticed it to late. To lazy to renumber everything */
                     { id: 23, name: "Meat" },
 					{ id: 24, name: "Microchip"},
-                    { id: 25, name: "Medical Supplies" },
-                    { id: 26, name: "Missile comp" },
-                    { id: 27, name: "Module PreFab" },
-                    { id: 28, name: "Plasma Conductors" },
-                    { id: 29, name: "Raw Scrap" },
-                    { id: 30, name: "Refined Metals" },
-                    { id: 31, name: "Rhydonium Core" },
-                    { id: 32, name: "Scrap Metal" },
-                    { id: 33, name: "Sensor Comp" },
-                    { id: 34, name: "Shield Comp" },
-                    { id: 35, name: "Ship Supplies" },
+					{ id: 25, name: "Medical Supplies" },
+					{ id: 26, name: "Missile comp" },
+					{ id: 27, name: "Module PreFab" },
+					{ id: 28, name: "Plasma Conductors" },
+					{ id: 29, name: "Raw Scrap" },
+					{ id: 30, name: "Refined Metals" },
+					{ id: 31, name: "Rhydonium Core" },
+					{ id: 32, name: "Scrap Metal" },
+					{ id: 33, name: "Sensor Comp" },
+					{ id: 34, name: "Shield Comp" },
+					{ id: 35, name: "Ship Supplies" },
 					{ id: 36, name: "Silicon Wafers"},
 					{ id: 37, name: "Smart Chips"},
 					{ id: 38, name: "Spices"},
@@ -240,11 +297,7 @@
 					{ id: 47, name: "Fibersteel (s)"},
 					{ id: 48, name: "Obsidian Composite (s)"}
                 ];
-                document.write(resources.map(r => `<th>${r.name}</th>`).join(""));
-            </script>
-        </tr>
-        <script>
-            // Plug in the resources produced and used here.
+				// Plug in the resources produced and used here.
             const modules = [
 				{
                     name: "Population",
@@ -387,7 +440,7 @@
                     outputVolume: 3150
                 },				
 				{
-                    name: "Food Ration*",
+                    name: "Food Ration",
                     inputMultiplier: 0,
                     resource1: 1,
                     volume1: -4500,
@@ -727,49 +780,62 @@
                     outputVolume: 1200
                 }
             ];
-			// the option that generates the table WITHOUT the default module values.
-			modules.forEach(module => {
-                document.write(`
-                    <tr>
-                        <td>${module.name}</td>
-                        <td><input type="number" id="moduleInput_${module.name}" value="${module.inputMultiplier}"></td>
-                        ${resources.map(resource => {
-                            if (resource.id === module.resource1) {
-                                return `<td id="input_${module.name}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.resource2) {
-                                return `<td id="input_${module.name}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.resource3) {
-							    return `<td id="input_${module.name}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.resource4) {
-                                return `<td id="input_${module.name}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.resource5) {
-								return `<td id="input_${module.name}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.outputResource) {
-								return `<td id="output_${module.name}_res${resource.id}">0</td>`;
-                            }
-                            return `<td id="empty_${module.name}_res${resource.id}"></td>`;
-                        }).join("")}
-                    </tr>
-                `);
-            });
-            document.write(`
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td></td>
-                    ${resources.map(r => `<td id="total_${r.id}">0</td>`).join("")}
-                </tr>
+				
+</script>
+<body>
+<div class="grid-container">
+	<div class="Gr-item1"><h1>Station calculator</h1></div><div class="Gr-item2"><h1>V1.1<h1></div>
+    <div class="Gr-item3"><table id="managementTable">
+        <tr>
+            <th>Building Name</th>
+            <th>Input</th>
+            <script>document.write(resources.map(r => `<th>${r.name}</th>`).join(""));</script>
+        </tr>
+        <script>
+		// the option that generates the table WITHOUT the default module values.
+		modules.forEach(module => {
+			document.write(`
+				<tr>
+					<td>${module.name}</td>
+					<td><input type="number" id="moduleInput_${module.name}" value="${module.inputMultiplier}"></td>
+					${resources.map(resource => {
+						if (resource.id === module.resource1) {
+							return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+						} else if (resource.id === module.resource2) {
+							return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+						} else if (resource.id === module.resource3) {
+							return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+						} else if (resource.id === module.resource4) {
+							return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+						} else if (resource.id === module.resource5) {
+							return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+						} else if (resource.id === module.outputResource) {
+							return `<td id="output_${module.name}_res${resource.id}">0</td>`;
+						}
+							return `<td id="empty_${module.name}_res${resource.id}"></td>`;
+					}).join("")}
+				</tr>
+			`);
+		});
+		document.write(`
+			<tr>
+			<td><strong>Total</strong></td><td></td>
+				${resources.map(r => `<td id="total_${r.id}">0</td>`).join("")}
+			</tr>
             `);
         </script>
     </table>
-	    <br>
-    <button onclick="CalcOpt()">Calculate my station</button>
-	<br><br>
-	<u>Population</u>: Every population roughly uses food 2,25 and 1.35 Meds. Sith use 1,65 cloning vats. I do the math, then round down the number so you always get enough.<br>
+	</div>
+	<div class="Gr-item4"><button class="calcbut" onclick="CalcOpt()">Calculate my station</button></div>
+	<div class="Gr-item5">Sunlight (%):</div><div class="Gr-item6"><input class="InpStr" type="text" id="ExtrOpt1" placeholder="Not functional" value="100"></div>
+	<div class="Gr-item7">Option:</div><div class="Gr-item8"><input class="InpStr" type="text" id="ExtrOpt2" placeholder="Not functional" value="Not used! Placeholder"></div>
+	<div class="Gr-item9">Option:</div><div class="Gr-item10"><input class="InpStr" type="text" id="ExtrOpt3" placeholder="Not functional" value="Not used! Placeholder"></div>
+	<div class="Gr-item11"><label for="StringID">Store:</label><input class="InpStr" type="text" id="StringID" placeholder="Unique string here"></div>
+    <div class="Gr-item12"><button class="calcbut" onclick="Save()">Export</button></div><div class="Gr-item13"><button class="calcbut" onclick="Load()">Import</button></div>
+	<div class="Gr-item14"><u>Population</u>: Every population roughly uses food 2,25 and 1.35 Meds. Sith use 1,65 cloning vats. I do the math, then round down the number so you always get enough.<br>
 	<u>Effeciency</u>: This applies to every module. Since i would not mess with number of modules it felt moot to implement it.<br>
-	<u>Systems solar %</u>: I did not add this (yet) since this is a dynamically generated calculator. I might tinker with an if statement if people struggle with the math.<br>
-	<u>Resources</u>: The calculation is done assuming the station is fed the maximum resources it can handle. (this makes scrap a bit in accurate)
-	<br><br>Note 1: This uses <u>javascript</u> to function. The initial javascript has been written by <i>Redisia</i> and has been written in good faith.<br>The Javascript can be inspected using the [f12] key and can found just above the 'body' tag and under the 'tbody' tag.<br>	
-	Population & workforcea
+	<u>Resources</u>: The calculation is done assuming the station is fed the maximum resources it can handle. (this makes scrap a bit in accurate)<br>
+	<u><b>IMPORTANT</b></u> This calculator is written entirely in javascript and html since i have no acces to the database by the discord user <u>redisia</u>. I made it from scratch, :) So notes or comments... you know where to find me.</div>
 </div>
 </body>
 </html>
