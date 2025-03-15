@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Station Calculator v1.0</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+			writing-mode: vertical-lr;
+			transform: rotate(180deg);
+			height: 150px;
+			overflow: hidden;
+			white-space: nowrap;
+        }
+		input[type="number"] {
+			width: 50px;
+		}
+		table tr:first-child th:nth-child(-n+4) {
+			background-color: #c6c6c6;
+		}
+		table tbody tr:first-child th:nth-child(5), th:nth-child(6), th:nth-child(7), th:nth-child(8){
+			background-color: #bf7839;
+		}
+		table tbody tr:first-child th:nth-child(9), th:nth-child(10), th:nth-child(11){
+			background-color: lightblue;
+			
+		}
+		table tbody tr:first-child th:nth-child(12){
+			background-color: #caade6;
+			
+		}
+		table tr:first-child th:nth-child(n+13) {
+			background-color: #c6c6c6;
+		}
+		table td:nth-child(-n+3) {
+			background-color: #f0f0f0;
+		}
+		table td:nth-child(4), table td:nth-child(5), table td:nth-child(6), table td:nth-child(7) {
+			background-color: #df924d;
+		}
+
+		table td:nth-child(8), table td:nth-child(9), table td:nth-child(10) {
+			background-color: #cce4ec;
+		}
+		table td:nth-child(11) {
+			background-color: #e8ccec;
+		}
+		table td:nth-child(n+12) {
+			background-color: #f0f0f0;
+		}
+    </style>
+</head>
+<script>
+	//Stack exchange and copilot helped me debug this bit a lot
+	function Save() {
+        const inputElements = document.querySelectorAll("input[type='number']");
+        const values = Array.from(inputElements).map(input => input.value || "0");
+        const uniqueString = btoa(values.join(",")); // Encode as a base64 string
+        document.getElementById("StringID").value = uniqueString; // Save to text input field
+    }
+
+    function Load() {
+        const uniqueString = document.getElementById("StringID").value;
+        try {
+            const decodedValues = atob(uniqueString).split(",");
+            const inputElements = document.querySelectorAll("input[type='number']");
+            Array.from(inputElements).forEach((input, index) => {
+                input.value = decodedValues[index] || "0";
+            });
+            CalcOpt();
+        } catch (e) {
+            alert("Invalid... Sorry");
+        }
+    }
+
+	// If you want you can uplug one of the options. 
+	function CalcOpt() {
+            CalcModules(); // calculate just the module
+            CalcStation(); // calculate just the station
+        }
+
+        // Math for modules
+        function CalcModules() {
+            modules.forEach(module => {
+                const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}`).value) || 0;
+
+                // Update input and output values based on input, i also decidedd to add a simple color change if the value is negative.
+                if (module.resource1) {
+                    document.getElementById(`input_${module.name}_res${module.resource1}`).textContent = Math.floor(module.volume1 * multiplier);
+					if(module.volume1 * multiplier < 0){
+						document.getElementById(`input_${module.name}_res${module.resource1}`).style.cssText = 'color: red;';
+					} else {
+						document.getElementById(`input_${module.name}_res${module.resource1}`).style.cssText = '';
+					}
+                }
+                if (module.resource2) {
+                    document.getElementById(`input_${module.name}_res${module.resource2}`).textContent = Math.floor(module.volume2 * multiplier);
+					if(module.volume2 * multiplier  < 0){
+						document.getElementById(`input_${module.name}_res${module.resource2}`).style.cssText = 'color: red;';
+					} else {
+						document.getElementById(`input_${module.name}_res${module.resource2}`).style.cssText = '';
+					}
+                }
+                if (module.resource3) {
+                    document.getElementById(`input_${module.name}_res${module.resource3}`).textContent = Math.floor(module.volume3 * multiplier);
+					if(module.volume3 * multiplier  < 0){
+						document.getElementById(`input_${module.name}_res${module.resource3}`).style.cssText = 'color: red;';
+					} else {
+						document.getElementById(`input_${module.name}_res${module.resource3}`).style.cssText = ' ';
+					}
+                }
+				if (module.resource4) {
+                    document.getElementById(`input_${module.name}_res${module.resource4}`).textContent = Math.floor(module.volume4 * multiplier);
+					if(module.volume4 * multiplier  < 0){
+						document.getElementById(`input_${module.name}_res${module.resource4}`).style.cssText = 'color: red;';
+					} else {
+						document.getElementById(`input_${module.name}_res${module.resource4}`).style.cssText = ' ';
+					}
+                }
+				if (module.resource5) {
+                    document.getElementById(`input_${module.name}_res${module.resource5}`).textContent = Math.floor(module.volume5 * multiplier);
+					if(module.volume5 * multiplier  < 0){
+						document.getElementById(`input_${module.name}_res${module.resource5}`).style.cssText = 'color: red;';
+					} else {
+						document.getElementById(`input_${module.name}_res${module.resource5}`).style.cssText = ' ';
+					}
+                }
+                if (module.outputResource) {
+                    document.getElementById(`output_${module.name}_res${module.outputResource}`).textContent = module.outputVolume * multiplier;
+					if(module.outputVolume * multiplier  < 0){
+						document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = 'color: red;';
+					} else {
+						document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = '';
+					}
+                }
+            });
+        }
+
+        // Math station
+        function CalcStation() {
+            const totals = {};
+            resources.forEach(resource => {
+                totals[resource.id] = 0;
+            });
+
+            // Loop through modules and calculate total resource usage/production
+            modules.forEach(module => {
+                const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}`).value) || 0;
+
+                totals[module.resource1] += module.volume1 * multiplier;
+                totals[module.resource2] += module.volume2 * multiplier;
+                totals[module.resource3] += module.volume3 * multiplier;
+				totals[module.resource4] += module.volume4 * multiplier;
+				totals[module.resource5] += module.volume5 * multiplier;
+                totals[module.outputResource] += module.outputVolume * multiplier;
+            });
+
+            // Update the total row in the table and gives it color
+            resources.forEach(resource => {
+				if(totals[resource.id] < 0){
+					document.getElementById(`total_${resource.id}`).style.cssText = 'color: red; font-weight: bold;';
+				} else {
+					document.getElementById(`total_${resource.id}`).style.cssText = 'color: green; font-weight: bold;';
+				}
+                document.getElementById(`total_${resource.id}`).textContent = Math.floor(totals[resource.id]);
+            });
+        }
+</script>
+<body>
+<div>
+    <label for="StringID">Store:</label>
+    <input type="text" id="StringID" placeholder="Unique string here">
+    <button onclick="Save()">Export</button>
+    <button onclick="Load()">Import</button>
+</div>
+<div>
+    <h1>Station calculator</h1>
+    <table id="managementTable">
+        <tr>
+            <th>Building Name</th>
+            <th>Input</th>
+            <script>
+                // All the resources i know off (found the sith ones later...)
+                const resources = [
+                    { id: 1, name: "Energy Cells" },
+					{ id: 2, name: "Ice" },
+                    { id: 3, name: "Ore" },
+                    { id: 4, name: "Silicon" },
+                    { id: 5, name: "Rhydonium" },
+                    { id: 6, name: "Helium" },
+                    { id: 7, name: "Methane" },
+                    { id: 8, name: "Tibana" },
+                    { id: 9, name: "Population" },
+                    { id: 10, name: "Advanced Composites" },
+                    { id: 11, name: "Advanced Electronics" },
+                    { id: 12, name: "Agricultural Goods" },
+                    { id: 13, name: "Antimatter Converter" },
+                    { id: 14, name: "Capacitor" },
+					{ id: 15, name: "Droid Parts" },
+					{ id: 16, name: "Durasteel Plates" },
+                    { id: 17, name: "Engine Parts" },
+                    { id: 18, name: "Field Coils" },
+                    { id: 19, name: "Food Rations" },
+                    { id: 20, name: "Graphene" },
+              /*	{ id: 21, name: "Ice" },
+					{ id: 22, name: "Plasma conductor" }, duplicate - noticed it to late. To lazy to renumber everything */
+                    { id: 23, name: "Meat" },
+					{ id: 24, name: "Microchip"},
+                    { id: 25, name: "Medical Supplies" },
+                    { id: 26, name: "Missile comp" },
+                    { id: 27, name: "Module PreFab" },
+                    { id: 28, name: "Plasma Conductors" },
+                    { id: 29, name: "Raw Scrap" },
+                    { id: 30, name: "Refined Metals" },
+                    { id: 31, name: "Rhydonium Core" },
+                    { id: 32, name: "Scrap Metal" },
+                    { id: 33, name: "Sensor Comp" },
+                    { id: 34, name: "Shield Comp" },
+                    { id: 35, name: "Ship Supplies" },
+					{ id: 36, name: "Silicon Wafers"},
+					{ id: 37, name: "Smart Chips"},
+					{ id: 38, name: "Spices"},
+					{ id: 39, name: "Superfluid Coolant"},
+					{ id: 40, name: "Tibanna Cells"},
+					{ id: 41, name: "Turret Comp"},
+					{ id: 42, name: "Water"},
+					{ id: 43, name: "Weapon Comp"},
+					{ id: 44, name: "Bacta Solution (s)"},
+					{ id: 45, name: "Cloning Vats (s)"},
+					{ id: 46, name: "Dark Fusion Cell (s)"},
+					{ id: 47, name: "Fibersteel (s)"},
+					{ id: 48, name: "Obsidian Composite (s)"}
+                ];
+                document.write(resources.map(r => `<th>${r.name}</th>`).join(""));
+            </script>
+        </tr>
+        <script>
+            // Plug in the resources produced and used here.
+            const modules = [
+				{
+                    name: "Population",
+                    inputMultiplier: 0,
+                    resource1: 19,
+                    volume1: -2.25,
+                    resource2: 25,
+					volume2: -1.35,
+                    outputResource: 9,
+                    outputVolume: 1
+                },
+				{
+                    name: "Population (S)",
+                    inputMultiplier: 0,
+                    resource1: 45,
+                    volume1: -1.65,
+                    outputResource: 9,
+                    outputVolume: 1
+                },
+                {
+                    name: "Advanced Composites",
+                    inputMultiplier: 0,  // The default # of modules to display.
+                    resource1: 1,         // Use the ID here from the SWI resources we added before.
+                    volume1: -1800,       // The hourly value
+                    resource2: 20,         // Use the ID here from the SWI resources we added before.
+                    volume2: -2880,      // The hourly value
+                    resource3: 30,        // Use the ID here from the SWI resources we added before.
+                    volume3: -2880,          // The hourly value
+                    outputResource: 10,    // Use the ID here from the SWI resources we added before.
+                    outputVolume: 1944    // The hourly value
+                },
+                {
+                    name: "Advanced Electronics",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -900,
+                    resource2: 24,
+                    volume2: -660,
+                    resource3: 14,
+                    volume3: -300,
+                    outputResource: 11,
+                    outputVolume: 810
+                },
+				{
+                    name: "Agricultural Goods",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -2160,
+                    resource2: 42,
+                    volume2: -2880,
+                    outputResource: 12,
+                    outputVolume: 11160
+                },
+				{
+                    name: "Antimatter Converter",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -2880,
+                    resource2: 10,
+                    volume2: -720,
+                    resource3: 24,
+                    volume3: -1080,
+                    outputResource: 13,
+                    outputVolume: 4788
+                },
+				{
+                    name: "Capacitor",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -1410,
+                    resource2: 20,
+                    volume2: -1740,
+                    resource3: 39,
+                    volume3: -450,
+                    outputResource: 14,
+                    outputVolume: 1410
+                },
+				{
+                    name: "Droid Parts",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -540,
+                    resource2: 17,
+                    volume2: -180,
+                    resource3: 16,
+                    volume3: -180,
+					resource4: 24,
+                    volume4: -180,
+					resource5: 33,
+                    volume5: -360,
+                    outputResource: 15,
+                    outputVolume: 945
+                },
+				{
+                    name: "Durasteel Plates",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -640,
+                    resource2: 20,
+                    volume2: -480,
+                    resource3: 30,
+                    volume3: -3360,
+                    outputResource: 16,
+                    outputVolume: 3528
+                },
+				{
+                    name: "Energy Cell",
+                    inputMultiplier: 0,
+                    outputResource: 1,
+                    outputVolume: 31500
+                },
+				{
+                    name: "Energy Cell(imp)",
+                    inputMultiplier: 0,
+                    outputResource: 1,
+                    outputVolume: 24000
+                },				
+				{
+                    name: "Engine Parts",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -720,
+                    resource2: 40,
+                    volume2: -1680,
+                    resource3: 30,
+                    volume3: -1152,
+                    outputResource: 17,
+                    outputVolume: 2496
+                },				
+				{
+                    name: "Field coil",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -1080,
+                    resource2: 28,
+                    volume2: -720,
+                    resource3: 14,
+                    volume3: -774,
+                    outputResource: 18,
+                    outputVolume: 3150
+                },				
+				{
+                    name: "Food Ration*",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -4500,
+                    resource2: 12,
+                    volume2: -2250,
+                    resource3: 23,
+                    volume3: -2250,
+					resource4: 38,
+                    volume4: -2250,
+                    outputResource: 19,
+                    outputVolume: 20700
+                },				
+				{
+                    name: "Graphene",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -2400,
+                    resource2: 7,
+                    volume2: -14400,
+                    outputResource: 20,
+                    outputVolume: 4320
+                },				
+				{
+                    name: "Meat",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -1920,
+                    resource2: 42,
+                    volume2: -2400,
+                    outputResource: 23,
+                    outputVolume: 6960
+                },
+				{
+                    name: "Medical Supplies",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -3600,
+                    resource2: 38,
+                    volume2: -1440,
+					resource3: 42,
+                    volume3: -2160,
+                    resource4: 12,
+                    volume4: -1080,
+                    outputResource: 23,
+                    outputVolume: 6960
+                },				
+				{
+                    name: "Microchip",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -900,
+                    resource2: 36,
+                    volume2: -3600,
+                    outputResource: 24,
+                    outputVolume: 1296
+                },				
+				{
+                    name: "Missile Comp",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -240,
+                    resource2: 16,
+                    volume2: -24,
+                    resource3: 10,
+                    volume3: -24,
+                    outputResource: 25,
+                    outputVolume: 3372
+                },				
+				{
+                    name: "Module Prefab",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -1680,
+                    resource2: 24,
+                    volume2: -1920,
+                    resource3: 14,
+                    volume3: -1200,
+					resource4: 28,
+                    volume4: -600,
+                    outputResource: 26,
+                    outputVolume: 1296
+                },				
+				{
+                    name: "Plasma Conductors",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -720,
+                    resource2: 20,
+                    volume2: -1152,
+                    resource3: 39,
+                    volume3: -1680,
+                    outputResource: 28,
+                    outputVolume: 528
+                },
+				{
+                    name: "Refined Metal",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -6336,
+                    resource2: 3,
+                    volume2: -17280,
+                    outputResource: 29,
+                    outputVolume: 6336
+                },			
+				{
+                    name: "Rhydonium Refinery",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -18000,
+                    resource2: 5,
+                    volume2: -4050,
+                    outputResource: 31,
+                    outputVolume: 135
+                },
+				{
+                    name: "Scrap Processor",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -90000,
+                    resource2: 29,
+                    volume2: -9000,
+                    outputResource: 32,
+                    outputVolume: 9000
+                },
+				{
+                    name: "Scrap Recycler",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -55000,
+                    resource2: 32,
+                    volume2: -2250,
+                    resource3: 16,
+                    volume3: 900,
+                    outputResource: 26,
+                    outputVolume: 460
+                },
+				{
+                    name: "Sensor Comp",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -1080,
+                    resource2: 29,
+                    volume2: -1800,
+                    resource3: 36,
+                    volume3: -1080,
+                    outputResource: 33,
+                    outputVolume: 648
+                },
+				{
+                    name: "Shield Comp",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -630,
+                    resource2: 14,
+                    volume2: -180,
+                    resource3: 28,
+                    volume3: -180,
+                    outputResource: 34,
+                    outputVolume: 1737
+                },
+				{
+                    name: "Ship Supplies",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -0,
+                    resource2: 30,
+                    volume2: -900,
+                    resource3: 42,
+                    volume3: -900,
+					resource4: 25,
+                    volume4: -1800,
+					resource4: 19,
+                    volume4: -2700,
+                    outputResource: 35,
+                    outputVolume: 360
+                },
+				{
+                    name: "Silicon Wafers",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -5400,
+                    resource2: 4,
+                    volume2: -14400,
+                    outputResource: 36,
+                    outputVolume: 6420
+                },
+				{
+                    name: "Smart Chip",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -900,
+                    resource2: 36,
+                    volume2: -360,
+                    outputResource: 37,
+                    outputVolume: 2574
+                },
+				{
+                    name: "Spices",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -720,
+                    resource2: 42,
+                    volume2: -1440,
+                    outputResource: 38,
+                    outputVolume: 9000
+                },
+				{
+                    name: "Superfluid Coolant",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -2700,
+                    resource2: 6,
+                    volume2: -14400,
+                    outputResource: 39,
+                    outputVolume: 0
+                },
+				{
+                    name: "Tibinna Refinery",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -9000,
+                    resource2: 8,
+                    volume2: -28800,
+                    outputResource: 40,
+                    outputVolume: 9000
+                },
+				{
+                    name: "Turret Comp.",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -240,
+                    resource2: 40,
+                    volume2: -90,
+                    resource3: 24,
+                    volume3: -80,
+					resource4: 14,
+                    volume4: -80,
+					resource5: 33,
+                    volume5: -60,
+                    outputResource: 41,
+                    outputVolume: 820
+                },				
+				{
+                    name: "Water",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -5400,
+                    resource2: 2,
+                    volume2: -28800,
+                    outputResource: 42,
+                    outputVolume: 17370
+                },			
+				{
+                    name: "Weapon Comp",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -360,
+                    resource2: 16,
+                    volume2: -120,
+                    resource3: 40,
+                    volume3: -360,
+                    outputResource: 43,
+                    outputVolume: 1020
+                },			
+				{
+                    name: "Bacta Solution (s)",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -1920,
+                    resource2: 2,
+                    volume2: -1920,
+                    resource3: 7,
+                    volume3: -4800,
+                    outputResource: 44,
+                    outputVolume: 5280
+                },								
+				{
+                    name: "Cloning Vats (s)",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -1800,
+                    resource2: 44,
+                    volume2: -1800,
+                    outputResource: 45,
+                    outputVolume: 1725
+                },				
+				{
+                    name: "Dark Fusion Cell (s)",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -48000,
+                    resource2: 8,
+                    volume2: -24000,
+                    resource3: 3,
+                    volume3: -36000,
+					resource4: 4,
+                    volume4: -36000,
+                    outputResource: 46,
+                    outputVolume: 1200
+                },				
+				{
+                    name: "Ship Supplies (s)",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -7200,
+                    resource2: 47,
+                    volume2: -1440,
+                    resource3: 44,
+                    volume3: -1728,
+                    outputResource: 35,
+                    outputVolume: 1728
+                },				
+				{
+                    name: "Fibresteel (s)",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -2000,
+                    resource2: 6,
+                    volume2: -5200,
+                    resource3: 3,
+                    volume3: -2000,
+                    outputResource: 47,
+                    outputVolume: 8000
+                },				
+				{
+                    name: "Obsidian Composite (s)",
+                    inputMultiplier: 0,
+                    resource1: 1,
+                    volume1: -4800,
+                    resource2: 47,
+                    volume2: -48,
+                    resource3: 7,
+                    volume3: -9600,
+					resource4: 4,
+                    volume4: -7200,
+                    outputResource: 48,
+                    outputVolume: 1200
+                }
+            ];
+			// the option that generates the table WITHOUT the default module values.
+			modules.forEach(module => {
+                document.write(`
+                    <tr>
+                        <td>${module.name}</td>
+                        <td><input type="number" id="moduleInput_${module.name}" value="${module.inputMultiplier}"></td>
+                        ${resources.map(resource => {
+                            if (resource.id === module.resource1) {
+                                return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+                            } else if (resource.id === module.resource2) {
+                                return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+                            } else if (resource.id === module.resource3) {
+							    return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+                            } else if (resource.id === module.resource4) {
+                                return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+                            } else if (resource.id === module.resource5) {
+								return `<td id="input_${module.name}_res${resource.id}">0</td>`;
+                            } else if (resource.id === module.outputResource) {
+								return `<td id="output_${module.name}_res${resource.id}">0</td>`;
+                            }
+                            return `<td id="empty_${module.name}_res${resource.id}"></td>`;
+                        }).join("")}
+                    </tr>
+                `);
+            });
+            document.write(`
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td></td>
+                    ${resources.map(r => `<td id="total_${r.id}">0</td>`).join("")}
+                </tr>
+            `);
+        </script>
+    </table>
+	    <br>
+    <button onclick="CalcOpt()">Calculate my station</button>
+	<br><br>
+	<u>Population</u>: Every population roughly uses food 2,25 and 1.35 Meds. Sith use 1,65 cloning vats. I do the math, then round down the number so you always get enough.<br>
+	<u>Effeciency</u>: This applies to every module. Since i would not mess with number of modules it felt moot to implement it.<br>
+	<u>Systems solar %</u>: I did not add this (yet) since this is a dynamically generated calculator. I might tinker with an if statement if people struggle with the math.<br>
+	<u>Resources</u>: The calculation is done assuming the station is fed the maximum resources it can handle. (this makes scrap a bit in accurate)
+	<br><br>Note 1: This uses <u>javascript</u> to function. The initial javascript has been written by <i>Redisia</i> and has been written in good faith.<br>The Javascript can be inspected using the [f12] key and can found just above the 'body' tag and under the 'tbody' tag.<br>	
+	Population & workforcea
+</div>
+</body>
+</html>
