@@ -1,4 +1,4 @@
-Version 1.0
+Version 1.00
 This version has:
 
 A dyslectic writer... sorry in advanced
@@ -19,7 +19,7 @@ Scripts:
 - A script that exports the values of the imput fields to a unique string.
 - A script that imports the unique string and alters input fields and calculates station.
 
-v1.1
+v1.01
 Layout:
 - Removed two typo's
 - Added some random style (buttons, etc)
@@ -30,3 +30,8 @@ Scripts:
 - Changed the logic and math to include solar power.
 - Changed the in- and export function so that it included solarpower (and 2 optional fields)
 - Changed the scripts arround and removed some old script that wasn't needed. (but was left as a option)
+
+v1.02
+Layout:
+- Changing the grid based on window size. I noticed smarthphone sized windows cut if input fields.
+- Changed the version numbering :)
