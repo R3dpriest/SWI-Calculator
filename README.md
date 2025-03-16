@@ -3,13 +3,15 @@ This version has:
 
 A dyslectic writer... sorry in advanced
 
+Indirect thanks to stack exchange and copilot for giving an example for the in and export function in a base64 string.
+
 Javascript based database:
 - Common wealth resources
 - Sith resources
 - Common wealth modules
 - Sith Modules
 
-Scripts
+Scripts:
 - Dynamically generated big enough for resources and modules.
 - Input fields tied to each module
 - Dynamic math that calculates resources for each module
@@ -18,10 +20,13 @@ Scripts
 - A script that imports the unique string and alters input fields and calculates station.
 
 v1.1
-- Added solar effeciency + 2 unused options to plug in later
-- Changed both the station and module logic to include the % solar statistics.
-- Included said fields into the import and export function
-- Added a grid to make the layout a little better
+Layout:
 - Removed two typo's
-- Added some random style
-- Cleaned and moved some of the code to make it more readable.
+- Added some random style (buttons, etc)
+- Added a grid to make the layout a little better
+- Added Solarpower fields, and 2 additional unused options.
+
+Scripts:
+- Changed the logic and math to include solar power.
+- Changed the in- and export function so that it included solarpower (and 2 optional fields)
+- Changed the scripts arround and removed some old script that wasn't needed. (but was left as a option)
