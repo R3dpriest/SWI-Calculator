@@ -35,3 +35,17 @@ v1.02
 Layout:
 - Changing the grid based on window size. I noticed smarthphone sized windows cut if input fields.
 - Changed the version numbering :)
+
+v1.003
+Layout:
+- Added effeciency field
+- Added an explenation on effeciency
+
+Data:
+- Added population field
+- Added max effeciency
+
+Script:
+- Added population calculation
+- Added effenciency based calculations
+- Changed some scripts around to accomodate for this.
