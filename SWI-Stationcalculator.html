@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Station Calculator v1.002</title>
+    <title>Station Calculator v1.003</title>
     <style>
         table {
             border-collapse: collapse;
@@ -137,50 +137,93 @@
     </style>
 </head>
 <script>
+	//globals
+	var TotPop = 0;
+	let PosiPop = 0;
+	let NegaPop = 0; 
+	var EfRes = 0;
+
 	//thanks to stackexchange and copilot for the save and load inspiration :)
 	function Save() {
-		const inputElements = document.querySelectorAll("input[type='number']");
-		const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt3"];
-		const numberValues = Array.from(inputElements).map(input => input.value || "0");
-		const extraValues = extraFields.map(id => document.getElementById(id)?.value || "0");
-		const allValues = [...numberValues, ...extraValues];
-		const uniqueString = btoa(allValues.join(",")); // Encode as a base64 string
-		document.getElementById("StringID").value = uniqueString; // Save to text input field
-	}
+    const inputElements = document.querySelectorAll("input[type='number']");
+    const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt3"];
+    
+    const numberValues = Array.from(inputElements).map(input => input.value || "0");
+    const extraValues = extraFields.map(id => {
+        const field = document.getElementById(id);
+        if (id === "ExtrOpt2" && field?.type === "checkbox") {
+            return field.checked ? "1" : "0";
+        }
+        return field?.value || "0";
+    });
 
-	function Load() {
-		const uniqueString = document.getElementById("StringID").value;
-		try {
-			const decodedValues = atob(uniqueString).split(",");
-			const inputElements = document.querySelectorAll("input[type='number']");
-			const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt3"];
-			Array.from(inputElements).forEach((input, index) => {
-				input.value = decodedValues[index] || "0";
-			});
-			extraFields.forEach((id, index) => {
-				const fieldIndex = inputElements.length + index; // Offset for additional fields
-				const field = document.getElementById(id);
-				if (field) {
-					field.value = decodedValues[fieldIndex] || "0";
-				}
-			});
-			CalcOpt();
-		} catch (e) {
-			alert("Invalid... Sorry");
-		}
-	}
+    const allValues = [...numberValues, ...extraValues];
+    const uniqueString = btoa(allValues.join(",")); // Encode as a base64 string
+    document.getElementById("StringID").value = uniqueString; // Save to text input field
+}
+
+function Load() {
+    const uniqueString = document.getElementById("StringID").value;
+    try {
+        const decodedValues = atob(uniqueString).split(",");
+        const inputElements = document.querySelectorAll("input[type='number']");
+        const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt3"];
+        
+        Array.from(inputElements).forEach((input, index) => {
+            input.value = decodedValues[index] || "0";
+        });
+
+        extraFields.forEach((id, index) => {
+            const fieldIndex = inputElements.length + index; // Offset for additional fields
+            const field = document.getElementById(id);
+            if (field) {
+                if (id === "ExtrOpt2" && field.type === "checkbox") {
+                    field.checked = decodedValues[fieldIndex] === "1"; // Set checkbox state
+                } else {
+                    field.value = decodedValues[fieldIndex] || "0";
+                }
+            }
+        });
+
+        CalcOpt();
+    } catch (e) {
+        alert("Invalid... Sorry");
+    }
+}
 
 	// If you want you can uplug one of the options. 
 	function CalcOpt() {
+			checkpop(); // Needed for effeciency
             CalcModules(); // calculate just the module
             CalcStation(); // calculate just the station
         }
-
+		
+	function checkpop(){
+		TotPop = 0;
+		PosiPop = 0;
+		NegaPop = 0; 
+		resources.forEach(resource => {
+			TotPop[resource.id] = 0;
+			PosiPop[resource.id] = 0;
+			NegaPop[resource.id] = 0;
+		});
+		modules.forEach(module => { 
+			const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}`).value) || 0;
+			const calculatedValue = module.Population * multiplier;
+			TotPop[module.Population] += calculatedValue;
+			if (calculatedValue > 0) {
+				PosiPop += calculatedValue;
+			} else if (calculatedValue < 0) {
+				NegaPop += calculatedValue;
+			}
+		});
+		NegaPop = String(NegaPop).replace("-", "");
+		NegaPop = Number(NegaPop);
+	}
         // Math for modules
         function CalcModules() {
             modules.forEach(module => {
                 const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}`).value) || 0;
-
                 // Update input and output values based on input, i also decidedd to add a simple color change if the value is negative.
                 if (module.resource1) {
                     document.getElementById(`input_${module.name}_res${module.resource1}`).textContent = Math.floor(module.volume1 * multiplier);
@@ -222,24 +265,43 @@
 						document.getElementById(`input_${module.name}_res${module.resource5}`).style.cssText = ' ';
 					}
                 }
+				if (module.Race) {
+                    document.getElementById(`output_${module.name}_res${module.Race}`).textContent = Math.floor(module.Population * multiplier);
+					if(module.Population * multiplier  < 0){
+						document.getElementById(`output_${module.name}_res${module.Race}`).style.cssText = 'color: red;';
+					} else {
+						document.getElementById(`output_${module.name}_res${module.Race}`).style.cssText = ' ';
+					}
+                }
                 if (module.outputResource) {
+					if(document.getElementById('ExtrOpt2').checked){
+					if(multiplier == 0){
+						EfRes = 0; 
+					} else { 
+						if(NegaPop < PosiPop){
+							PosiPop = NegaPop;
+						}
+						EfRes = Math.floor(module.outputVolume * multiplier * (1 + (PosiPop/NegaPop * module.MaxEffeciency)));
+					}					
+				} else {
+					EfRes = module.outputVolume * multiplier ;
+				}
 					if(module.outputResource == 1){
 						const ExtrOpt1 = document.getElementById("ExtrOpt1").value;
-						document.getElementById(`output_${module.name}_res${module.outputResource}`).textContent = (module.outputVolume * multiplier / 100) * ExtrOpt1;
+						document.getElementById(`output_${module.name}_res${module.outputResource}`).textContent = (EfRes / 100) * ExtrOpt1; //sunlight
 						if(module.outputVolume * multiplier  < 0){
 							document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = 'color: red;';
 						} else {
 							document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = '';
 						}
 					} else {
-						document.getElementById(`output_${module.name}_res${module.outputResource}`).textContent = module.outputVolume * multiplier;
+						document.getElementById(`output_${module.name}_res${module.outputResource}`).textContent = EfRes;
 						if(module.outputVolume * multiplier  < 0){
 							document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = 'color: red;';
 						} else {
 							document.getElementById(`output_${module.name}_res${module.outputResource}`).style.cssText = '';
 						}
 					}
-					
                 }
             });
         }
@@ -252,19 +314,30 @@
                 totals[resource.id] = 0;
             });
 
-            // Loop through modules and calculate total resource usage/production
             modules.forEach(module => {
                 const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}`).value) || 0;
-				if(module.outputResource == 1){}
                 totals[module.resource1] += module.volume1 * multiplier;
                 totals[module.resource2] += module.volume2 * multiplier;
                 totals[module.resource3] += module.volume3 * multiplier;
 				totals[module.resource4] += module.volume4 * multiplier;
 				totals[module.resource5] += module.volume5 * multiplier;
-				if(module.outputResource == 1){
-					totals[module.outputResource] += (module.outputVolume * multiplier / 100) * ExtrOpt1;
+				totals[module.Race] += module.Population * multiplier;
+				if(document.getElementById('ExtrOpt2').checked){
+					if(multiplier == 0){
+						EfRes = 0; 
+					} else { 
+						if(NegaPop < PosiPop){
+							PosiPop = NegaPop;
+						}
+						EfRes = Math.floor(module.outputVolume * multiplier * (1 + (PosiPop/NegaPop * module.MaxEffeciency)));
+					}					
 				} else {
-					totals[module.outputResource] += module.outputVolume * multiplier;
+					EfRes = module.outputVolume * multiplier ;
+				}
+				if(module.outputResource == 1){
+					totals[module.outputResource] += (EfRes / 100) * ExtrOpt1;
+				} else {
+					totals[module.outputResource] += EfRes;
 				}
             });
 
@@ -339,16 +412,14 @@
                     volume1: -2.25,
                     resource2: 25,
 					volume2: -1.35,
-                    outputResource: 9,
-                    outputVolume: 1
+                    Race: 9, Population: 1
                 },
 				{
                     name: "Population (S)",
                     inputMultiplier: 0,
                     resource1: 45,
                     volume1: -1.65,
-                    outputResource: 9,
-                    outputVolume: 1
+                    Race: 9, Population: 1
                 },
                 {
                     name: "Advanced Composites",
@@ -360,7 +431,9 @@
                     resource3: 30,        // Use the ID here from the SWI resources we added before.
                     volume3: -2880,          // The hourly value
                     outputResource: 10,    // Use the ID here from the SWI resources we added before.
-                    outputVolume: 1944    // The hourly value
+                    outputVolume: 1944,    // The hourly value
+					Race: 9, Population: -315,
+					MaxEffeciency: 0.35
                 },
                 {
                     name: "Advanced Electronics",
@@ -372,7 +445,9 @@
                     resource3: 14,
                     volume3: -300,
                     outputResource: 11,
-                    outputVolume: 810
+                    outputVolume: 810,
+					Race: 9, Population: -540,
+					MaxEffeciency: 0.42
                 },
 				{
                     name: "Agricultural Goods",
@@ -382,7 +457,9 @@
                     resource2: 42,
                     volume2: -2880,
                     outputResource: 12,
-                    outputVolume: 11160
+                    outputVolume: 11160,
+					Race: 9, Population: -75,
+					MaxEffeciency: 0.28
                 },
 				{
                     name: "Antimatter Converter",
@@ -394,7 +471,9 @@
                     resource3: 24,
                     volume3: -1080,
                     outputResource: 13,
-                    outputVolume: 4788
+                    outputVolume: 4788,
+					Race: 9, Population: -1080,
+					MaxEffeciency: 0.39
                 },
 				{
                     name: "Capacitor",
@@ -406,7 +485,9 @@
                     resource3: 39,
                     volume3: -450,
                     outputResource: 14,
-                    outputVolume: 1410
+                    outputVolume: 1410,
+					Race: 9, Population: -225,
+					MaxEffeciency: 0.53
                 },
 				{
                     name: "Droid Parts",
@@ -422,7 +503,9 @@
 					resource5: 33,
                     volume5: -360,
                     outputResource: 15,
-                    outputVolume: 945
+                    outputVolume: 945,
+					Race: 9, Population: -675,
+					MaxEffeciency: 0.43
                 },
 				{
                     name: "Durasteel Plates",
@@ -434,19 +517,25 @@
                     resource3: 30,
                     volume3: -3360,
                     outputResource: 16,
-                    outputVolume: 3528
+                    outputVolume: 3528,
+					Race: 9, Population: -270,
+					MaxEffeciency: 0.37
                 },
 				{
                     name: "Energy Cell",
                     inputMultiplier: 0,
                     outputResource: 1,
-                    outputVolume: 31500
+                    outputVolume: 31500,
+					Race: 9, Population: -90,
+					MaxEffeciency: 0.43
                 },
 				{
                     name: "Energy Cell(imp)",
                     inputMultiplier: 0,
                     outputResource: 1,
-                    outputVolume: 24000
+                    outputVolume: 24000,
+					Race: 9, Population: -45,
+					MaxEffeciency: 0.43
                 },				
 				{
                     name: "Engine Parts",
@@ -458,7 +547,9 @@
                     resource3: 30,
                     volume3: -1152,
                     outputResource: 17,
-                    outputVolume: 2496
+                    outputVolume: 2496,
+					Race: 9, Population: -225,
+					MaxEffeciency: 0.47
                 },				
 				{
                     name: "Field coil",
@@ -470,7 +561,9 @@
                     resource3: 14,
                     volume3: -774,
                     outputResource: 18,
-                    outputVolume: 3150
+                    outputVolume: 3150,
+					Race: 9, Population: -810,
+					MaxEffeciency: 0.43
                 },				
 				{
                     name: "Food Ration",
@@ -484,7 +577,9 @@
 					resource4: 38,
                     volume4: -2250,
                     outputResource: 19,
-                    outputVolume: 20700
+                    outputVolume: 20700,
+					Race: 9, Population: -90,
+					MaxEffeciency: 0.35
                 },				
 				{
                     name: "Graphene",
@@ -494,8 +589,10 @@
                     resource2: 7,
                     volume2: -14400,
                     outputResource: 20,
-                    outputVolume: 4320
-                },				
+                    outputVolume: 4320,
+					Race: 9, Population: -180,
+					MaxEffeciency: 0.46
+                },
 				{
                     name: "Meat",
                     inputMultiplier: 0,
@@ -504,7 +601,9 @@
                     resource2: 42,
                     volume2: -2400,
                     outputResource: 23,
-                    outputVolume: 6960
+                    outputVolume: 6960,
+					Race: 9, Population: -75,
+					MaxEffeciency: 0.33
                 },
 				{
                     name: "Medical Supplies",
@@ -518,7 +617,9 @@
                     resource4: 12,
                     volume4: -1080,
                     outputResource: 23,
-                    outputVolume: 6960
+                    outputVolume: 6960,
+					Race: 9, Population: -90,
+					MaxEffeciency: 0.28
                 },				
 				{
                     name: "Microchip",
@@ -528,7 +629,9 @@
                     resource2: 36,
                     volume2: -3600,
                     outputResource: 24,
-                    outputVolume: 1296
+                    outputVolume: 1296,
+					Race: 9, Population: -450,
+					MaxEffeciency: 0.36
                 },				
 				{
                     name: "Missile Comp",
@@ -540,7 +643,9 @@
                     resource3: 10,
                     volume3: -24,
                     outputResource: 25,
-                    outputVolume: 3372
+                    outputVolume: 3372,
+					Race: 9, Population: -22,
+					MaxEffeciency: 0.53
                 },				
 				{
                     name: "Module Prefab",
@@ -554,7 +659,9 @@
 					resource4: 28,
                     volume4: -600,
                     outputResource: 26,
-                    outputVolume: 1296
+                    outputVolume: 1296,
+					Race: 9, Population: -1215,
+					MaxEffeciency: 0.34
                 },				
 				{
                     name: "Plasma Conductors",
@@ -566,7 +673,9 @@
                     resource3: 39,
                     volume3: -1680,
                     outputResource: 28,
-                    outputVolume: 528
+                    outputVolume: 528,
+					Race: 9, Population: -225,
+					MaxEffeciency: 0.43
                 },
 				{
                     name: "Refined Metal",
@@ -576,7 +685,9 @@
                     resource2: 3,
                     volume2: -17280,
                     outputResource: 29,
-                    outputVolume: 6336
+                    outputVolume: 6336,
+					Race: 9, Population: -225,
+					MaxEffeciency: 0.43
                 },			
 				{
                     name: "Rhydonium Refinery",
@@ -586,7 +697,9 @@
                     resource2: 5,
                     volume2: -4050,
                     outputResource: 31,
-                    outputVolume: 135
+                    outputVolume: 135,
+					Race: 9, Population: -700,
+					MaxEffeciency: 0.40
                 },
 				{
                     name: "Scrap Processor",
@@ -596,7 +709,9 @@
                     resource2: 29,
                     volume2: -9000,
                     outputResource: 32,
-                    outputVolume: 9000
+                    outputVolume: 9000,
+					Race: 9, Population: -0,
+					MaxEffeciency: 0.00
                 },
 				{
                     name: "Scrap Recycler",
@@ -608,7 +723,9 @@
                     resource3: 16,
                     volume3: 900,
                     outputResource: 26,
-                    outputVolume: 460
+                    outputVolume: 460,
+					Race: 9, Population: -1250,
+					MaxEffeciency: 0.00
                 },
 				{
                     name: "Sensor Comp",
@@ -620,7 +737,9 @@
                     resource3: 36,
                     volume3: -1080,
                     outputResource: 33,
-                    outputVolume: 648
+                    outputVolume: 648,
+					Race: 9, Population: -315,
+					MaxEffeciency: 0.38
                 },
 				{
                     name: "Shield Comp",
@@ -632,7 +751,9 @@
                     resource3: 28,
                     volume3: -180,
                     outputResource: 34,
-                    outputVolume: 1737
+                    outputVolume: 1737,
+					Race: 9, Population: -225,
+					MaxEffeciency: 0.43
                 },
 				{
                     name: "Ship Supplies",
@@ -648,7 +769,9 @@
 					resource4: 19,
                     volume4: -2700,
                     outputResource: 35,
-                    outputVolume: 360
+                    outputVolume: 360,
+					Race: 9, Population: -100,
+					MaxEffeciency: 0.30
                 },
 				{
                     name: "Silicon Wafers",
@@ -658,7 +781,9 @@
                     resource2: 4,
                     volume2: -14400,
                     outputResource: 36,
-                    outputVolume: 6420
+                    outputVolume: 6420,
+					Race: 9, Population: -225,
+					MaxEffeciency: 0.37
                 },
 				{
                     name: "Smart Chip",
@@ -668,7 +793,9 @@
                     resource2: 36,
                     volume2: -360,
                     outputResource: 37,
-                    outputVolume: 2574
+                    outputVolume: 2574,
+					Race: 9, Population: -60,
+					MaxEffeciency: 0.37
                 },
 				{
                     name: "Spices",
@@ -678,7 +805,9 @@
                     resource2: 42,
                     volume2: -1440,
                     outputResource: 38,
-                    outputVolume: 9000
+                    outputVolume: 9000,
+					Race: 9, Population: -60,
+					MaxEffeciency: 0.40
                 },
 				{
                     name: "Superfluid Coolant",
@@ -688,7 +817,9 @@
                     resource2: 6,
                     volume2: -14400,
                     outputResource: 39,
-                    outputVolume: 0
+                    outputVolume: 0,
+					Race: 9, Population: -50,
+					MaxEffeciency: 0.49
                 },
 				{
                     name: "Tibinna Refinery",
@@ -698,7 +829,9 @@
                     resource2: 8,
                     volume2: -28800,
                     outputResource: 40,
-                    outputVolume: 9000
+                    outputVolume: 9000,
+					Race: 9, Population: -180,
+					MaxEffeciency: 0.35
                 },
 				{
                     name: "Turret Comp.",
@@ -714,7 +847,9 @@
 					resource5: 33,
                     volume5: -60,
                     outputResource: 41,
-                    outputVolume: 820
+                    outputVolume: 820,
+					Race: 9, Population: -225,
+					MaxEffeciency: 0.53
                 },				
 				{
                     name: "Water",
@@ -724,7 +859,9 @@
                     resource2: 2,
                     volume2: -28800,
                     outputResource: 42,
-                    outputVolume: 17370
+                    outputVolume: 17370,
+					Race: 9, Population: -180,
+					MaxEffeciency: 0.43
                 },			
 				{
                     name: "Weapon Comp",
@@ -736,7 +873,9 @@
                     resource3: 40,
                     volume3: -360,
                     outputResource: 43,
-                    outputVolume: 1020
+                    outputVolume: 1020,
+					Race: 9, Population: -225,
+					MaxEffeciency: 0.53
                 },			
 				{
                     name: "Bacta Solution (s)",
@@ -748,7 +887,9 @@
                     resource3: 7,
                     volume3: -4800,
                     outputResource: 44,
-                    outputVolume: 5280
+                    outputVolume: 5280,
+					Race: 9, Population: -180,
+					MaxEffeciency: 0.30
                 },								
 				{
                     name: "Cloning Vats (s)",
@@ -758,7 +899,9 @@
                     resource2: 44,
                     volume2: -1800,
                     outputResource: 45,
-                    outputVolume: 1725
+                    outputVolume: 1725,
+					Race: 9, Population: -135,
+					MaxEffeciency: 0.42
                 },				
 				{
                     name: "Dark Fusion Cell (s)",
@@ -772,7 +915,9 @@
 					resource4: 4,
                     volume4: -36000,
                     outputResource: 46,
-                    outputVolume: 1200
+                    outputVolume: 1200,
+					Race: 9, Population: -1500,
+					MaxEffeciency: 0.10
                 },				
 				{
                     name: "Ship Supplies (s)",
@@ -784,7 +929,9 @@
                     resource3: 44,
                     volume3: -1728,
                     outputResource: 35,
-                    outputVolume: 1728
+                    outputVolume: 1728,
+					Race: 9, Population: -100,
+					MaxEffeciency: 0.30
                 },				
 				{
                     name: "Fibresteel (s)",
@@ -796,7 +943,9 @@
                     resource3: 3,
                     volume3: -2000,
                     outputResource: 47,
-                    outputVolume: 8000
+                    outputVolume: 8000,
+					Race: 9, Population: -120,
+					MaxEffeciency: 0.20
                 },				
 				{
                     name: "Obsidian Composite (s)",
@@ -810,14 +959,16 @@
 					resource4: 4,
                     volume4: -7200,
                     outputResource: 48,
-                    outputVolume: 1200
+                    outputVolume: 1200,
+					Race: 9, Population: -750,
+					MaxEffeciency: 0.20
                 }
             ];
 				
 </script>
 <body>
 <div class="grid-container">
-	<div class="Gr-item1"><h1>Station calculator</h1></div><div class="Gr-item2"><h1>v1.002<h1></div>
+	<div class="Gr-item1"><h1>Station calculator</h1></div><div class="Gr-item2"><h1>v1.003<h1></div>
     <div class="Gr-item3"><table id="managementTable">
         <tr>
             <th>Building Name</th>
@@ -844,6 +995,8 @@
 							return `<td id="input_${module.name}_res${resource.id}">0</td>`;
 						} else if (resource.id === module.outputResource) {
 							return `<td id="output_${module.name}_res${resource.id}">0</td>`;
+						} else if (resource.id === module.Race) {
+							return `<td id="output_${module.name}_res${resource.id}">0</td>`;
 						}
 							return `<td id="empty_${module.name}_res${resource.id}"></td>`;
 					}).join("")}
@@ -861,12 +1014,12 @@
 	</div>
 	<div class="Gr-item4"><button class="calcbut" onclick="CalcOpt()">Calculate my station</button></div>
 	<div class="Gr-item5">Sunlight (%):</div><div class="Gr-item6"><input class="InpStr" type="text" id="ExtrOpt1" placeholder="Not functional" value="100"></div>
-	<div class="Gr-item7">Option:</div><div class="Gr-item8"><input class="InpStr" type="text" id="ExtrOpt2" placeholder="Not functional" value="Not used! Placeholder"></div>
+	<div class="Gr-item7">Effeciency (%):</div><div class="Gr-item8"><input class="InpStr" type="checkbox" id="ExtrOpt2"></div>
 	<div class="Gr-item9">Option:</div><div class="Gr-item10"><input class="InpStr" type="text" id="ExtrOpt3" placeholder="Not functional" value="Not used! Placeholder"></div>
 	<div class="Gr-item11"><label for="StringID">Code:</label><input class="InpStr" type="text" id="StringID" placeholder="This code holds all your station data"></div>
     <div class="Gr-item12"><button class="calcbut" onclick="Save()">Export</button></div><div class="Gr-item13"><button class="calcbut" onclick="Load()">Import</button></div>
 	<div class="Gr-item14"><u>Population</u>: Every population roughly uses food 2,25 and 1.35 Meds. Sith use 1,65 cloning vats. I do the math, then round down the number so you always get enough.<br>
-	<u>Effeciency</u>: This applies to every module. Since i would not mess with number of modules it felt moot to implement it.<br>
+	<u>Effeciency</u>: This works and is about 99,5% accurate. Example: Ingame graphene shows a maximum effeciency of "146%". The game outputs 6300, but the math i came up with gave me 6307.<br>
 	<u>Resources</u>: The calculation is done assuming the station is fed the maximum resources it can handle. (this makes scrap a bit in accurate)<br>
 	<u><b>IMPORTANT</b></u> This calculator is written entirely in javascript and html since i have no acces to the database by the discord user <u>redisia</u>. I made it from scratch, :) So notes or comments... you know where to find me.</div>
 </div>
