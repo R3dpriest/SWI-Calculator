@@ -36,7 +36,7 @@ Layout:
 - Changing the grid based on window size. I noticed smarthphone sized windows cut if input fields.
 - Changed the version numbering :)
 
-v1.003
+v1.03
 Layout:
 - Added effeciency field
 - Added an explenation on effeciency
@@ -49,3 +49,19 @@ Script:
 - Added population calculation
 - Added effenciency based calculations
 - Changed some scripts around to accomodate for this.
+
+V1.04
+Layout:
+- Added dynamic classes
+- Removed old static classes (this allows for more dynamic and better layouts and filtering)
+- Added a menu for filtering
+
+Data:
+- Reworked the data to accomodate for dynamic filtering and layout
+- Assigned the correct tiers to modules and resources
+
+Scripts:
+- Create a script that allows for users to manually hide/show certain fields. That should improve handeling of the volume of information
+
+Known issue:
+- Re-adding certain filters can be a bit wonky. Since you work with columns and rows. Where they meet can be a bit... weird.
