@@ -5,20 +5,16 @@
 	var EfRes = 0;
 	let IM = 0;
 document.addEventListener('DOMContentLoaded', () => { 
-  alert('test'); // Alert to confirm the script runs on page load
-
   document.querySelectorAll('td').forEach(cell => { 
 
     cell.addEventListener('mouseenter', () => {
       const table = cell.closest('table');
       const colIndex = cell.cellIndex;
 
-      // Highlight the column
       Array.from(table.rows).forEach(row => {
         row.cells[colIndex].classList.add('highlight-column');
       });
 
-      // Highlight the row
       cell.parentElement.classList.add('highlight-row');
     });
 
@@ -26,12 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const table = cell.closest('table');
       const colIndex = cell.cellIndex;
 
-      // Remove column highlight
       Array.from(table.rows).forEach(row => {
         row.cells[colIndex].classList.remove('highlight-column');
       });
 
-      // Remove row highlight
       cell.parentElement.classList.remove('highlight-row');
     });
   });
