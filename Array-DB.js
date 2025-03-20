@@ -63,12 +63,12 @@
 		Tier: "M-T2"
 	},
 	{
-		name: "Population (S)",
+		name: "Population",
 		inputMultiplier: 0,
 		resource1: 45,
 		volume1: -1.65,
 		Race: 9, Population: 1,
-		Style: "R-Pop-m",
+		Style: "M-Sith",
 		Tier: "M-T2"
 	},
 	{
