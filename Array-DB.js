@@ -596,7 +596,7 @@
 		Tier: "M-T3"
 	},			
 	{
-		name: "Bacta Solution (s)",
+		name: "Bacta Solution",
 		inputMultiplier: 0,
 		resource1: 1,
 		volume1: -1920,
@@ -612,7 +612,7 @@
 		Tier: "M-T2"
 	},								
 	{
-		name: "Cloning Vats (s)",
+		name: "Cloning Vats",
 		inputMultiplier: 0,
 		resource1: 1,
 		volume1: -1800,
@@ -626,7 +626,7 @@
 		Tier: "M-T3"
 	},				
 	{
-		name: "Dark Fusion Cell (s)",
+		name: "Dark Fusion Cell",
 		inputMultiplier: 0,
 		resource1: 1,
 		volume1: -48000,
@@ -644,7 +644,7 @@
 		Tier: "M-T1"
 	},				
 	{
-		name: "Ship Supplies (s)",
+		name: "Ship Supplies",
 		inputMultiplier: 0,
 		resource1: 1,
 		volume1: -7200,
@@ -660,7 +660,7 @@
 		Tier: "M-T3"
 	},				
 	{
-		name: "Fibresteel (s)",
+		name: "Fibresteel",
 		inputMultiplier: 0,
 		resource1: 1,
 		volume1: -2000,
@@ -676,7 +676,7 @@
 		Tier: "M-T1"
 	},				
 	{
-		name: "Obsidian Composite (s)",
+		name: "Obsidian Composite",
 		inputMultiplier: 0,
 		resource1: 1,
 		volume1: -4800,

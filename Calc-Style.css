@@ -32,6 +32,10 @@ td:hover {
   background-color: #f0ffc6	!important; /* Highlight column color */
 }
 
+.R-Sith::after{content: url('Sith.png');}
+.M-Sith td:first-child::after {content: url('Sith.png');}
+.M-Imp td:first-child::after {content: url('Imp.png');}
+
 		.M-T1{background-color: #F0FFF0;}
 		.M-T2{background-color: #CCFFFF;}
 		.M-T3{background-color: #E6CCFF;}
