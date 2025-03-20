@@ -3,7 +3,11 @@
 	let PosiPop = 0;
 	let NegaPop = 0; 
 	var EfRes = 0;
-	let IM = 0;
+	
+
+//TODO: Styling, Add calculate station, update on change
+
+// Highlight script
 document.addEventListener('DOMContentLoaded', () => { 
   document.querySelectorAll('td').forEach(cell => { 
 
@@ -30,6 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+const inpf = document.getElementsByClassName('SWI_Manual');
+Array.from(inpf).forEach(input => {
+    input.addEventListener('change', (event) => {
+		CalcOpt();
+	});
+});
+	
 
 //thanks to stackexchange and copilot for the save and load inspiration :)
 function Save() {
@@ -79,12 +91,13 @@ function Load() {
     }
 }
 
-	// If you want you can uplug one of the options. 
-	function CalcOpt() {
-			checkpop(); // Needed for effeciency
-            CalcModules(); // calculate just the module
-            CalcStation(); // calculate just the station
-        }
+
+// If you want you can uplug one of the options. 
+function CalcOpt() {
+	checkpop(); // Needed for effeciency
+	CalcModules(); // calculate just the module
+	CalcStation(); // calculate just the station
+}
 		
 	function checkpop(){
 		TotPop = 0;

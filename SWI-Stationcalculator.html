@@ -45,27 +45,27 @@
                     <tr class="${module.Tier} ${module.Style}">
                         <td>${module.name}</td>
                         <td>
-                            <input type="number" id="moduleInput_${module.name}" value="${module.inputMultiplier}">
+                            <input class="SWI_Manual" type="number" id="moduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}">
                         </td>
                         ${resources.map(resource => {
                             if (resource.id === module.resource1) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}_res${resource.id}">0</td>`;
+                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
                             } else if (resource.id === module.resource2) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}_res${resource.id}">0</td>`;
+                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
                             } else if (resource.id === module.resource3) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}_res${resource.id}">0</td>`;
+                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
                             } else if (resource.id === module.resource4) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}_res${resource.id}">0</td>`;
+                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
                             } else if (resource.id === module.resource5) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}_res${resource.id}">0</td>`;
+                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
                             } else if (resource.id === module.outputResource1) {
-                                return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}_res${resource.id}">0</td>`;
+                                return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
                             } else if (resource.id === module.outputResource2) {
-                                return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}_res${resource.id}">0</td>`;
+                                return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
                             } else if (resource.id === module.Race) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="output_${module.name}_res${resource.id}">0</td>`;
+                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
                             }
-                            return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="empty_${module.name}_res${resource.id}"></td>`;
+                            return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="empty_${module.name}${module.Style}_res${resource.id}"></td>`;
                         }).join("")}
                     </tr>
                 `);
