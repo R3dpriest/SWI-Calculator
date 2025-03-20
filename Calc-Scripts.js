@@ -96,7 +96,7 @@ function Load() {
 			NegaPop[resource.id] = 0;
 		});
 		modules.forEach(module => { 
-			const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}`).value) || 0;
+			const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}${module.Style}`).value) || 0;
 			const calculatedValue = module.Population * multiplier;
 			TotPop[module.Population] += calculatedValue;
 			if (calculatedValue > 0) {
@@ -111,54 +111,54 @@ function Load() {
         // Math for modules
         function CalcModules() {
             modules.forEach(module => {
-                const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}`).value) || 0;
+                const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}${module.Style}`).value) || 0;
                 // Update input and output values based on input, i also decidedd to add a simple color change if the value is negative.
                 if (module.resource1) {
-                    document.getElementById(`input_${module.name}_res${module.resource1}`).textContent = Math.floor(module.volume1 * multiplier);
+                    document.getElementById(`input_${module.name}${module.Style}_res${module.resource1}`).textContent = Math.floor(module.volume1 * multiplier);
 					if(module.volume1 * multiplier < 0){
-						document.getElementById(`input_${module.name}_res${module.resource1}`).style.cssText = 'color: red;';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource1}`).style.cssText = 'color: red;';
 					} else {
-						document.getElementById(`input_${module.name}_res${module.resource1}`).style.cssText = '';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource1}`).style.cssText = '';
 					}
                 }
                 if (module.resource2) {
-                    document.getElementById(`input_${module.name}_res${module.resource2}`).textContent = Math.floor(module.volume2 * multiplier);
+                    document.getElementById(`input_${module.name}${module.Style}_res${module.resource2}`).textContent = Math.floor(module.volume2 * multiplier);
 					if(module.volume2 * multiplier  < 0){
-						document.getElementById(`input_${module.name}_res${module.resource2}`).style.cssText = 'color: red;';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource2}`).style.cssText = 'color: red;';
 					} else {
-						document.getElementById(`input_${module.name}_res${module.resource2}`).style.cssText = '';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource2}`).style.cssText = '';
 					}
                 }
                 if (module.resource3) {
-                    document.getElementById(`input_${module.name}_res${module.resource3}`).textContent = Math.floor(module.volume3 * multiplier);
+                    document.getElementById(`input_${module.name}${module.Style}_res${module.resource3}`).textContent = Math.floor(module.volume3 * multiplier);
 					if(module.volume3 * multiplier  < 0){
-						document.getElementById(`input_${module.name}_res${module.resource3}`).style.cssText = 'color: red;';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource3}`).style.cssText = 'color: red;';
 					} else {
-						document.getElementById(`input_${module.name}_res${module.resource3}`).style.cssText = ' ';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource3}`).style.cssText = ' ';
 					}
                 }
 				if (module.resource4) {
-                    document.getElementById(`input_${module.name}_res${module.resource4}`).textContent = Math.floor(module.volume4 * multiplier);
+                    document.getElementById(`input_${module.name}${module.Style}_res${module.resource4}`).textContent = Math.floor(module.volume4 * multiplier);
 					if(module.volume4 * multiplier  < 0){
-						document.getElementById(`input_${module.name}_res${module.resource4}`).style.cssText = 'color: red;';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource4}`).style.cssText = 'color: red;';
 					} else {
-						document.getElementById(`input_${module.name}_res${module.resource4}`).style.cssText = ' ';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource4}`).style.cssText = ' ';
 					}
                 }
 				if (module.resource5) {
-                    document.getElementById(`input_${module.name}_res${module.resource5}`).textContent = Math.floor(module.volume5 * multiplier);
+                    document.getElementById(`input_${module.name}${module.Style}_res${module.resource5}`).textContent = Math.floor(module.volume5 * multiplier);
 					if(module.volume5 * multiplier  < 0){
-						document.getElementById(`input_${module.name}_res${module.resource5}`).style.cssText = 'color: red;';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource5}`).style.cssText = 'color: red;';
 					} else {
-						document.getElementById(`input_${module.name}_res${module.resource5}`).style.cssText = ' ';
+						document.getElementById(`input_${module.name}${module.Style}_res${module.resource5}`).style.cssText = ' ';
 					}
                 }
 				if (module.Race) {
-                    document.getElementById(`output_${module.name}_res${module.Race}`).textContent = Math.floor(module.Population * multiplier);
+                    document.getElementById(`output_${module.name}${module.Style}_res${module.Race}`).textContent = Math.floor(module.Population * multiplier);
 					if(module.Population * multiplier  < 0){
-						document.getElementById(`output_${module.name}_res${module.Race}`).style.cssText = 'color: red;';
+						document.getElementById(`output_${module.name}${module.Style}_res${module.Race}`).style.cssText = 'color: red;';
 					} else {
-						document.getElementById(`output_${module.name}_res${module.Race}`).style.cssText = ' ';
+						document.getElementById(`output_${module.name}${module.Style}_res${module.Race}`).style.cssText = ' ';
 					}
                 }
                 if (module.outputResource1) {
@@ -176,18 +176,18 @@ function Load() {
 				}
 					if(module.outputResource1 == 1){
 						const ExtrOpt1 = document.getElementById("ExtrOpt1").value;
-						document.getElementById(`output_${module.name}_res${module.outputResource1}`).textContent = (EfRes / 100) * ExtrOpt1; //sunlight
+						document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource1}`).textContent = (EfRes / 100) * ExtrOpt1; //sunlight
 						if(module.outputVolume1 * multiplier  < 0){
-							document.getElementById(`output_${module.name}_res${module.outputResource1}`).style.cssText = 'color: red;';
+							document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource1}`).style.cssText = 'color: red;';
 						} else {
-							document.getElementById(`output_${module.name}_res${module.outputResource1}`).style.cssText = 'color: green; font-weight: bold;';
+							document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource1}`).style.cssText = 'color: green; font-weight: bold;';
 						}
 					} else {
-						document.getElementById(`output_${module.name}_res${module.outputResource1}`).textContent = EfRes;
+						document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource1}`).textContent = EfRes;
 						if(module.outputVolume1 * multiplier  < 0){
-							document.getElementById(`output_${module.name}_res${module.outputResource1}`).style.cssText = 'color: red;';
+							document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource1}`).style.cssText = 'color: red;';
 						} else {
-							document.getElementById(`output_${module.name}_res${module.outputResource1}`).style.cssText = 'color: green; font-weight: bold;';
+							document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource1}`).style.cssText = 'color: green; font-weight: bold;';
 						}
 					}
                 }
@@ -206,18 +206,18 @@ function Load() {
 				}
 					if(module.outputResource2 == 1){
 						const ExtrOpt1 = document.getElementById("ExtrOpt1").value;
-						document.getElementById(`output_${module.name}_res${module.outputResource2}`).textContent = (EfRes / 100) * ExtrOpt1; //sunlight
+						document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource2}`).textContent = (EfRes / 100) * ExtrOpt1; //sunlight
 						if(module.outputVolume1 * multiplier  < 0){
-							document.getElementById(`output_${module.name}_res${module.outputResource2}`).style.cssText = 'color: red;';
+							document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource2}`).style.cssText = 'color: red;';
 						} else {
-							document.getElementById(`output_${module.name}_res${module.outputResource2}`).style.cssText = 'color: green; font-weight: bold;';
+							document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource2}`).style.cssText = 'color: green; font-weight: bold;';
 						}
 					} else {
-						document.getElementById(`output_${module.name}_res${module.outputResource2}`).textContent = EfRes;
+						document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource2}`).textContent = EfRes;
 						if(module.outputVolume1 * multiplier  < 0){
-							document.getElementById(`output_${module.name}_res${module.outputResource2}`).style.cssText = 'color: red;';
+							document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource2}`).style.cssText = 'color: red;';
 						} else {
-							document.getElementById(`output_${module.name}_res${module.outputResource2}`).style.cssText = 'color: green; font-weight: bold;';
+							document.getElementById(`output_${module.name}${module.Style}_res${module.outputResource2}`).style.cssText = 'color: green; font-weight: bold;';
 						}
 					}
                 }
@@ -233,7 +233,7 @@ function Load() {
             });
 
             modules.forEach(module => {
-                const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}`).value) || 0;
+                const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}${module.Style}`).value) || 0;
                 totals[module.resource1] += module.volume1 * multiplier;
                 totals[module.resource2] += module.volume2 * multiplier;
                 totals[module.resource3] += module.volume3 * multiplier;
