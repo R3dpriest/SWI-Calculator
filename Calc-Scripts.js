@@ -3,11 +3,13 @@
 	let PosiPop = 0;
 	let NegaPop = 0; 
 	var EfRes = 0;
+	const MMaxTier = 3;
+	const RMaxTier = 3;
 	
 
 //TODO: Styling, Add calculate station, update on change
 
-// Highlight script
+// Highlight row/column script
 document.addEventListener('DOMContentLoaded', () => { 
   document.querySelectorAll('td').forEach(cell => { 
 
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
-
+//Auto update fields on input field change
 const inpf = document.getElementsByClassName('SWI_Manual');
 Array.from(inpf).forEach(input => {
     input.addEventListener('change', (event) => {
@@ -282,9 +284,8 @@ function CalcOpt() {
                 document.getElementById(`total_${resource.id}`).textContent = Math.floor(totals[resource.id]);
             });
         }
-	
-	//Simple hide/display script
-	function Display(Elem, Tar, Opt){
+
+function Display(Elem, Tar, Opt){
 	var OptA;
 	var ChangeA = document.getElementsByClassName(Elem);
 	var ChangeB = document.getElementsByClassName(Elem+"-m");
@@ -295,4 +296,113 @@ function CalcOpt() {
 		for(let i = 0; i < ChangeA.length; i++) {ChangeA[i].style.display = 'none';}
 		for(let i = 0; i < ChangeB.length; i++) {ChangeB[i].style.display = 'none';}
 	}
+}
+/*
+function Display(Elem, Tar) {
+    // Checkbox state: checked or unchecked
+    let isChecked = document.getElementById(Tar).checked;
+
+    // Target rows with the specific class
+    let rows = document.querySelectorAll(`tr.${Elem}`);
+    // Target cells (columns) with the specific class
+    let cells = document.querySelectorAll(`td.${Elem}, th.${Elem}`);
+
+    if (isChecked) {
+        // Show the targeted rows and cells
+        rows.forEach(row => row.style.display = ''); // Unhide rows
+        cells.forEach(cell => cell.style.display = ''); // Unhide columns
+    } else {
+        // Hide the targeted rows and cells
+        rows.forEach(row => row.style.display = 'none'); // Hide rows
+        cells.forEach(cell => cell.style.display = 'none'); // Hide columns
+    }
+}
+*/
+
+//like 60% o.g. code and 40% ai fixxing my borked script
+function Indepthcalc() {
+	let Buffer = resources.map(r => ({
+	id: r.id,
+	volume: 0,
+	tier: r.Tier
+}));
+let moduleRequirements = {};
+
+	function addModule(module, count) {
+		const key = module.outputResource1;
+		if (!moduleRequirements[key]) {
+			moduleRequirements[key] = 0;
+		}
+		moduleRequirements[key] += count;
+	}
+
+	function runModule(module, count) {
+	for (let k = 1; k <= 5; k++) {
+		const inResKey = "resource" + k;
+		const inVolKey = "volume" + k;
+		if (module[inResKey] && module[inVolKey] !== undefined) {
+			let bufItem = Buffer.find(item => item.id === module[inResKey]);
+			if (bufItem) {
+				bufItem.volume += module[inVolKey] * count;
+			}
+		}
+	}
+		for (let k = 1; k <= 5; k++) {
+			const outResKey = "outputResource" + k;
+			const outVolKey = "outputVolume" + k;
+			if (module[outResKey] && module[outVolKey] !== undefined) {
+				let bufItem = Buffer.find(item => item.id === module[outResKey]);
+				if (bufItem) {
+					bufItem.volume += module[outVolKey] * count;
+				}
+			}
+		}
+			addModule(module, count);
+	}
+
+const tier3Modules = modules.filter(m => m.Tier === "M-T3");
+tier3Modules.forEach(module => {
+	let multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}${module.Style}`)?.value) || 0;
+	if (multiplier > 0) {
+		runModule(module, multiplier);
+	}
+});
+
+const tierMapping = [
+	{ moduleTier: "M-T3", targetResourceTier: "R-T2" },
+	{ moduleTier: "M-T2", targetResourceTier: "R-T1" },
+	{ moduleTier: "M-T1", targetResourceTier: "R-T0" }
+];
+
+for(let idx = 0; idx < tierMapping.length - 1; idx++) {
+	let currentMapping = tierMapping[idx];
+	let nextMapping = tierMapping[idx + 1];    
+	let deficits = Buffer.filter(item => item.tier === currentMapping.targetResourceTier && item.volume < 0);
+	deficits.forEach(deficit => {
+	let candidates = modules.filter(m => m.Tier === nextMapping.moduleTier && m.outputResource1 === deficit.id);
+	if (!candidates.length) {
+		console.log(`No module: ${nextMapping.moduleTier} => ${deficit.id}`);
+		return;
+	}
+	let prodModule = candidates[0];
+	let needed = Math.ceil(Math.abs(deficit.volume) / prodModule.outputVolume1);
+	runModule(prodModule, needed);
+	});
+}
+
+console.log("\nModules needed:");
+for (let key in moduleRequirements) {
+	const Tar = document.querySelector(`[class~="${key}"]`);
+	if (Tar) { // Ensure the element exists
+		Tar.value = moduleRequirements[key]; // Update the value of the input field
+    } else {
+        console.log('No element found with class:', key);
+    }  
+
+	console.log(key + ": " + moduleRequirements[key]);
+}
+
+// Return the module requirements if needed.
+//return moduleRequirements;
+CalcOpt();
 }

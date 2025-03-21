@@ -6,13 +6,13 @@
 	<script type="text/javascript" src="Calc-Scripts.js" defer></script>
 	<script type="text/javascript" src="Array-DB.js"></script>
 	<link rel="stylesheet" type="text/css" href="Calc-Style.css">
-    <title>Station Calculator v1.05</title>
+    <title>Station Calculator v1.06</title>
 </head>
 <body>
 <div class="Calc-Container">
-	<div class="Gr-item1"><h1>Station calculator - v1.05</h1></div><div class="Gr-item2">
+	<div class="Gr-item1"><h1>Station calculator - v1.06 <a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator.html" target="_blank">full screen</a></h1></div><div class="Gr-item2">
 		<div class="Options-Container">
-			<div class="Gr-Opt-Ba">Display options: (Needs work... i know, but somewhat works)</div>
+			<div class="Gr-Opt-Ba">Display options: [wonky if re-applying filters])</div>
 			<div class="Gr-Opt-Co">Resources</div>
 			<div class="Gr-Opt-C1"><label for="Gr-Opt-C1" onclick="Display('R-T1', 'Gr-Opt-C1', 'C');">Tier 1:<input type="checkbox" id="Gr-Opt-C1" CHECKED></label></div>
 			<div class="Gr-Opt-C2"><label for="Gr-Opt-C2" onclick="Display('R-T2', 'Gr-Opt-C2', 'C');">Tier 2:<input type="checkbox" id="Gr-Opt-C2" CHECKED></label></div>
@@ -45,7 +45,7 @@
                     <tr class="${module.Tier} ${module.Style}">
                         <td>${module.name}</td>
                         <td>
-                            <input class="SWI_Manual" type="number" id="moduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}">
+                            <input class="${module.outputResource1} SWI_Manual M${module.Tier}" type="number" id="moduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}">
                         </td>
                         ${resources.map(resource => {
                             if (resource.id === module.resource1) {
@@ -83,7 +83,7 @@
         </script>
     </table>
 </div>
-	<div class="Gr-item4"><button class="calcbut" onclick="CalcOpt()">Calculate my station</button></div>
+	<div class="Gr-item4"><button class="calcbut" onclick="Indepthcalc()">Calclate </button></div>
 	<div class="Gr-item5">Sunlight (%):</div><div class="Gr-item6"><input class="InpStr" type="text" id="ExtrOpt1" placeholder="Not functional" value="100"></div>
 	<div class="Gr-item7">Effeciency (%):</div><div class="Gr-item8"><input class="InpStr" type="checkbox" id="ExtrOpt2"></div>
 	<div class="Gr-item9">Option:</div><div class="Gr-item10"><input class="InpStr" type="text" id="ExtrOpt3" placeholder="Not functional" value="Not used! Placeholder"></div>
@@ -92,7 +92,12 @@
 	<div class="Gr-item14"><u>Population</u>: Every population roughly uses food 2,25 and 1.35 Meds. Sith use 1,65 cloning vats. I do the math, then round down the number so you always get enough.<br>
 	<u>Effeciency</u>: This works and is about 99,5% accurate. Example: Ingame graphene shows a maximum effeciency of "146%". The game outputs 6300, but the math i came up with gave me 6307.<br>
 	<u>Resources</u>: The calculation is done assuming the station is fed the maximum resources it can handle. (this makes scrap a bit in accurate)<br>
-	<u><b>IMPORTANT</b></u>: This is written in CSS, JS, HTML and needs <b>javascript</b> to work. If there is any wrong value or bug you can let me (Redisia) on discord know.</div>
+	<u><b>IMPORTANT</b></u>: This is written in CSS, JS, HTML and needs <b>javascript</b> to work. If there is any wrong value or bug you can let me (Redisia) on discord know.<br><br>
+	<u><b>This version added:</b></u> Calculating the station based modules you add in.<br>
+	<u><b>Known bug:</b></u> It seems to mess up energy.
+	
+	
+	</div>
 </div>
 </body>
 </html>

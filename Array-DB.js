@@ -26,7 +26,7 @@
 		{ id: 25, name: "Medical Supplies", Tier: "R-T3", style: "R-General" },
 		{ id: 26, name: "Missile comp", Tier: "R-T3", style: "R-General" },
 		{ id: 27, name: "Module PreFab", Tier: "R-T3", style: "R-General" },
-		{ id: 28, name: "Plasma Conductors", Tier: "R-T3", style: "R-General" },
+		{ id: 28, name: "Plasma Conductors", Tier: "R-T2", style: "R-General" },
 		{ id: 29, name: "Raw Scrap", Tier: "R-T1", style: "R-General" },
 		{ id: 30, name: "Refined Metals", Tier: "R-T1", style: "R-General" },
 		{ id: 31, name: "Rhydonium Core", Tier: "R-T3", style: "R-General" },
@@ -60,7 +60,7 @@
 		volume2: -1.35,
 		Race: 9, Population: 1,
 		Style: "R-Pop-m",
-		Tier: "M-T2"
+		Tier: "M-T0"
 	},
 	{
 		name: "Population",
@@ -68,8 +68,8 @@
 		resource1: 45,
 		volume1: -1.65,
 		Race: 9, Population: 1,
-		Style: "M-Sith",
-		Tier: "M-T2"
+		Style: "M-Sith R-Pop-m",
+		Tier: "M-T0"
 	},
 	{
 		name: "Advanced Composites",
@@ -487,7 +487,7 @@
 		Race: 9, Population: -225,
 		MaxEffeciency: 0.37,
 		Style: "M-Gen",
-		Tier: "M-T2"
+		Tier: "M-T1"
 	 },
 	{
 		name: "Smart Chip",
@@ -608,7 +608,7 @@
 		outputVolume1: 5280,
 		Race: 9, Population: -180,
 		MaxEffeciency: 0.30,
-		Style: "M-Gen",
+		Style: "M-Sith",
 		Tier: "M-T2"
 	},								
 	{
@@ -622,7 +622,7 @@
 		outputVolume1: 1725,
 		Race: 9, Population: -135,
 		MaxEffeciency: 0.42,
-		Style: "M-Gen",
+		Style: "M-Sith",
 		Tier: "M-T3"
 	},				
 	{
