@@ -65,3 +65,13 @@ Scripts:
 
 Known issue:
 - Re-adding certain filters can be a bit wonky. Since you work with columns and rows. Where they meet can be a bit... weird.
+
+v1.06
+
+Layout: Mild changes
+
+Scripts:  
+- Added row and column highlighting, 
+- Added automated row update.
+- Added automated column update.
+- Revamped the calculate button to actually calculate how much modules you need.
