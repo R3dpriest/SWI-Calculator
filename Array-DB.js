@@ -456,24 +456,24 @@
 		Tier: "M-T3"
 	},
 	{
-		name: "Ship Supplies",
+		name: "Ship Supplies (Has Bug)",
 		inputMultiplier: 0,
 		resource1: 1,
-		volume1: -0,
+		volume1: -1800,
 		resource2: 30,
 		volume2: -900,
 		resource3: 42,
 		volume3: -900,
 		resource4: 25,
 		volume4: -1800,
-		resource4: 19,
-		volume4: -2700,
+		resource5: 19,
+		volume5: -2700,
 		outputResource1: 35,
 		outputVolume1: 360,
 		Race: 9, Population: -100,
 		MaxEffeciency: 0.30,
 		Style: "M-Gen",
-		Tier: "M-T3"
+		Tier: "M-T4"
 	},
 	{
 		name: "Silicon Wafers",
@@ -609,7 +609,7 @@
 		Race: 9, Population: -180,
 		MaxEffeciency: 0.30,
 		Style: "M-Sith",
-		Tier: "M-T2"
+		Tier: "M-T1"
 	},								
 	{
 		name: "Cloning Vats",

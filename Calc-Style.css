@@ -29,14 +29,16 @@ input[type="number"] {
 .highlight-column {
   background-color: #f0ffc6	!important;
 }
-
+.Highlight{color: #388e3c;}
+.F22{font-size: 22px;}
 .R-Sith::after{content: url('Sith.png');}
 .M-Sith td:first-child::after {content: url('Sith.png');}
 .M-Imp td:first-child::after {content: url('Imp.png');}
-
-.M-T1{background-color: #F0FFF0;}
-.M-T2{background-color: #CCFFFF;}
-.M-T3{background-color: #E6CCFF;}
+.SimpleIcon{vertical-align: middle;}
+.M-T1{background-color: #F0FFF0;}.M-T1T:checked{background-color: #F0FFF0!important;}
+.M-T2{background-color: #CCFFFF;}.M-T2T:checked{background-color: #CCFFFF!important;}
+.M-T3{background-color: #E6CCFF;}.M-T3T:checked{background-color: #E6CCFF!important;}
+.M-T4{background-color: #FFDEB3;}.M-T4T:checked{background-color: #FFDEB3!important;}
 .R-Solid{background-color: #fbba82;}
 .R-Solid-m{background-color: #ffdec1;}
 .R-Liquid{background-color: #aad4e1;}
@@ -108,23 +110,6 @@ input[type="text"]:focus {
     border-color: #388e3c; /* Darker green border when focused */
     box-shadow: inset 0 4px 6px rgba(0, 128, 0, 0.2); /* Add focus shadow */
 }
-/* Buttons */
-.Op-But{
-	width: 95%;
-	height: 95%;
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    color: #373333; /* Text color */
-    background: linear-gradient(to bottom, #edf7ee, #e0e0e0);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 5px #e0f5e182;
-    cursor: pointer;
-    position: relative;
-    transition: box-shadow 0.2s ease, background-color 2s ease;
-	border: 1px solid #4caf50;
-}
 /* drop down */
 select {
 	width: 200px; 
@@ -148,10 +133,26 @@ select:hover {
     box-shadow: 0 3px #f7f9fc;
     color: #388e3c;
 }
-
 option {
     background-color: #edf7ee;
     color: #373333;
+}
+/* Buttons */
+.Op-But{
+	width: 95%;
+	height: 95%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #373333;
+    background: linear-gradient(to bottom, #edf7ee, #e0e0e0);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 5px #e0f5e182;
+    cursor: pointer;
+    position: relative;
+    transition: box-shadow 0.2s ease, background-color 2s ease;
+	border: 1px solid #4caf50;
 }
 
 .Op-But:hover{
@@ -182,6 +183,35 @@ option {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
+.Dummy{display: none!important;}
+.Ta1{
+	display: grid;
+	grid-template-areas:
+	"Ta1-01"
+	"Ta1-02";
+	grid-template-columns: 1fr;
+	grid-template-rows: auto auto;
+}
+.Ta1-01{grid-area: Ta1-01;}
+.Ta1-01 div{
+	display: inline-block;	border-radius: 8px 8px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;	border-top: 2px solid #4caf50; padding: 4px 10px;
+	font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: bold; color: #388e3c; background: linear-gradient(to bottom, #edf7ee, #e0e0e0);	cursor: pointer;}
+.Ta1-01 div:hover {color: #373333; background: linear-gradient(to bottom, #e0e0e0, #edf7ee);}
+.Ta1-02{grid-area: Ta1-02;}
+.TabData {
+	display: none;
+	border: 2px solid #4caf50;
+	background-color: #f7f9fc;
+}
+.TabData.active {
+	display: block;
+}
+.TagText{
+	padding: 5px;
+}
+.SimpleBox{display: inline-block; margin: 2px; border-radius: 2px; border: 1px solid #4caf50; height: 27px;}
+.SimpleBox div{display: inline-block; padding: 2px; height: 100%; align-items: center;}
+
 @media (min-width: 801px) {
 .Calc-Container {
 	display: grid;
@@ -190,7 +220,7 @@ option {
 		"Gr-item2 Gr-item2"
 		"Gr-item3 Gr-item4"
 		"Gr-item5 Gr-item6"					;
-		grid-template-columns: repeat(2, 1fr);;
+		grid-template-columns: repeat(2, 1fr);
 		grid-template-rows: auto;
 	}
 .Op1{border-radius: 0px 8px 0px 0px;	border-top: 2px solid #4caf50;		border-right: 2px solid #4caf50;}

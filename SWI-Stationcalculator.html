@@ -5,85 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script type="text/javascript" src="Calc-Scripts.js" defer></script>
 	<script type="text/javascript" src="Array-DB.js"></script>
-	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v1.07">
-    <title>Station Calculator v1.07</title>
+	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v1.08">
+    <title>Station Calculator v1.08</title>
 </head>
 <body>
 <div class="Calc-Container">
-	<div class="Gr-item1"><h1>Station calculator - V1.07 <a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator.html" target="_blank">full screen version</a></h1></div>
+	<div class="Gr-item1"><h1>Station calculator - V1.08 <a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator.html" target="_blank">full screen version</a></h1></div>
 	<div class="Gr-item2">
-	
-	<table id="managementTable">
-        <tr>
-            <td class="R-General">Module Name</td>
-            <td class="R-General">Input</td>
-            <script>
-                document.write(resources.map(resource => `<td class="${resource.style} ${resource.Tier}">${resource.name}</td>`).join(""));
-            </script>
-        </tr>
-        <script>
-			
-            document.write(`
-                <tr class=".T-Copy{}">
-                    <td class="R-General"></td>
-                    <td class="R-General"><b>Total</b></td>
-                    ${resources.map(resource => `
-                        <td class="${resource.style} ${resource.Tier}" id="Copy_${resource.id}">0</td>
-                    `).join("")}
-                </tr>
-				
-            `);
-            modules.forEach(module => {
-                document.write(`
-                    <tr class="${module.Tier} ${module.Style}">
-                        <td>${module.name}</td>
-                        <td>
-                            <input class="${module.outputResource1} SWI_Manual M${module.Tier}" type="number" id="moduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}">
-                        </td>
-                        ${resources.map(resource => {
-                            if (resource.id === module.resource1) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.resource2) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.resource3) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.resource4) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.resource5) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.outputResource1) {
-                                return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.outputResource2) {
-                                return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
-                            } else if (resource.id === module.Race) {
-                                return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
-                            }
-                            return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="empty_${module.name}${module.Style}_res${resource.id}"></td>`;
-                        }).join("")}
-                    </tr>
-                `);
-            });
+		<div class="Ta1">
+			<div class="Ta1-01">
+				<div class="Tab">Welcome</div><div class="Tab">Simple</div><div class="Tab">Complex</div>
+			</div>
+			<div class="Ta1-11">
+				<div class="TabData TagText active Welcome"><h3>Explenation</h3>
+				<b class="Highlight F22"><u>Choice</b></u><br>
+				<b class="Highlight">Simple:</b> A very <u class="Highlight">simple</u> looking calculator that will look at the highest tier <u class="Highlight">modules</u> you request and changes the values to what you need.<br>
+				<b class="Highlight">Complex:</b> A rather <u class="Highlight">complex</u> calculator, that does the above, and that will show you the data such as <u class="Highlight">resources input</u> <u class="Highlight">resources output</u> and creates a <u class="Highlight">spreadsheet</u> style table out of it that you can manually tailor.<br><br>
+				<b class="Highlight F22"><u>Tip</b></u><br>
+				<b class="Highlight">1.</b> I have color coded the tiers as such: 1 <input type="checkbox" class="M-T1T" checked> 2 <input type="checkbox" class="M-T2T" checked> 3 <input type="checkbox" class="M-T3T" checked> 4 <input type="checkbox" class="M-T4T" checked> <br>
+				<b class="Highlight">2.</b> If you want to know just the modules <u class="Highlight">simple</u> is enough. (<u class="Highlight">Disclaimer:</u> If there is any bug in the calculation scripts, you might not catch.)<br>
+				<b class="Highlight">3.</b> The code from <u class="Highlight">import</u> and <u class="Highlight">export</u> works on both <u class="Highlight">Simple</u> and <u class="Highlight">Complex</u>. The buttons look at what tab you currently have <u class="Highlight">active</u>.<br>
+				<b class="Highlight">4.</b> Functional buttons work from the <u class="Highlight">active</u> tab.<br>
+				<b class="Highlight">5. Warning:</b> Tier 4 (ship supplies) are a bit odd to calculate. The calculation works as a pyramid going from top to bottom. <u class="Highlight">Medical supplies</u> and <u class="Highlight">Food rations</u> are on their own on top of the pyramid. This makes it rather complicated to deal with. I do have a solution in mind.<br>
+				<b class="Highlight">6.</b> Last updated for SWI <b class="Highlight">0.85.</b><br>
+				</div>
+				<div class="TabData Simple">
+					<div class="SimpleContainer">
+						<script>
+							modules.forEach(module => {
+							if(module.Style.includes("R-Pop-m")){document.write(`<div class="Dummy SimpleBox"><div class="Dummy"></div><div class="Dummy"><input type="number" class="SimpleNumber" id="SimplemoduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}"></div></div>`);}else{
+							document.write(`<div class="SimpleBox ${module.Tier} ${module.Style}"><div class="SimpleName">${module.name}`);
+							if(module.Style === "M-Sith"){ document.write(`<img class="SimpleIcon" src="Sith.png">`);} else if (module.Style === "M-Imp"){document.write(`<img class="SimpleIcon" src="Imp.png">`);}
+							
+							
+							document.write(`</div><div><input type="number" class="Simple${module.outputResource1} Simple${module.Tier}" id="SimplemoduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}"></div></div>`)}});
+						</script>
+					</div>				
+				</div>
+				<div class="TabData Complex">
+					<table id="managementTable">
+						<tr>
+							<td class="R-General">Module Name</td>
+							<td class="R-General">Input</td>
+							<script>
+								document.write(resources.map(resource => `<td class="${resource.style} ${resource.Tier}">${resource.name}</td>`).join(""));
+							</script>
+						</tr>
+						<script>
+							
+							document.write(`
+								<tr class=".T-Copy{}">
+									<td class="R-General"></td>
+									<td class="R-General"><b>Total</b></td>
+									${resources.map(resource => `
+										<td class="${resource.style} ${resource.Tier}" id="Copy_${resource.id}">0</td>
+									`).join("")}
+								</tr>
+								
+							`);
+							modules.forEach(module => {
+								document.write(`
+									<tr class="${module.Tier} ${module.Style}">
+										<td>${module.name}</td>
+										<td>
+											<input class="Complex${module.outputResource1} SWI_Manual Complex${module.Tier}" type="number" id="ComplexmoduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}">
+										</td>
+										${resources.map(resource => {
+											if (resource.id === module.resource1) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.resource2) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.resource3) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.resource4) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.resource5) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.outputResource1) {
+												return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.outputResource2) {
+												return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.Race) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											}
+											return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="empty_${module.name}${module.Style}_res${resource.id}"></td>`;
+										}).join("")}
+									</tr>
+								`);
+							});
 
-            document.write(`
-                <tr>
-                    <td class="R-General"></td>
-                    <td class="R-General"><b>Total</b></td>
-                    ${resources.map(resource => `
-                        <td class="${resource.style} ${resource.Tier}" id="total_${resource.id}">0</td>
-                    `).join("")}
-                </tr>
-				
-            `);
-        </script>
-		<tr class="I-Copy">
-            <td class="R-General">Module Name</td>
-            <td class="R-General">Input</td>
-            <script>
-                document.write(resources.map(resource => `<td class="${resource.style} ${resource.Tier}">${resource.name}</td>`).join(""));
-            </script>
-        </tr>
-    </table>
-	
+							document.write(`
+								<tr>
+									<td class="R-General"></td>
+									<td class="R-General"><b>Total</b></td>
+									${resources.map(resource => `
+										<td class="${resource.style} ${resource.Tier}" id="total_${resource.id}">0</td>
+									`).join("")}
+								</tr>
+								
+							`);
+						</script>
+						<tr class="I-Copy">
+							<td class="R-General">Module Name</td>
+							<td class="R-General">Input</td>
+							<script>
+								document.write(resources.map(resource => `<td class="${resource.style} ${resource.Tier}">${resource.name}</td>`).join(""));
+							</script>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
     <div class="Gr-item3">
 		<div class="Op2">

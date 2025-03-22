@@ -3,8 +3,20 @@
 	let PosiPop = 0;
 	let NegaPop = 0; 
 	var EfRes = 0;
-
+	const SimpleR = resources.map(resource => resource);
+	
 //TODO: Styling, Add calculate station, update on change
+
+//tabselector
+const Tabs = document.querySelectorAll('.Tab');
+const TabData = document.querySelectorAll('.TabData');
+
+Tabs.forEach((Tab, index) => {
+	Tab.addEventListener('click', () => {
+		TabData.forEach(data => data.classList.remove('active'));
+		TabData[index].classList.add('active');
+	});
+});
 
 // Highlight row/column script
 document.addEventListener('DOMContentLoaded', () => { 
@@ -44,10 +56,31 @@ Array.from(inpf).forEach(input => {
 
 //thanks to stackexchange and copilot for the save and load inspiration :)
 function Save() {
-    const inputElements = document.querySelectorAll("input[type='number']");
-    const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt3"];
-    
+    // Step 1: Find the element with the class "active"
+    const activeElement = document.querySelector('.active');
+    if (!activeElement) {
+        alert("No active element found.");
+        return;
+    }
+
+    // Step 2: Check the class before "active" (Simple or Complex)
+    const classList = Array.from(activeElement.classList);
+    const activeIndex = classList.indexOf('active');
+    const prefix = activeIndex > 0 ? classList[activeIndex - 1] : null;
+
+    if (!prefix) {
+        alert("No class found before 'active' (e.g., Simple or Complex).");
+        return;
+    }
+
+    // Step 3: Find all input fields with IDs that start with the prefix
+    const inputElements = document.querySelectorAll(`input[type="number"][id^="${prefix}"]`);
+
+    // Step 4: Collect their values
     const numberValues = Array.from(inputElements).map(input => input.value || "0");
+
+    // Step 5: Include extra fields
+    const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt13"];
     const extraValues = extraFields.map(id => {
         const field = document.getElementById(id);
         if (id === "ExtrOpt2" && field?.type === "checkbox") {
@@ -56,22 +89,47 @@ function Save() {
         return field?.value || "0";
     });
 
+    // Step 6: Encode all values
     const allValues = [...numberValues, ...extraValues];
     const uniqueString = btoa(allValues.join(",")); // Encode as a base64 string
-    document.getElementById("StringID").value = uniqueString; // Save to text input field
+    document.getElementById("StringID").value = uniqueString; // Save to a text input field
 }
 
+
+
 function Load() {
+    // Step 1: Find the element with the class "active"
+    const activeElement = document.querySelector('.active');
+    if (!activeElement) {
+        alert("No active element found.");
+        return;
+    }
+
+    // Step 2: Check the class before "active" (Simple or Complex)
+    const classList = Array.from(activeElement.classList);
+    const activeIndex = classList.indexOf('active');
+    const prefix = activeIndex > 0 ? classList[activeIndex - 1] : null;
+
+    if (!prefix) {
+        alert("No class found before 'active' (e.g., Simple or Complex).");
+        return;
+    }
+
+    // Step 3: Decode the stored data
     const uniqueString = document.getElementById("StringID").value;
     try {
         const decodedValues = atob(uniqueString).split(",");
-        const inputElements = document.querySelectorAll("input[type='number']");
-        const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt3"];
-        
+
+        // Step 4: Find all input fields with IDs that start with the prefix
+        const inputElements = document.querySelectorAll(`input[type="number"][id^="${prefix}"]`);
+
+        // Step 5: Apply the decoded values to the input fields
         Array.from(inputElements).forEach((input, index) => {
             input.value = decodedValues[index] || "0";
         });
 
+        // Step 6: Apply the remaining decoded values to the extra fields
+        const extraFields = ["ExtrOpt1", "ExtrOpt2", "ExtrOpt13"];
         extraFields.forEach((id, index) => {
             const fieldIndex = inputElements.length + index; // Offset for additional fields
             const field = document.getElementById(id);
@@ -84,12 +142,11 @@ function Load() {
             }
         });
 
-        CalcOpt();
+        CalcOpt(); // Call CalcOpt if necessary
     } catch (e) {
         alert("Invalid... Sorry");
     }
 }
-
 
 // If you want you can uplug one of the options. 
 function CalcOpt() {
@@ -108,7 +165,7 @@ function CalcOpt() {
 			NegaPop[resource.id] = 0;
 		});
 		modules.forEach(module => { 
-			const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}${module.Style}`).value) || 0;
+			const multiplier = parseFloat(document.getElementById(`ComplexmoduleInput_${module.name}${module.Style}`).value) || 0;
 			const calculatedValue = module.Population * multiplier;
 			TotPop[module.Population] += calculatedValue;
 			if (calculatedValue > 0) {
@@ -123,7 +180,7 @@ function CalcOpt() {
         // Math for modules
         function CalcModules() {
             modules.forEach(module => {
-                const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}${module.Style}`).value) || 0;
+                const multiplier = parseFloat(document.getElementById(`ComplexmoduleInput_${module.name}${module.Style}`).value) || 0;
                 // Update input and output values based on input, i also decidedd to add a simple color change if the value is negative.
                 if (module.resource1) {
                     document.getElementById(`input_${module.name}${module.Style}_res${module.resource1}`).textContent = Math.floor(module.volume1 * multiplier);
@@ -245,7 +302,7 @@ function CalcOpt() {
             });
 
             modules.forEach(module => {
-                const multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}${module.Style}`).value) || 0;
+                const multiplier = parseFloat(document.getElementById(`ComplexmoduleInput_${module.name}${module.Style}`).value) || 0;
                 totals[module.resource1] += module.volume1 * multiplier;
                 totals[module.resource2] += module.volume2 * multiplier;
                 totals[module.resource3] += module.volume3 * multiplier;
@@ -321,10 +378,48 @@ function Display(Elem, Tar) {
 
 //like 60% o.g. code and 40% ai fixxing my borked script
 function Indepthcalc() {
-//Calcualte ship suppies. Add the needed materials to the fields later on.
+
+//Functionality to adept to simple and complex
+/*const Active = document.querySelector('.active');
+const Classes = Array.from(Active.classList);
+const Index = Classes.indexOf('active');
+let SorC = Classes[Index - 1];
+
+//check for tier 4
+
+var T4 = document.getElementsByClassName(SorC+'M-T4');
+Array.from(T4).forEach(input => {
+	const value = parseFloat(input.value); 
+	if (!isNaN(value) && value > 0) { // Ensure valid number and check > 0
+		const classes = input.className.split(' ');
+		if (classes.length > 1) {
+			console.log(classes[1]);
+			let Mid = classes[0].replace(SorC, '');
+			const module = modules.find(module => module.outputResource1 === Mid);
+
+			// Logs the second class
+			let multiplier = parseFloat(document.getElementById(SorC+`moduleInput_${module.name}${module.Style}`)?.value) || 0;
+			if (multiplier > 0) {
+			//	runModule(module, multiplier);
+			}
+		}
+	}
+});*/
+
+
+const Active = document.querySelector('.active');
+const Classes = Array.from(Active.classList);
+const Index = Classes.indexOf('active');
+let SorC = Classes[Index - 1];
+
+let Buffer = resources.map(r => ({
+	id: r.id,
+	volume: 0,
+	tier: r.Tier
+}));
 
 //The loop appearently struggled to work if 3 was empty.
-var T3 = document.getElementsByClassName('MM-T3');
+var T3 = document.getElementsByClassName(SorC+'M-T3');
 var T3Array = Array.from(T3);
 var T3Exists = T3Array.some(function(T3) { return parseFloat(T3.value) > 0; });
 if(T3Exists) {
@@ -333,50 +428,105 @@ if(T3Exists) {
     var TMod = "M-T2";
 }
 
-let Buffer = resources.map(r => ({
-	id: r.id,
-	volume: 0,
-	tier: r.Tier
-}));
+//Res Req
 let moduleRequirements = {};
-
-	function addModule(module, count) {
-		const key = module.outputResource1;
-		if (!moduleRequirements[key]) {
-			moduleRequirements[key] = 0;
-		}
-		moduleRequirements[key] += count;
+function addModule(module, count) {
+	const key = module.outputResource1;
+	if (!moduleRequirements[key]) {
+		moduleRequirements[key] = 0;
 	}
+	moduleRequirements[key] += count;
+}
 
-	function runModule(module, count) {
-	for (let k = 1; k <= 5; k++) {
-		const inResKey = "resource" + k;
-		const inVolKey = "volume" + k;
-		if (module[inResKey] && module[inVolKey] !== undefined) {
-			let bufItem = Buffer.find(item => item.id === module[inResKey]);
-			if (bufItem) {
-				bufItem.volume += module[inVolKey] * count;
+// Check for tier 4
+var T4 = document.getElementsByClassName(SorC + 'M-T4');
+Array.from(T4).forEach(input => {
+	const value = parseFloat(input.value);
+	if (!isNaN(value) && value > 0) {
+	const classes = input.className.split(' ');
+		if (classes.length > 1) {
+			let Mid = parseInt(classes[0].replace(SorC, ''), 10);
+			const module = modules.find(module => module.outputResource1 === Mid);
+			let multiplier = parseFloat(document.getElementById(SorC+`moduleInput_${module.name}${module.Style}`)?.value) || 0;
+			if(!module) {
+				return;
+				}
+			const inputId = SorC + `moduleInput_${module.name}${module.Style}`;
+			if (multiplier > 0) {
+				runModule(module, multiplier, 4);
 			}
 		}
 	}
+});
+
+
+//Check active
+
+function runModule(module, count, opt) {
+	if(opt === 4){
 		for (let k = 1; k <= 5; k++) {
-			const outResKey = "outputResource" + k;
-			const outVolKey = "outputVolume" + k;
-			if (module[outResKey] && module[outVolKey] !== undefined) {
-				let bufItem = Buffer.find(item => item.id === module[outResKey]);
+			const MInIdRes = "resource" + k;
+			const MInVoRes = "volume" + k;
+			if (module[MInIdRes] && module[MInVoRes] !== undefined) {
+				let bufItem = Buffer.find(item => item.id === module[MInIdRes]);
 				if (bufItem) {
-					bufItem.volume += module[outVolKey] * count;
+					bufItem.volume += module[MInVoRes] * count;
+					let Swap = modules.find(module => module.outputResource1 === bufItem.id);
+					if(Swap.Tier === "M-T3"){
+						let SubNumA = module[MInVoRes];
+						let	SubNumB = String(SubNumA).replace("-", "");
+						let	SubNumC = Number(SubNumB);
+						let ModNum = Math.ceil(Swap.outputVolume1/SubNumC);
+						let get = document.getElementById(SorC+`moduleInput_`+Swap.name+Swap.Style).value;
+						let calc = Math.ceil(get+ModNum);
+				//		alert(calc);
+						document.getElementById(SorC+`moduleInput_`+Swap.name+Swap.Style).value = calc;
+						} else {}
+				}
+			}
+		}/* fix later 
+		for (let k = 1; k <= 5; k++) {
+			const MOuIdRes = "outputResource" + k;
+			const MOuVoRes = "outputVolume" + k;
+			if (module[MOuIdRes] && module[MOuVoRes] !== undefined) {
+				let bufItem = Buffer.find(item => item.id === module[MOuIdRes]);
+				if (bufItem) {
+					bufItem.volume += module[MOuVoRes] * count;
+					console.log('ID: '+bufItem.id+' outVolume: '+bufItem.volume);
+				}
+			}
+		}*/
+	} else {
+		for (let k = 1; k <= 5; k++) {
+			const MInIdRes = "resource" + k;
+			const MInVoRes = "volume" + k;
+			if (module[MInIdRes] && module[MInVoRes] !== undefined) {
+				let bufItem = Buffer.find(item => item.id === module[MInIdRes]);
+				if (bufItem) {
+					bufItem.volume += module[MInVoRes] * count;
 				}
 			}
 		}
-			addModule(module, count);
+		for (let k = 1; k <= 5; k++) {
+			const MOuIdRes = "outputResource" + k;
+			const MOuVoRes = "outputVolume" + k;
+			if (module[MOuIdRes] && module[MOuVoRes] !== undefined) {
+				let bufItem = Buffer.find(item => item.id === module[MOuIdRes]);
+				if (bufItem) {
+					bufItem.volume += module[MOuVoRes] * count;
+				}
+			}
+		}
+		addModule(module, count);
 	}
+}
 
+//Grab selected
 const TModules = modules.filter(m => m.Tier === TMod);
 TModules.forEach(module => {
-	let multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}${module.Style}`)?.value) || 0;
+	let multiplier = parseFloat(document.getElementById(SorC+`moduleInput_${module.name}${module.Style}`)?.value) || 0;
 	if (multiplier > 0) {
-		runModule(module, multiplier);
+		runModule(module, multiplier, 0);
 	}
 });
 
@@ -402,19 +552,15 @@ for(let idx = 0; idx < tierMapping.length - 1; idx++) {
 	});
 }
 
-console.log("\nModules needed:");
 for (let key in moduleRequirements) {
-	const Tar = document.querySelector(`[class~="${key}"]`);
-	if (Tar) { // Ensure the element exists
-		Tar.value = moduleRequirements[key]; // Update the value of the input field
-    } else {
-        console.log('No element found with class:', key);
-    }  
-
-	console.log(key + ": " + moduleRequirements[key]);
+	const Tar = document.querySelector(`[class~="` + SorC + key + `"]`);
+	if (Tar){
+		Tar.value = moduleRequirements[key];
+    } else {}  
+	/* Debug log */
+	console.log("Modules " + key + ": " + moduleRequirements[key]);
 }
 
 // Return the module requirements if needed.
-//return moduleRequirements;
-CalcOpt();
+if(SorC === "Complex"){ CalcOpt(); }
 }
