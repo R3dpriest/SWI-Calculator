@@ -85,3 +85,5 @@ Layout
 
 Scripts: 
 - Fixxed the bug that it would only start calculation from tier 3 modules on.
+
+v1.08  (working on simplistic calculator)
