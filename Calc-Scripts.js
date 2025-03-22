@@ -3,9 +3,6 @@
 	let PosiPop = 0;
 	let NegaPop = 0; 
 	var EfRes = 0;
-	const MMaxTier = 3;
-	const RMaxTier = 3;
-	
 
 //TODO: Styling, Add calculate station, update on change
 
@@ -278,10 +275,13 @@ function CalcOpt() {
             resources.forEach(resource => {
 				if(totals[resource.id] < 0){
 					document.getElementById(`total_${resource.id}`).style.cssText = 'color: red; font-weight: bold;';
+					document.getElementById(`Copy_${resource.id}`).style.cssText = 'color: red; font-weight: bold;';
 				} else {
 					document.getElementById(`total_${resource.id}`).style.cssText = 'color: green; font-weight: bold;';
+					document.getElementById(`Copy_${resource.id}`).style.cssText = 'color: green; font-weight: bold;';
 				}
-                document.getElementById(`total_${resource.id}`).textContent = Math.floor(totals[resource.id]);
+					document.getElementById(`total_${resource.id}`).textContent = Math.floor(totals[resource.id]);
+					document.getElementById(`Copy_${resource.id}`).textContent = Math.floor(totals[resource.id]);
             });
         }
 
@@ -321,7 +321,19 @@ function Display(Elem, Tar) {
 
 //like 60% o.g. code and 40% ai fixxing my borked script
 function Indepthcalc() {
-	let Buffer = resources.map(r => ({
+//Calcualte ship suppies. Add the needed materials to the fields later on.
+
+//The loop appearently struggled to work if 3 was empty.
+var T3 = document.getElementsByClassName('MM-T3');
+var T3Array = Array.from(T3);
+var T3Exists = T3Array.some(function(T3) { return parseFloat(T3.value) > 0; });
+if(T3Exists) {
+    var TMod = "M-T3";
+} else {
+    var TMod = "M-T2";
+}
+
+let Buffer = resources.map(r => ({
 	id: r.id,
 	volume: 0,
 	tier: r.Tier
@@ -360,8 +372,8 @@ let moduleRequirements = {};
 			addModule(module, count);
 	}
 
-const tier3Modules = modules.filter(m => m.Tier === "M-T3");
-tier3Modules.forEach(module => {
+const TModules = modules.filter(m => m.Tier === TMod);
+TModules.forEach(module => {
 	let multiplier = parseFloat(document.getElementById(`moduleInput_${module.name}${module.Style}`)?.value) || 0;
 	if (multiplier > 0) {
 		runModule(module, multiplier);

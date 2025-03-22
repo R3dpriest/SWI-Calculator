@@ -6,40 +6,33 @@
 	<script type="text/javascript" src="Calc-Scripts.js" defer></script>
 	<script type="text/javascript" src="Array-DB.js"></script>
 	<link rel="stylesheet" type="text/css" href="Calc-Style.css">
-    <title>Station Calculator v1.06</title>
+    <title>Station Calculator v1.07</title>
 </head>
 <body>
 <div class="Calc-Container">
-	<div class="Gr-item1"><h1>Station calculator - v1.06 <a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator.html" target="_blank">full screen</a></h1></div><div class="Gr-item2">
-		<div class="Options-Container">
-			<div class="Gr-Opt-Ba">Display options: [wonky if re-applying filters])</div>
-			<div class="Gr-Opt-Co">Resources</div>
-			<div class="Gr-Opt-C1"><label for="Gr-Opt-C1" onclick="Display('R-T1', 'Gr-Opt-C1', 'C');">Tier 1:<input type="checkbox" id="Gr-Opt-C1" CHECKED></label></div>
-			<div class="Gr-Opt-C2"><label for="Gr-Opt-C2" onclick="Display('R-T2', 'Gr-Opt-C2', 'C');">Tier 2:<input type="checkbox" id="Gr-Opt-C2" CHECKED></label></div>
-			<div class="Gr-Opt-C3"><label for="Gr-Opt-C3" onclick="Display('R-T3', 'Gr-Opt-C3', 'C');">Tier 3:<input type="checkbox" id="Gr-Opt-C3" CHECKED></label></div>
-			<div class="Gr-Opt-So"><label for="Gr-Opt-So" onclick="Display('R-Solid', 'Gr-Opt-So', 'C');">Solids:<input type="checkbox" id="Gr-Opt-So" CHECKED></label></div>
-			<div class="Gr-Opt-Li"><label for="Gr-Opt-Li" onclick="Display('R-Liquid', 'Gr-Opt-Li', 'C');">Liquids:<input type="checkbox" id="Gr-Opt-Li" CHECKED></label></div>
-			
-			<div class="Gr-Opt-Ro">Modules</div>
-			<div class="Gr-Opt-R1"><label for="Gr-Opt-R1" onclick="Display('M-T1', 'Gr-Opt-R1', 'R');">Tier 1:<input type="checkbox" id="Gr-Opt-R1" CHECKED></label></div>
-			<div class="Gr-Opt-R2"><label for="Gr-Opt-R2" onclick="Display('M-T2', 'Gr-Opt-R2', 'R');">Tier 2:<input type="checkbox" id="Gr-Opt-R2" CHECKED></label></div>
-			<div class="Gr-Opt-R3"><label for="Gr-Opt-R3" onclick="Display('M-T3', 'Gr-Opt-R3', 'R');">Tier 3:<input type="checkbox" id="Gr-Opt-R3" CHECKED></label></div>
-			
-			<div class="Gr-Opt-Eo">General</div>
-			<div class="Gr-Opt-Po"><label for="Gr-Opt-Po" onclick="Display('R-Pop', 'Gr-Opt-Po', 'B');">Population:<input type="checkbox" id="Gr-Opt-Po" CHECKED></label></div>
-			<div class="Gr-Opt-Si"><label for="Gr-Opt-Si" onclick="Display('R-Sith', 'Gr-Opt-Si', 'B');">Sith:<input type="checkbox" id="Gr-Opt-Si" CHECKED></label></div>
-		</div>
-	</div>
-    <div class="Gr-item3">
-    <table id="managementTable">
+	<div class="Gr-item1"><h1>Station calculator - V1.07 <a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator.html" target="_blank">full screen version</a></h1></div>
+	<div class="Gr-item2">
+	
+	<table id="managementTable">
         <tr>
-            <td class="R-General">Building Name</td>
+            <td class="R-General">Module Name</td>
             <td class="R-General">Input</td>
             <script>
                 document.write(resources.map(resource => `<td class="${resource.style} ${resource.Tier}">${resource.name}</td>`).join(""));
             </script>
         </tr>
         <script>
+			
+            document.write(`
+                <tr class=".T-Copy{}">
+                    <td class="R-General"></td>
+                    <td class="R-General"><b>Total</b></td>
+                    ${resources.map(resource => `
+                        <td class="${resource.style} ${resource.Tier}" id="Copy_${resource.id}">0</td>
+                    `).join("")}
+                </tr>
+				
+            `);
             modules.forEach(module => {
                 document.write(`
                     <tr class="${module.Tier} ${module.Style}">
@@ -73,30 +66,72 @@
 
             document.write(`
                 <tr>
-                    <td class="R-General"><b>Total</b></td>
                     <td class="R-General"></td>
+                    <td class="R-General"><b>Total</b></td>
                     ${resources.map(resource => `
                         <td class="${resource.style} ${resource.Tier}" id="total_${resource.id}">0</td>
                     `).join("")}
                 </tr>
+				
             `);
         </script>
+		<tr class="I-Copy">
+            <td class="R-General">Module Name</td>
+            <td class="R-General">Input</td>
+            <script>
+                document.write(resources.map(resource => `<td class="${resource.style} ${resource.Tier}">${resource.name}</td>`).join(""));
+            </script>
+        </tr>
     </table>
-</div>
-	<div class="Gr-item4"><button class="calcbut" onclick="Indepthcalc()">Calclate </button></div>
-	<div class="Gr-item5">Sunlight (%):</div><div class="Gr-item6"><input class="InpStr" type="text" id="ExtrOpt1" placeholder="Not functional" value="100"></div>
-	<div class="Gr-item7">Effeciency (%):</div><div class="Gr-item8"><input class="InpStr" type="checkbox" id="ExtrOpt2"></div>
-	<div class="Gr-item9">Option:</div><div class="Gr-item10"><input class="InpStr" type="text" id="ExtrOpt3" placeholder="Not functional" value="Not used! Placeholder"></div>
-	<div class="Gr-item11"><label for="StringID">Code:</label><input class="InpStr" type="text" id="StringID" placeholder="This code holds all your station data"></div>
-    <div class="Gr-item12"><button class="calcbut" onclick="Save()">Export</button></div><div class="Gr-item13"><button class="calcbut" onclick="Load()">Import</button></div>
-	<div class="Gr-item14"><u>Population</u>: Every population roughly uses food 2,25 and 1.35 Meds. Sith use 1,65 cloning vats. I do the math, then round down the number so you always get enough.<br>
-	<u>Effeciency</u>: This works and is about 99,5% accurate. Example: Ingame graphene shows a maximum effeciency of "146%". The game outputs 6300, but the math i came up with gave me 6307.<br>
-	<u>Resources</u>: The calculation is done assuming the station is fed the maximum resources it can handle. (this makes scrap a bit in accurate)<br>
-	<u><b>IMPORTANT</b></u>: This is written in CSS, JS, HTML and needs <b>javascript</b> to work. If there is any wrong value or bug you can let me (Redisia) on discord know.<br><br>
-	<u><b>This version added:</b></u> Calculating the station based modules you add in.<br>
-	<u><b>Known bug:</b></u> It seems to mess up energy.
 	
-	
+	</div>
+    <div class="Gr-item3">
+		<div class="Op2">
+			<div class="Op2-01"><h3>Options</h3></div>
+			<div class="Op2-11"><button class="Op-But" onclick="Indepthcalc()">Calculate</button></div>
+			<div class="Op2-12"><label for="ExtrOpt1">Sunlight <input value=100 type="text" id="ExtrOpt1"></label></div>
+			<div class="Op2-22"><label for="ExtrOpt2">Effeciency <input type="checkbox" type="text" id="ExtrOpt2" CHECKED></label></div>
+			<div class="Op2-32"><label for="ExtrOpt3">Unused <input type="checkbox" type="text" id="ExtrOpt3" CHECKED></label></div>
+			<div class="Op2-33"><select><option>Placeholder</option><option>Placeholder</option></select></div>
+		</div>
+	</div>
+	<div class="Gr-item4">
+		<div class="Op1">
+			<div class="Op1-01"><h3>View controls</h3></div>
+			<div class="Op1-11">Resources</div>
+				<div class="Op1-12"><label for="Op1-12" onclick="Display('R-T1', 'Op1-12', 'C');">Tier 1:<input type="checkbox" id="Op1-12" CHECKED></label></div>
+				<div class="Op1-13"><label for="Op1-13" onclick="Display('R-T2', 'Op1-13', 'C');">Tier 2:<input type="checkbox" id="Op1-13" CHECKED></label></div>
+				<div class="Op1-14"><label for="Op1-14" onclick="Display('R-T3', 'Op1-14', 'C');">Tier 3:<input type="checkbox" id="Op1-14" CHECKED></label></div>
+				<div class="Op1-15"><label for="Op1-15" onclick="Display('R-Solid', 'Op1-15', 'C');">Solids:<input type="checkbox" id="Op1-15" CHECKED></label></div>
+				<div class="Op1-16"><label for="Op1-16" onclick="Display('R-Liquid', 'Op1-16', 'C');">Liquids:<input type="checkbox" id="Op1-16" CHECKED></label></div>
+			<div class="Op1-21">Modules</div>
+				<div class="Op1-22"><label for="Op1-22" onclick="Display('M-T1', 'Op1-22', 'R');">Tier 1:<input type="checkbox" id="Op1-22" CHECKED></label></div>
+				<div class="Op1-23"><label for="Op1-23" onclick="Display('M-T2', 'Op1-23', 'R');">Tier 2:<input type="checkbox" id="Op1-23" CHECKED></label></div>
+				<div class="Op1-24"><label for="Op1-24" onclick="Display('M-T3', 'Op1-24', 'R');">Tier 3:<input type="checkbox" id="Op1-24" CHECKED></label></div>
+			<div class="Op1-31">General</div>
+				<div class="Op1-32"><label for="Op1-32" onclick="Display('R-Pop', 'Op1-32', 'B');">Population:<input type="checkbox" id="Op1-32" CHECKED></label></div>
+				<div class="Op1-33"><label for="Op1-33" onclick="Display('R-Sith', 'Op1-33', 'B');">Sith:<input type="checkbox" id="Op1-33" CHECKED></label></div>
+		</div>
+	</div>
+	<div class="Gr-item5">
+		<div class="Op3">
+			<div class="Op3-01"><h3>Save & Load</h3></div>
+			<div class="Op3-11"><button class="Op-But" onclick="Save()">Export</button></div>
+			<div class="Op3-21"><button class="Op-But" onclick="Load()">Import</button></div>
+			<div class="Op3-12"><label for="StringID">Code:</label><input type="text" id="StringID" placeholder="This will hold a unique code"></div>
+			<div class="Op3-22"></div>
+		</div>
+	</div>
+	<div class="Gr-item6">
+		<div class="Op4">
+			<div class="Op4-01"><h3>Notes:</h3></div>
+			<div class="Op4-11"><u>Population</u>: Every population roughly uses food 2,25 and 1.35 Meds. Sith use 1,65 cloning vats. I do the math, then round down the number so you always get enough.<br>
+			<u>Effeciency</u>: This works and is about 99,5% accurate. Example: Ingame graphene shows a maximum effeciency of "146%". The game outputs 6300, but the math i came up with gave me 6307.<br>
+			<u>Resources</u>: The calculation is done assuming the station is fed the maximum resources it can handle. (this makes scrap a bit in accurate)<br>
+			<u><b>IMPORTANT</b></u>: This is written in CSS, JS, HTML and needs <b>javascript</b> to work. If there is any wrong value or bug you can let me (<b>Redisia</b>) on discord know.<br><br>
+			<u><b>Known bug(s):</b></u> 1. It seems to mess up energy. 2. Common wealth supplies.
+			</div>
+		</div>		
 	</div>
 </div>
 </body>
