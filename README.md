@@ -75,3 +75,13 @@ Scripts:
 - Added automated row update.
 - Added automated column update.
 - Revamped the calculate button to actually calculate how much modules you need.
+
+v1.07
+
+Layout
+- Fully reworked the layout and styles
+- Added total value at the top (suggestion)
+- Added resource names to the bottom (suggestion)
+
+Scripts: 
+- Fixxed the bug that it would only start calculation from tier 3 modules on.
