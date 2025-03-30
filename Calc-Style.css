@@ -146,10 +146,10 @@ option{background-color: #edf7ee; color: #373333;}
 		grid-template-columns: repeat(2, 1fr);
 		grid-template-rows: auto;
 	}
-.Op1{border-radius: 0px 8px 0px 0px;	border-top: 2px solid #4caf50;		border-right: 2px solid #4caf50;}
-.Op2{border-radius: 8px 0px 0px 0px;	border-top: 2px solid #4caf50;		border-left: 2px solid #4caf50;}	
-.Op3{border-radius: 0px 0px 0px 8px;	border-bottom: 2px solid #4caf50;	border-left: 2px solid #4caf50;}
-.Op4{border-radius: 0px 0px 8px 0px;	border-bottom: 2px solid #4caf50;	border-right: 2px solid #4caf50;}
+.Op1{border-radius: 0px 8px 0px 0px;	border-top: 2px solid #4caf50;		border-right: 2px solid #4caf50; padding: 4px;}
+.Op2{border-radius: 8px 0px 0px 0px;	border-top: 2px solid #4caf50;		border-left: 2px solid #4caf50; padding: 4px;}	
+.Op3{border-radius: 0px 0px 0px 8px;	border-bottom: 2px solid #4caf50;	border-left: 2px solid #4caf50; padding: 4px;}
+.Op4{border-radius: 0px 0px 8px 0px;	border-bottom: 2px solid #4caf50;	border-right: 2px solid #4caf50; padding: 4px;}
 }
 @media (max-width: 800px) {
 .Calc-Container {
@@ -164,10 +164,10 @@ option{background-color: #edf7ee; color: #373333;}
 		grid-template-columns: auto;
 		grid-template-rows: auto;
 	}
-.Op1{border-radius: 0px 0px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;}
-.Op2{border-radius: 8px 8px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;}	border-top: 2px solid #4caf50;}
-.Op3{border-radius: 0px 0px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;}
-.Op4{border-radius: 0px 0px 8px 8px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;}	border-bottom: 2px solid #4caf50;}
+.Op1{border-radius: 0px 0px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50; padding: 4px;}
+.Op2{border-radius: 8px 8px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;	border-top: 2px solid #4caf50; padding: 4px;}
+.Op3{border-radius: 0px 0px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50; padding: 4px;}
+.Op4{border-radius: 0px 0px 8px 8px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;	border-bottom: 2px solid #4caf50; padding: 4px;}
 }
 .Gr-item1{grid-area: Gr-item1;}	/*header*/
 .Gr-item2{grid-area: Gr-item2; margin-bottom: 2px; border-radius:}	/*table*/
