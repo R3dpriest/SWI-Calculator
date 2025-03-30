@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="Calc-Scripts-old.js" defer></script>
+	<script type="text/javascript" src="Array-DB-old.js"></script>
+	<link rel="stylesheet" type="text/css" href="Calc-Style-old.css?v1.08">
+    <title>Station Calculator v1.08</title>
+</head>
+<body>
+<div class="Calc-Container">
+	<div class="Gr-item1"><h1>Legacy Station calculator - V1.08 <a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator.html-old" target="_blank">full screen version</a></h1></div>
+	<div class="Gr-item2">
+		<div class="Ta1">
+			<div class="Ta1-01">
+				<div class="Tab">Welcome</div><div class="Tab">Simple</div><div class="Tab">Complex</div>
+			</div>
+			<div class="Ta1-11">
+				<div class="TabData TagText active Welcome"><h3>Explenation</h3>
+				<b class="Highlight F22"><u>Choice</b></u><br>
+				<b class="Highlight">Simple:</b> A very <u class="Highlight">simple</u> looking calculator that will look at the highest tier <u class="Highlight">modules</u> you request and changes the values to what you need.<br>
+				<b class="Highlight">Complex:</b> A rather <u class="Highlight">complex</u> calculator, that does the above, and that will show you the data such as <u class="Highlight">resources input</u> <u class="Highlight">resources output</u> and creates a <u class="Highlight">spreadsheet</u> style table out of it that you can manually tailor.<br><br>
+				<b class="Highlight F22"><u>Tip</b></u><br>
+				<b class="Highlight">1.</b> I have color coded the tiers as such: 1 <input type="checkbox" class="M-T1T" checked> 2 <input type="checkbox" class="M-T2T" checked> 3 <input type="checkbox" class="M-T3T" checked> 4 <input type="checkbox" class="M-T4T" checked> <br>
+				<b class="Highlight">2.</b> If you want to know just the modules <u class="Highlight">simple</u> is enough. (<u class="Highlight">Disclaimer:</u> If there is any bug in the calculation scripts, you might not catch.)<br>
+				<b class="Highlight">3.</b> The code from <u class="Highlight">import</u> and <u class="Highlight">export</u> works on both <u class="Highlight">Simple</u> and <u class="Highlight">Complex</u>. The buttons look at what tab you currently have <u class="Highlight">active</u>.<br>
+				<b class="Highlight">4.</b> Functional buttons work from the <u class="Highlight">active</u> tab.<br>
+				<b class="Highlight">5. Warning:</b> Tier 4 (ship supplies) are a bit odd to calculate. The calculation works as a pyramid going from top to bottom. <u class="Highlight">Medical supplies</u> and <u class="Highlight">Food rations</u> are on their own on top of the pyramid. This makes it rather complicated to deal with. I do have a solution in mind.<br>
+				<b class="Highlight">6.</b> Last updated for SWI <b class="Highlight">0.85.</b><br><br>
+				<b class="Highlight F22"><u>New version:</b></u><br>
+				The new and version of this calculator can be found <b class="Highlight"><a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator.html">here</a></b>
+				</div>
+				<div class="TabData Simple">
+					<div class="SimpleContainer">
+						<script>
+							modules.forEach(module => {
+							if(module.Style.includes("R-Pop-m")){document.write(`<div class="Dummy SimpleBox"><div class="Dummy"></div><div class="Dummy"><input type="number" class="SimpleNumber" id="SimplemoduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}"></div></div>`);}else{
+							document.write(`<div class="SimpleBox ${module.Tier} ${module.Style}"><div class="SimpleName">${module.name}`);
+							if(module.Style === "M-Sith"){ document.write(`<img class="SimpleIcon" src="Sith.png">`);} else if (module.Style === "M-Imp"){document.write(`<img class="SimpleIcon" src="Imp.png">`);}
+							
+							
+							document.write(`</div><div><input type="number" class="Simple${module.outputResource1} Simple${module.Tier}" id="SimplemoduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}"></div></div>`)}});
+						</script>
+					</div>				
+				</div>
+				<div class="TabData Complex">
+					<table id="managementTable">
+						<tr>
+							<td class="R-General">Module Name</td>
+							<td class="R-General">Input</td>
+							<script>
+								document.write(resources.map(resource => `<td class="${resource.style} ${resource.Tier}">${resource.name}</td>`).join(""));
+							</script>
+						</tr>
+						<script>
+							
+							document.write(`
+								<tr class=".T-Copy{}">
+									<td class="R-General"></td>
+									<td class="R-General"><b>Total</b></td>
+									${resources.map(resource => `
+										<td class="${resource.style} ${resource.Tier}" id="Copy_${resource.id}">0</td>
+									`).join("")}
+								</tr>
+								
+							`);
+							modules.forEach(module => {
+								document.write(`
+									<tr class="${module.Tier} ${module.Style}">
+										<td>${module.name}</td>
+										<td>
+											<input class="Complex${module.outputResource1} SWI_Manual Complex${module.Tier}" type="number" id="ComplexmoduleInput_${module.name}${module.Style}" value="${module.inputMultiplier}">
+										</td>
+										${resources.map(resource => {
+											if (resource.id === module.resource1) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.resource2) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.resource3) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.resource4) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.resource5) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="input_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.outputResource1) {
+												return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.outputResource2) {
+												return `<td class="${resource.style}-mo ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											} else if (resource.id === module.Race) {
+												return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="output_${module.name}${module.Style}_res${resource.id}">0</td>`;
+											}
+											return `<td class="${resource.style}-m ${resource.Tier} ${module.Tier}" id="empty_${module.name}${module.Style}_res${resource.id}"></td>`;
+										}).join("")}
+									</tr>
+								`);
+							});
+
+							document.write(`
+								<tr>
+									<td class="R-General"></td>
+									<td class="R-General"><b>Total</b></td>
+									${resources.map(resource => `
+										<td class="${resource.style} ${resource.Tier}" id="total_${resource.id}">0</td>
+									`).join("")}
+								</tr>
+								
+							`);
+						</script>
+						<tr class="I-Copy">
+							<td class="R-General">Module Name</td>
+							<td class="R-General">Input</td>
+							<script>
+								document.write(resources.map(resource => `<td class="${resource.style} ${resource.Tier}">${resource.name}</td>`).join(""));
+							</script>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="Gr-item3">
+		<div class="Op2">
+			<div class="Op2-01"><h3>Options</h3></div>
+			<div class="Op2-11"><button class="Op-But" onclick="Indepthcalc()">Calculate</button></div>
+			<div class="Op2-12"><label for="ExtrOpt1">Sunlight <input value=100 type="text" id="ExtrOpt1"></label></div>
+			<div class="Op2-22"><label for="ExtrOpt2">Effeciency <input type="checkbox" type="text" id="ExtrOpt2" CHECKED></label></div>
+			<div class="Op2-32"><label for="ExtrOpt3">Unused <input type="checkbox" type="text" id="ExtrOpt3" CHECKED></label></div>
+			<div class="Op2-33"><select><option>Placeholder</option><option>Placeholder</option></select></div>
+		</div>
+	</div>
+	<div class="Gr-item4">
+		<div class="Op1">
+			<div class="Op1-01"><h3>View controls</h3></div>
+			<div class="Op1-11">Resources</div>
+				<div class="Op1-12"><label for="Op1-12" onclick="Display('R-T1', 'Op1-12', 'C');">Tier 1:<input type="checkbox" id="Op1-12" CHECKED></label></div>
+				<div class="Op1-13"><label for="Op1-13" onclick="Display('R-T2', 'Op1-13', 'C');">Tier 2:<input type="checkbox" id="Op1-13" CHECKED></label></div>
+				<div class="Op1-14"><label for="Op1-14" onclick="Display('R-T3', 'Op1-14', 'C');">Tier 3:<input type="checkbox" id="Op1-14" CHECKED></label></div>
+				<div class="Op1-15"><label for="Op1-15" onclick="Display('R-Solid', 'Op1-15', 'C');">Solids:<input type="checkbox" id="Op1-15" CHECKED></label></div>
+				<div class="Op1-16"><label for="Op1-16" onclick="Display('R-Liquid', 'Op1-16', 'C');">Liquids:<input type="checkbox" id="Op1-16" CHECKED></label></div>
+			<div class="Op1-21">Modules</div>
+				<div class="Op1-22"><label for="Op1-22" onclick="Display('M-T1', 'Op1-22', 'R');">Tier 1:<input type="checkbox" id="Op1-22" CHECKED></label></div>
+				<div class="Op1-23"><label for="Op1-23" onclick="Display('M-T2', 'Op1-23', 'R');">Tier 2:<input type="checkbox" id="Op1-23" CHECKED></label></div>
+				<div class="Op1-24"><label for="Op1-24" onclick="Display('M-T3', 'Op1-24', 'R');">Tier 3:<input type="checkbox" id="Op1-24" CHECKED></label></div>
+			<div class="Op1-31">General</div>
+				<div class="Op1-32"><label for="Op1-32" onclick="Display('R-Pop', 'Op1-32', 'B');">Population:<input type="checkbox" id="Op1-32" CHECKED></label></div>
+				<div class="Op1-33"><label for="Op1-33" onclick="Display('R-Sith', 'Op1-33', 'B');">Sith:<input type="checkbox" id="Op1-33" CHECKED></label></div>
+		</div>
+	</div>
+	<div class="Gr-item5">
+		<div class="Op3">
+			<div class="Op3-01"><h3>Save & Load</h3></div>
+			<div class="Op3-11"><button class="Op-But" onclick="Save()">Export</button></div>
+			<div class="Op3-21"><button class="Op-But" onclick="Load()">Import</button></div>
+			<div class="Op3-12"><label for="StringID">Code:</label><input type="text" id="StringID" placeholder="This will hold a unique code"></div>
+			<div class="Op3-22"></div>
+		</div>
+	</div>
+	<div class="Gr-item6">
+		<div class="Op4">
+			<div class="Op4-01"><h3>Notes:</h3></div>
+			<div class="Op4-11"><u>Population</u>: Every population roughly uses food 2,25 and 1.35 Meds. Sith use 1,65 cloning vats. I do the math, then round down the number so you always get enough.<br>
+			<u>Effeciency</u>: This works and is about 99,5% accurate. Example: Ingame graphene shows a maximum effeciency of "146%". The game outputs 6300, but the math i came up with gave me 6307.<br>
+			<u>Resources</u>: The calculation is done assuming the station is fed the maximum resources it can handle. (this makes scrap a bit in accurate)<br>
+			<u><b>IMPORTANT</b></u>: This is written in CSS, JS, HTML and needs <b>javascript</b> to work. If there is any wrong value or bug you can let me (<b>Redisia</b>) on discord know.<br><br>
+			<u><b>Known bug(s):</b></u> 1. It seems to mess up energy. 2. Common wealth supplies.
+			</div>
+		</div>		
+	</div>
+</div>
+</body>
+</html>

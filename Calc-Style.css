@@ -1,171 +1,92 @@
-table {
-	border-collapse: collapse;
-	width: 100%;
-}
-td {
-	border: 1px solid black;
-	padding: 8px;
-	text-align: center;
-	}
-tr:first-of-type td{
-	writing-mode: vertical-lr;
-	transform: rotate(180deg);
-	height: 150px;
-	overflow: hidden;
-	white-space: nowrap; font-weight: bold;
-}
-input[type="number"] {
-	width: 50px;
-}
-
-.I-Copy td{transform: rotate(180deg); writing-mode: vertical-lr; overflow: hidden;
-	white-space: nowrap; font-weight: bold;}
-.T-Copy{}
-
-.highlight-row td {
-  background-color: #f0ffc6	!important;
-}
-
-.highlight-column {
-  background-color: #f0ffc6	!important;
-}
-.Highlight{color: #388e3c;}
-.F22{font-size: 22px;}
-.R-Sith::after{content: url('Sith.png');}
-.M-Sith td:first-child::after {content: url('Sith.png');}
-.M-Imp td:first-child::after {content: url('Imp.png');}
-.SimpleIcon{vertical-align: middle;}
-.M-T1{background-color: #F0FFF0;}.M-T1T:checked{background-color: #F0FFF0!important;}
-.M-T2{background-color: #CCFFFF;}.M-T2T:checked{background-color: #CCFFFF!important;}
-.M-T3{background-color: #E6CCFF;}.M-T3T:checked{background-color: #E6CCFF!important;}
-.M-T4{background-color: #FFDEB3;}.M-T4T:checked{background-color: #FFDEB3!important;}
-.R-Solid{background-color: #fbba82;}
-.R-Solid-m{background-color: #ffdec1;}
-.R-Liquid{background-color: #aad4e1;}
-.R-Liquid-m{background-color: #e3f5fb;}
-.R-Pop{background-color: #caade6;}
-.R-Pop-m{background-color: #ebe0f5;}
-.R-General{background-color: #c8c8c8;}
-.R-General-m{background-color: #e1e1e1;}
-.R-Sith{background-color: #ff9b9b;}
-.R-Sith-m{background-color: #f5cccc;}
+body{margin: 1px;}
 
 h1 {font-family: 'Poppins', sans-serif; font-size: 36px; font-weight: bold; color: #388e3c; }
 h1:hover {color: #373333;}
 h3 {font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: bold; color: #388e3c; }
 h3:hover {color: #373333;}
 
-label{cursor: pointer;}
-input[type="checkbox"] {
-    appearance: none; /* Remove default browser styles */
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    background-color: #e0e0e0;
-    border: 2px solid #c0c0c0;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
+.ExMenu {max-width: 375px;  padding-bottom: 5px;}
+.ExMenu div:last-child{display: none; border-radius: 5px; background: linear-gradient(to right, #edf7ee, #e0e0e0); border: 2px solid #4caf50; box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.15);}
+.ExMenu div table tbody tr td:first-child{padding-right: 10px;}
+.ExMenuA div table thead tr th{text-align: left; width: 100px;}
 
-input[type="checkbox"]:checked {
-    background-color: #4caf50;
-    border-color: #388e3c;
-}
+#DataContent{min-width: 514px; max-width: 600px;}
+#DataContent thead tr th, #DataContent tbody tr td {text-align: left;}
+#DataContent thead tr th{border-bottom: 2px solid #388e3c;}
+#DataContent thead tr th:nth-last-of-type(2), #DataContent tbody tr td:nth-last-of-type(2){width: 70px;}
+#DataContent thead tr th:nth-last-of-type(1), #DataContent tbody tr td:nth-last-of-type(1){width: 60px;}
+#CalcContent thead tr th, #CalcContent tbody tr td{text-align: left; padding-right: 1px;}
+#CalcContent thead tr th:first-of-type, #CalcContent tbody tr td:first-of-type{width: 3px; min-width: 3px; max-width: 3px;}
+#CalcContent thead tr th:nth-of-type(4), #CalcContent tbody tr td:nth-of-type(4){min-width: 100px;}
+#CalcContent thead tr th:nth-of-type(3), #CalcContent tbody tr td:nth-of-type(3){min-width: 100px;}
+#CalcContent thead tr th:nth-of-type(2), #CalcContent tbody tr td:nth-of-type(2){min-width: 150px;}
+.rc0{background: #F0FFF0;}
+.rc1{background: #A6F2F2;}
+.rc2{background: #CCFFFF;}
+.rc3{background: #E6CCFF;}
+.rc4{background: #FFDEB3;}
+.rch{background: linear-gradient(to right, #e5eee6, #d7d7d7); border: 0px; display: none; color: #388e3c;}
 
-input[type="checkbox"] + label {
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    color: #2e7d32;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-input[type="checkbox"] + label:hover {
-    color: #4caf50;
-}
-
-
-input[type="text"] {
-    width: 200px;
-    height: 30px;
-    background-color: #e0e0e0;
-    border: 2px solid #c0c0c0; 
-    border-radius: 6px;
-    font-size: 14px;
-    padding: 1px 10px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-	margin-left: 8px;
-}
-input[type="text"]:hover {
-    width: 300px;
-    background-color: #f7f9fc;
-    border-color: #4caf50;
-    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.15);
-}
-
-input[type="text"]:focus {
-    outline: none; /* Removes the default focus outline */
-    border-color: #388e3c; /* Darker green border when focused */
-    box-shadow: inset 0 4px 6px rgba(0, 128, 0, 0.2); /* Add focus shadow */
-}
+/* Inputs */
+input[type="checkbox"]{appearance: none; -webkit-appearance: none; width: 20px; height: 20px; background-color: #e0e0e0; border: 2px solid #c0c0c0; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease, border-color 0.3s ease;}
+input[type="checkbox"]:checked {background-color: #4caf50; border-color: #388e3c;}
+input[type="checkbox"] + label {font-family: 'Poppins', sans-serif; font-size: 16px; color: #2e7d32; cursor: pointer; transition: color 0.3s ease;}
+input[type="checkbox"] + label:hover {color: #4caf50;}
+input[type="text"] {width: 200px; height: 30px; background-color: #e0e0e0; border: 2px solid #c0c0c0; border-radius: 6px; font-size: 14px; padding: 1px 10px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; margin-left: 8px;}
+input[type="text"]:hover{width: 300px; background-color: #f7f9fc; border-color: #4caf50; box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.15);}
+input[type="text"]:focus {outline: none; border-color: #388e3c; box-shadow: inset 0 4px 6px rgba(0, 128, 0, 0.2);}
+input[type="number"]{width: 50px; height: 25px; background-color: #e0e0e0; border: 2px solid #c0c0c0; border-radius: 6px; font-size: 14px; padding: 1px 1px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; margin-left: 8px;}
+input[type="number"]:hover{background-color: #f7f9fc; border-color: #4caf50; box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.15);}
+input[type="number"]:focus{outline: none; border-color: #388e3c; background-color: #ffffff; box-shadow: inset 0 4px 6px rgba(0, 128, 0, 0.2);}
 /* drop down */
-select {
-	width: 200px; 
-	height: 40px;
-	font-family: 'Poppins', sans-serif;
-	font-size: 14px;
-	font-weight: bold;
-	color: #373333; /* Text color */
-	background: linear-gradient(to bottom, #edf7ee, #e0e0e0);
-	border: none;
-	border-radius: 8px;
-	box-shadow: 0 5px #e0f5e182;
-	cursor: pointer;
-	padding: 5px;
-	transition: box-shadow 0.2s ease, background-color 2s ease;
-	border: 1px solid #4caf50;
-}
-
-select:hover {
-    background: linear-gradient(to bottom, #e0e0e0, #edf7ee);
-    box-shadow: 0 3px #f7f9fc;
-    color: #388e3c;
-}
-option {
-    background-color: #edf7ee;
-    color: #373333;
-}
+select{ font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: bold; color: #373333; background: linear-gradient(to bottom, #edf7ee, #e0e0e0); border: none; border-radius: 8px; box-shadow: 0 5px #e0f5e182; cursor: pointer; padding: 5px; transition: box-shadow 0.2s ease, background-color 2s ease; border: 1px solid #4caf50;}
+select:hover {background: linear-gradient(to bottom, #e0e0e0, #edf7ee); box-shadow: 0 3px #f7f9fc; color: #388e3c;}
+option{background-color: #edf7ee; color: #373333;}
 /* Buttons */
-.Op-But{
-	width: 95%;
-	height: 95%;
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    color: #373333;
-    background: linear-gradient(to bottom, #edf7ee, #e0e0e0);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 5px #e0f5e182;
-    cursor: pointer;
-    position: relative;
-    transition: box-shadow 0.2s ease, background-color 2s ease;
-	border: 1px solid #4caf50;
-}
+.Op-But{width: 95%; height: 95%; font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: bold; color: #373333; background: linear-gradient(to bottom, #edf7ee, #e0e0e0); border: none; border-radius: 8px; box-shadow: 0 5px #e0f5e182; cursor: pointer; position: relative; transition: box-shadow 0.2s ease, background-color 2s ease; border: 1px solid #4caf50;}
+.Op-But:hover{ background: linear-gradient(to bottom, #e0e0e0, #edf7ee); box-shadow: 0 3px #f7f9fc; color: #388e3c;}
+.Op-But:active{ box-shadow: 0 4px #bde4bf82; transform: translateY(3px); }
 
-.Op-But:hover{
-    background: linear-gradient(to bottom, #e0e0e0, #edf7ee);
-    box-shadow: 0 3px #f7f9fc;
-    color: #388e3c;
-}
-.Op-But:active{
-    box-shadow: 0 4px #bde4bf82;
-    transform: translateY(3px);
-}
+.OpCon{padding: 1px; width: calc(max-content - 2px); display: inline-flex; align-items: center; max-width: 300px;}
+.OpCon div:first-child{text-align: left; width: 205px; display: inline;}
+.OpCon div:last-child{text-align: right; width: min-content; display: inline; margin-left: auto;}
 
-/* General styling ends */
+.Highlight{color: #388e3c;}
+.F22{font-size: 22px;}
+.R-Sith::after{content: url('Sith.png');}
+.M-Sith td:first-child::after {content: url('Sith.png');}
+.M-Imp td:first-child::after {content: url('Imp.png');}
+.O-Imperial{background: #fff!important;}
+.O-Republic{background: #DAF1F9!important;}
+.O-Sith{background: #FFBFBF!important;}
+.O-General{background: #edf7ee !important;}
+.SimpleIcon{vertical-align: middle;}
+.InBl{display: inline-block;}
+.w200{width: 200px;}
+.w100{width: 100px;}	
+.h34{height: 34px!important;}
+.h40{height: 40px;}
+.h100{height: 100px!important;}
+.C-H{cursor: help;}
+.OptSpan{width: 22px; height: 22px; cursor: pointer;}
+
+
+
+/* app grid */
+.AppGrid {
+    display: grid;
+    grid-template-areas:
+        "App01 App02 App03";
+    grid-template-columns: 540px 390px auto;
+    grid-template-rows: repeat(1, 1fr);
+}
+.App01{grid-area:App01;}	.App02{grid-area:App02;}	.App03{grid-area:App03;}
+
+
+
+
+
+
 
 .Options-Container {
     display: grid;
@@ -197,11 +118,13 @@ option {
 	display: inline-block;	border-radius: 8px 8px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;	border-top: 2px solid #4caf50; padding: 4px 10px;
 	font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: bold; color: #388e3c; background: linear-gradient(to bottom, #edf7ee, #e0e0e0);	cursor: pointer;}
 .Ta1-01 div:hover {color: #373333; background: linear-gradient(to bottom, #e0e0e0, #edf7ee);}
+.Ta1-01 div.active {color: #ffffff; background: linear-gradient(to bottom, #4caf50, #81c784); cursor: default;}
 .Ta1-02{grid-area: Ta1-02;}
 .TabData {
 	display: none;
 	border: 2px solid #4caf50;
-	background-color: #f7f9fc;
+	background-color: #f7f9fc; padding: 5px;
+	border-radius: 0px 0px 8px 8px;
 }
 .TabData.active {
 	display: block;
@@ -242,18 +165,18 @@ option {
 		grid-template-rows: auto;
 	}
 .Op1{border-radius: 0px 0px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;}
-.Op2{border-radius: 8px 8px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;	border-top: 2px solid #4caf50;}
+.Op2{border-radius: 8px 8px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;}	border-top: 2px solid #4caf50;}
 .Op3{border-radius: 0px 0px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;}
-.Op4{border-radius: 0px 0px 8px 8px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;	border-bottom: 2px solid #4caf50;}
+.Op4{border-radius: 0px 0px 8px 8px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;}	border-bottom: 2px solid #4caf50;}
 }
 .Gr-item1{grid-area: Gr-item1;}	/*header*/
-.Gr-item2{grid-area: Gr-item2; margin-bottom: 2px;}	/*table*/
+.Gr-item2{grid-area: Gr-item2; margin-bottom: 2px; border-radius:}	/*table*/
 .Gr-item3{grid-area: Gr-item3;}	/*Options*/
 .Gr-item4{grid-area: Gr-item4;}	/*Options*/
 .Gr-item5{grid-area: Gr-item5;}	/*Options*/
 .Gr-item6{grid-area: Gr-item6;}	/*Options*/
 
-/*options1*/
+/*options1
 .Op1{
 	display: grid;
 	grid-template-areas:
@@ -275,7 +198,7 @@ option {
 .Op1-21{grid-area: Op1-21;}	.Op1-22{grid-area: Op1-22;}	.Op1-23{grid-area: Op1-23;}	.Op1-24{grid-area: Op1-24;}	
 .Op1-31{grid-area: Op1-31;}	.Op1-32{grid-area: Op1-32;}	.Op1-33{grid-area: Op1-33;}
 
-/*options2*/
+
 .Op2{
 	display: grid;
 	grid-template-areas:
@@ -305,7 +228,7 @@ option {
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 38px);
 	gap: 3px;
-	background-color: #f7f9fc;
+	
 	padding: 15px;
 }
 .Op3 div{align-items: center; display:flex;}
@@ -328,4 +251,4 @@ option {
 .Op4 div:first-child{align-items: center; display:flex;}
 .Op4 div label{align-items: center; display:flex;}
 .Op4-01{grid-area: Op4-01;}
-.Op4-11{grid-area: Op4-11;}
+.Op4-11{grid-area: Op4-11;}*/
