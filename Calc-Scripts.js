@@ -348,7 +348,7 @@ function CalculateModules() {
 	//Add raw resources.
 	let ResourceSArray = SwapResources.filter(item => item.Storage === 2);
 	ResourceSArray.forEach(ResA => {
-		RawBuffer += `<tr><td></td><td>${ResA.Name}</td><td>${ResA.InVolume}</td><td></td></tr>`;
+		RawBuffer += `<tr><td>${ResA.Name}</td><td>${ResA.InVolume}</td><td></td></tr>`;
 		RawS = Math.ceil(RawS + Number(ResA.InVolume));
 	});
 	RawBuffer += `<tr><td><b>Total Solid</b></td><td>${RawS}</td><td>${Sstorage}</td></tr>`;
