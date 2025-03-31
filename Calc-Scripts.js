@@ -195,14 +195,14 @@ function CalculateModules() {
 	let SithPop = 0;	let GenPop = 0;		let TotPop = 0;			let NegPop = 0;		let EndPop = 0;
 	let Sstorage = 0;	let Lstorage = 0;	let Cstorage = 0;
 	function SubRoutine(x){
-		let filterthearray;
 		if (x === 0) {
 			filteredArray = SwapArray.filter(item => item.Type === 1 || item.Type === 3);
+			console.log(x);
 		} else {
 			filteredArray = SwapArray;
 		}
 		// Cycle Through tiers
-		for (let MT = 4; MT >= 0; MT--) {
+		for (let MT = 5; MT >= -1; MT--) {
 			const Filter = SwapResources.filter((resource) => resource.Tier === MT-1);
 			filteredArray.forEach((ModuleItem, index) => {
 				if (ModuleItem.Tier === MT){
@@ -240,17 +240,18 @@ function CalculateModules() {
 								break;
 							}
 						}
-						for (let RQ = 5; RQ >= 1; RQ--){
+						let InpVVal = 0; let ConVVal = 0; let OupVVal = 0;
+						for (let RQ = 5; RQ >= 0; RQ--){
 							//adds resources for next tier of modules to be added
 							let InpR = "InputResource"+RQ; let InpV = "InputVolume"+RQ;
-							let InpRVal = ModuleItem[InpR]; let InpVVal = ModuleItem[InpV] * multiplier;
+							let InpRVal = ModuleItem[InpR]; InpVVal = ModuleItem[InpV] * multiplier;
 							let InpTar = SwapResources.find(item => item.id === InpRVal);
 							if(InpTar){
 								InpTar.InVolume = InpTar.InVolume + InpVVal;
 							}
 							//adds resources for building pool
 							let ConR = "ConstResource"+RQ; let ConV = "ConstVolume"+RQ;
-							let ConRVal = ModuleItem[ConR]; let ConVVal = ModuleItem[ConV] * multiplier;
+							let ConRVal = ModuleItem[ConR]; ConVVal = ModuleItem[ConV] * multiplier;
 							let ConTar = SwapResources.find(item => item.id === ConRVal);
 							if(ConTar){
 								ConTar.ConstrVolume = ConTar.ConstrVolume + ConVVal;
@@ -324,12 +325,12 @@ function CalculateModules() {
 	//Effenciency
 	// EfRes = Math.floor(module.outputVolume1 * multiplier * (1 + (PosiPop/NegaPop * module.MaxEffeciency)));
 	
-	const Rfilt = Type; // Use the Type array you provided
+	const Rfilt = Type;
 	$('#CalcContent tbody tr').remove();
-	for (let RT = 0; RT < Rfilt.length; RT++) { // Loop through all elements of the Type array
+	for (let RT = 0; RT < Rfilt.length; RT++) {
 		let TotC = "";
 		let I = 0;
-		let Rlabel = Rfilt[RT].Name; // Get the correct Name for the current RT
+		let Rlabel = Rfilt[RT].Name;
 		TotC += `<tr class="rch" id="rch${RT}"><td></td><td>${Rlabel}</td><td></td><td></td></tr>`;
 		let ResCalcArray = SwapResources.filter(Ritem => Ritem.Storage === 1 && Ritem.Type === Rfilt[RT].id); // Match Type ID
 		ResCalcArray.forEach(Ritems => {
@@ -370,5 +371,6 @@ function CalculateModules() {
 	$('#ConstructionContent tbody tr').remove();
 	$('#ConstructionContent tbody').append(ConsBuffer);
 	$('#ConstructionContainer div').fadeIn(500);
+	SwapResources = JSON.parse(JSON.stringify(resources));
 //	console.log("Generic pop: " + GenPop + " | " + "Sith pop: " + SithPop + " | " + "Total pop: " + TotPop + " | " + "Required pop: " + NegPop + " | " + "End result :" + EndPop);
 }

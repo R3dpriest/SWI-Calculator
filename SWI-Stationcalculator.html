@@ -6,12 +6,12 @@
 	<script type="text/javascript" src="Calc-Scripts.js" defer></script>
 	<script type="text/javascript" src="Array-DB.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v2.0001">
-    <title>SWI - Station calculator V2.0001 (Beta)</title>
+	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v2.0002">
+    <title>SWI - Station calculator V2.0002 (Beta)</title>
 </head>
 <body>
 <div class="Calc-Container">
-	<div class="Gr-item1"><h1>SWI - Station calculator V2.0001 (Beta)</h1></div>
+	<div class="Gr-item1"><h1>SWI - Station calculator V2.0002 (Beta)</h1></div>
 	<div class="Gr-item2">
 		<div class="Ta1">
 			<div class="Ta1-01">
@@ -19,20 +19,20 @@
 			</div>
 			<div class="Ta1-11">
 				<div class="TabData TagText active Welcome">
-				<b class="Highlight F22"><u>Information</b></u><br>
+				<b class="Highlight F22"><u>Information</u></b><br>
 					It is time! I feel the calculator works well enough for it to go <b class="Highlight">live</b> for you all to test.<br>
 					Any and all information feedback is welcome!<br>
 					You can check in the <b class="Highlight">Alpha changelog</b> tab what is currently added.<br><br>
-					You can find the old legacy calculator <b class="Highlight"><a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator-old.html">here</a></b>.
+					You can find the <b class="Highlight F22">old legacy calculator <a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator-old.html">here</a></b>.
 					<br>
-				<b class="Highlight F22"><u>Currently has:</b></u><br>
+				<b class="Highlight F22"><u>Currently has:</u></b><br>
 				<b class="Highlight">2270</b> lines of javascript functioning as a database.<br>
 				<b class="Highlight">374</b> lines of javascript most of them dynamic scripts.<br>
 				<b class="Highlight">+/- 177</b> lines of css some of them could be scrapped<br>
 				<b class="Highlight">+/- 190</b> lines of html<br><br>
 				
 				
-				<b class="Highlight F22"><u>Outro</b></u><br>
+				<b class="Highlight F22"><u>Outro</u></b><br>
 				1. If you want to use some materials please ask me. :)<br>
 				2. The user <b class="Highlight">dannyyyy</b> is currently working on a stand alone program you can download.<br>
 				3. All brands belong to their respective owners.<br>
@@ -121,7 +121,7 @@
 				</div>
 				<div class="TabData Complex">
 					<h3>Explenation</h3>
-					<b class="Highlight F22"><u>Alpha for the calculator 2.0</b></u><br>
+					<b class="Highlight F22"><u>Alpha for the calculator 2.0</u></b><br>
 					<b class="Highlight">1.</b>The menu on the bottom has not been stripped yet. Ignore<br>
 					<b class="Highlight">2.</b>I am adding basic functionality right now.<br>
 					<b class="Highlight">3.</b>Expect it to be an extremely borked previeuw, but feel free to give me suggestions based on the current state.<br>
@@ -155,12 +155,18 @@
 					<b class="Highlight">1.</b> Start on the resource calculation<br>
 					<b class="Highlight">2.</b> Perhaps spreadsheet functionality?<br>
 					<b class="Highlight">3.</b> If people provice me with list of miners & cargo capacity i could calculate how many mining loads of a X ship are needed to fill requirements.<br>
+					<b class="Highlight F22">Bug fixxes</b><br>
+					<b class="Highlight">- </b>Fixxed the file link in -old version.<br>
+					<b class="Highlight">- </b>Fixxed the module prefab showing ice as a building material.<br>
+					<b class="Highlight">- </b>Fixxed the an issue calculating silicon wafers, super fluit, refined metals.<br>
+					<b class="Highlight F22">Noted wonkyness</b><br>
+					<b class="Highlight">- </b>The initial calculation when it comes to agricultural stuff is good, but if you press the button again it just multiplies.<br>
 				</div>
 			</div>
 		</div>
 	</div>
     <div class="Gr-item3">
-		<div class="Op2 h100" style="padding: 4px;">
+		<div class="Op2 h100">
 			<div Class="OpCon"><div class="C-H" title="Select this style module, and if its not arround grab any other.">Module preference: </div><div><select class="h40 w100" id="StylePref"></select></div></div>
 			<div Class="OpCon"><div class="C-H" title="Can I downscale your own input if calculations suggest you need less?">Downscaling allowed: </div><div><select class="h40 w100" id="ScalePref"><option value="0" selected>No keep it</option><option value="1">Downscale</option></select></div></div>
 			<div Class="OpCon"><div class="C-H" title="Every sector has a % of sunlight. Usually between (0-400%)">Sunlight (%): </div><div><input id="SunPref" class="h34 w100" type="number" value="100"></div></div>

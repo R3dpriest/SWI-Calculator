@@ -53,6 +53,7 @@ option{background-color: #edf7ee; color: #373333;}
 
 .Highlight{color: #388e3c;}
 .F22{font-size: 22px;}
+.F16{font-size: 16px;}
 .R-Sith::after{content: url('Sith.png');}
 .M-Sith td:first-child::after {content: url('Sith.png');}
 .M-Imp td:first-child::after {content: url('Imp.png');}
