@@ -6,6 +6,7 @@
 	<script type="text/javascript" src="Calc-Scripts.js" defer></script>
 	<script type="text/javascript" src="Array-DB.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v2.0002">
     <title>SWI - Station calculator V2.0002 (Beta)</title>
 </head>
@@ -15,7 +16,7 @@
 	<div class="Gr-item2">
 		<div class="Ta1">
 			<div class="Ta1-01">
-				<div class="Tab active">Welcome</div><div class="Tab">Simple</div><div class="Tab">Changelog</div>
+				<div class="Tab active">Info</div><div class="Tab">Simple</div><div class="Tab">Spreadsheet</div><div class="Tab">Changelog</div>
 			</div>
 			<div class="Ta1-11">
 				<div class="TabData TagText active Welcome">
@@ -41,15 +42,15 @@
 				<div class="TabData Simple">
 					<div class="AppGrid">
 						<div class="App01">
-							<div id="ModuleContainer" class="InBl"><select id="SimpleModules" class="w200 h40"></select></div>
+							<div id="ModuleContainer" class="InBl"><select id="SimpleModules" class="SRA w200 h40"></select></div>
 							<div id="SortContainer" class="InBl"> Sort by:
-								<select id="SimpleSorterA" class="Sort h40 w100">
+								<select id="SimpleSorterA" class=" SRB Sort h40 w100">
 									<option value="Name" class="OpSith">Alphabet</option>
 									<option value="Style">Faction</option>
 									<option value="Tier">Tier</option>
 									<option value="Type"selected>Type</option>
 								</select> Order: 
-								<select id="SimpleSorterB" class="Sort h40 w100">
+								<select id="SimpleSorterB" class="SRC Sort h40 w100">
 									<option value="Ascending" selected>Ascending </option>
 									<option value="descending">Descending </option>
 								</select><br>
@@ -84,7 +85,7 @@
 							</div>
 						</div>
 						<div class="App03">
-							<div id="ConstructionContainer" class="ExMenu">
+							<div id="ConstructionContainer" class="ExMenu" style>
 								<div><b class="Highlight">Construction resources</b></div>
 								<div>
 									<table id="ConstructionContent" class="DataContent">
@@ -120,6 +121,22 @@
 					</div>
 				</div>
 				<div class="TabData Complex">
+					</div>
+					<div id="SortContainer" class="InBl"> Sort by:
+						<select id="SimpleSorterC" class=" SRB Sort h40 w100">
+							<option value="Name" class="OpSith">Alphabet</option>
+							<option value="Style">Faction</option>
+							<option value="Tier">Tier</option>
+							<option value="Type"selected>Type</option>
+						</select> Order: 
+						<select id="SimpleSorterD" class="SRC Sort h40 w100">
+							<option value="Ascending" selected>Ascending </option>
+							<option value="descending">Descending </option>
+						</select><br>
+					</div>
+					
+				</div>
+				<div class="TabData Info">
 					<h3>Explenation</h3>
 					<b class="Highlight F22"><u>Alpha for the calculator 2.0</u></b><br>
 					<b class="Highlight">1.</b>The menu on the bottom has not been stripped yet. Ignore<br>
@@ -159,8 +176,8 @@
 					<b class="Highlight">- </b>Fixxed the file link in -old version.<br>
 					<b class="Highlight">- </b>Fixxed the module prefab showing ice as a building material.<br>
 					<b class="Highlight">- </b>Fixxed the an issue calculating silicon wafers, super fluit, refined metals.<br>
+					<b class="Highlight">- </b>Fixxed the an issue where argicultural items kept on rising without there being a need for it.<br>
 					<b class="Highlight F22">Noted wonkyness</b><br>
-					<b class="Highlight">- </b>The initial calculation when it comes to agricultural stuff is good, but if you press the button again it just multiplies.<br>
 				</div>
 			</div>
 		</div>
@@ -173,17 +190,21 @@
 		</div>
 	</div>
 	<div class="Gr-item4">
-		<div class="Op1 h100">
+		<div class="Op1 h100i">
 			<button onclick="CalculateModules()" class="Op-But">Beta calculate button</button>
 		</div>
 	</div>
 	<div class="Gr-item5">
-		<div class="Op3 h100">
-			
+		<div class="Op3 h100i">
+			<div class="Op3-01"><h3>Save & Load</h3></div>
+			<div class="Op3-11"><button class="Op-But" onclick="ExportData()">Export</button></div>
+			<div class="Op3-21"><button class="Op-But" onclick="ImportData()">Import</button></div>
+			<div class="Op3-12"><label for="StringID">Code:</label><input type="text" id="StringID" placeholder="This will hold a unique code"></div>
+			<div class="Op3-22">[ Beta ]</div>
 		</div>
 	</div>
 	<div class="Gr-item6">
-		<div class="Op4 h100">
+		<div class="Op4 h100i">
 		</div>		
 	</div>
 </div>

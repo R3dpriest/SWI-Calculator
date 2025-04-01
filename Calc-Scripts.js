@@ -174,7 +174,7 @@ let G1label;
 		const G2label = G2[value.Tier]?.Name || "Unknown Tier";
 		const G3 = Lookup["Style"];
 		const G3label = G3[value.Style-1]?.Name || "Unknown Style";
-		let FuncAddrow = `<tr title	="${value.Title}" id="ModId${value.id}" data-type="${value.Type}" data-tier="${value.Tier}" data-Style="${value.Style}" style="display: none;"><td>${value.Name}</td><td style="display: none;">`+G2label+`</td><td>`+G1label+`</td><td style="display: none;">`+G3label+`</td><td><input class="Inp-Style-${value.Style} Inp-Tier-${value.Tier} Inp-Type-${value.Type}" id="Input_M_${value.id}" type="number" value="0"></td><td><span class="SwiClean OptSpan" hover="test" title="Set value to 0">🧹</span><span class="SwiBin OptSpan" title="Set value to 0 and remove">🗑️</span></td></tr>`;		
+		let FuncAddrow = `<tr title	="${value.Title}" id="ModId${value.id}" data-type="${value.Type}" data-tier="${value.Tier}" data-Style="${value.Style}" style="display: none;"><td>${value.Name}</td><td style="display: none;">`+G2label+`</td><td>`+G1label+`</td><td style="display: none;">`+G3label+`</td><td><input class="ModId${value.id} Inp-Style-${value.Style} Inp-Tier-${value.Tier} Inp-Type-${value.Type}" id="Input_M_${value.id}" type="number" value="0"></td><td><span class="SwiClean OptSpan" hover="test" title="Set value to 0">🧹</span><span class="SwiBin OptSpan" title="Set value to 0 and remove">🗑️</span></td></tr>`;		
 		$('#DataContent tbody').append(FuncAddrow);
 	});
 }
@@ -189,6 +189,11 @@ function Resources(){
 }
 
 function CalculateModules() {
+	if($('.App02:visible').length == 0){
+		$('.App02').fadeIn(500);
+		$('.App03').fadeIn(500);
+	}
+	$('').fadeIn(500);
     let SwapArray = JSON.parse(JSON.stringify(Modules));		let SwapResources = JSON.parse(JSON.stringify(resources));
 	let multiplier = 0; 	let ConsBuffer = "";	let PopBuffer = "";	let RawBuffer = "";	let RawS = "";	let RawL = "";
 	let StylePref = Number($("#StylePref").val());		let ScalePref = Number($("#ScalePref").val());
@@ -197,71 +202,74 @@ function CalculateModules() {
 	function SubRoutine(x){
 		if (x === 0) {
 			filteredArray = SwapArray.filter(item => item.Type === 1 || item.Type === 3);
-			console.log(x);
 		} else {
 			filteredArray = SwapArray;
-		}
+		} let FFx;
 		// Cycle Through tiers
 		for (let MT = 5; MT >= -1; MT--) {
 			const Filter = SwapResources.filter((resource) => resource.Tier === MT-1);
 			filteredArray.forEach((ModuleItem, index) => {
-				if (ModuleItem.Tier === MT){
-					if($(`#Input_M_${ModuleItem.id}`).val() !== "0") {
-						multiplier = $(`#Input_M_${ModuleItem.id}`).val();
-						//Population calculation
-						if(ModuleItem.Population > 0){
-							switch(ModuleItem.Race){
-								case 1:
-									GenPop += ModuleItem.Population * multiplier;
-								break;
-								case 2:
-									SithPop += ModuleItem.Population * multiplier;
-								break;
-								default:
-									GenPop += ModuleItem.Population * multiplier;
-								break;
+				FFx = SwapResources.find(resources => resources.id === ModuleItem.OutputResource1);
+				if (!FFx || FFx.OutVolume <= Math.abs(FFx.InVolume)) {
+					if (ModuleItem.Tier === MT){
+						if($(`#Input_M_${ModuleItem.id}`).val() !== "0") {
+							multiplier = $(`#Input_M_${ModuleItem.id}`).val();
+							//Population calculation
+							if(ModuleItem.Population > 0){
+								switch(ModuleItem.Race){
+									case 1:
+										GenPop += ModuleItem.Population * multiplier;
+
+									break;
+									case 2:
+										SithPop += ModuleItem.Population * multiplier;
+									break;
+									default:
+										GenPop += ModuleItem.Population * multiplier;
+									break;
+								}
+								TotPop += ModuleItem.Population * multiplier;
+							} else if (ModuleItem.Population < 0){ 
+								NegPop += ModuleItem.Population * multiplier;
+							} else {}
+							if(ModuleItem.Storage){
+								switch(ModuleItem.Storage){
+									case 1:
+										Cstorage = Math.ceil(Cstorage + Number(ModuleItem.StorageVolume) * multiplier);
+									break;
+									case 2:
+										Sstorage = Math.ceil(Sstorage + Number(ModuleItem.StorageVolume) * multiplier);
+									break;
+									case 3:
+										Lstorage = Math.ceil(Lstorage + Number(ModuleItem.StorageVolume) * multiplier);
+									break;
+									default:
+									break;
+								}
 							}
-							TotPop += ModuleItem.Population * multiplier;
-						} else if (ModuleItem.Population < 0){ 
-							NegPop += ModuleItem.Population * multiplier;
-						} else {}
-						if(ModuleItem.Storage){
-							switch(ModuleItem.Storage){
-								case 1:
-									Cstorage = Math.ceil(Cstorage + Number(ModuleItem.StorageVolume) * multiplier);
-								break;
-								case 2:
-									Sstorage = Math.ceil(Sstorage + Number(ModuleItem.StorageVolume) * multiplier);
-								break;
-								case 3:
-									Lstorage = Math.ceil(Lstorage + Number(ModuleItem.StorageVolume) * multiplier);
-								break;
-								default:
-								break;
-							}
-						}
-						let InpVVal = 0; let ConVVal = 0; let OupVVal = 0;
-						for (let RQ = 5; RQ >= 0; RQ--){
-							//adds resources for next tier of modules to be added
-							let InpR = "InputResource"+RQ; let InpV = "InputVolume"+RQ;
-							let InpRVal = ModuleItem[InpR]; InpVVal = ModuleItem[InpV] * multiplier;
-							let InpTar = SwapResources.find(item => item.id === InpRVal);
-							if(InpTar){
-								InpTar.InVolume = InpTar.InVolume + InpVVal;
-							}
-							//adds resources for building pool
-							let ConR = "ConstResource"+RQ; let ConV = "ConstVolume"+RQ;
-							let ConRVal = ModuleItem[ConR]; ConVVal = ModuleItem[ConV] * multiplier;
-							let ConTar = SwapResources.find(item => item.id === ConRVal);
-							if(ConTar){
-								ConTar.ConstrVolume = ConTar.ConstrVolume + ConVVal;
-							}	
-							//adds resource to the output pile.
-							let OupR = "OutputResource"+RQ; let OupV = "OutputVolume"+RQ;
-							let OupRVal = ModuleItem[OupR]; let OupVVal = ModuleItem[OupV] * multiplier;
-							let OupTar = SwapResources.find(item => item.id === OupRVal);
-							if(OupTar){
-								OupTar.OutVolume = OupTar.OutVolume + OupVVal;
+							let InpVVal = 0; let ConVVal = 0; let OupVVal = 0;
+							for (let RQ = 5; RQ >= 0; RQ--){
+								//adds resources for next tier of modules to be added
+								let InpR = "InputResource"+RQ; let InpV = "InputVolume"+RQ;
+								let InpRVal = ModuleItem[InpR]; InpVVal = ModuleItem[InpV] * multiplier;
+								let InpTar = SwapResources.find(item => item.id === InpRVal);
+								if(InpTar){
+									InpTar.InVolume = InpTar.InVolume + InpVVal;
+								}
+								//adds resources for building pool
+								let ConR = "ConstResource"+RQ; let ConV = "ConstVolume"+RQ;
+								let ConRVal = ModuleItem[ConR]; ConVVal = ModuleItem[ConV] * multiplier;
+								let ConTar = SwapResources.find(item => item.id === ConRVal);
+								if(ConTar){
+									ConTar.ConstrVolume = ConTar.ConstrVolume + ConVVal;
+								}	
+								//adds resource to the output pile.
+								let OupR = "OutputResource"+RQ; let OupV = "OutputVolume"+RQ;
+								let OupRVal = ModuleItem[OupR]; let OupVVal = ModuleItem[OupV] * multiplier;
+								let OupTar = SwapResources.find(item => item.id === OupRVal);
+								if(OupTar){
+									OupTar.OutVolume = OupTar.OutVolume + OupVVal;
+								}
 							}
 						}
 					}
@@ -289,7 +297,7 @@ function CalculateModules() {
 					}
 				} else { 
 				$(`#Input_M_${AdModule.id}`).val(ModNeed); }
-					$(`#Input_M_${AdModule.id}`).parent().parent().fadeIn(500);				
+					$(`#Input_M_${AdModule.id}`).parent().parent().slideDown(350);				
 				}
 			});
 		}
@@ -320,7 +328,7 @@ function CalculateModules() {
 	PopBuffer += `<tr><td>Population needed</td><td>${NegPop}</td></tr>`;
 	$('#PopulationContent tbody tr').remove();
 	$('#PopulationContent tbody').append(PopBuffer);
-	$('#PopulationContainer div').fadeIn(500);
+	$('#PopulationContainer div').slideDown(350);
 	
 	//Effenciency
 	// EfRes = Math.floor(module.outputVolume1 * multiplier * (1 + (PosiPop/NegaPop * module.MaxEffeciency)));
@@ -344,7 +352,7 @@ function CalculateModules() {
 			$('#rch' + RT).fadeIn(200);
 		}
 	}
-	$('#CalcContainer div').fadeIn(500);
+	$('#CalcContainer div').slideDown(350);
 
 	//Add raw resources.
 	let ResourceSArray = SwapResources.filter(item => item.Storage === 2);
@@ -361,7 +369,7 @@ function CalculateModules() {
 	RawBuffer += `<tr><td><b>Total Liquid</b></td><td>${RawL}</td><td>${Lstorage}</td></tr>`;
 	$('#RawContent tbody tr').remove();
 	$('#RawContent tbody').append(RawBuffer);
-	$('#RawContainer div').fadeIn(500);
+	$('#RawContainer div').slideDown(350);
 	
 	//Add construction resources.
 	const ConstrResources = SwapResources.filter((resource) => resource.ConstrVolume !== 0);
@@ -370,7 +378,118 @@ function CalculateModules() {
 	});
 	$('#ConstructionContent tbody tr').remove();
 	$('#ConstructionContent tbody').append(ConsBuffer);
-	$('#ConstructionContainer div').fadeIn(500);
+	$('#ConstructionContainer div').slideDown(350);
 	SwapResources = JSON.parse(JSON.stringify(resources));
 //	console.log("Generic pop: " + GenPop + " | " + "Sith pop: " + SithPop + " | " + "Total pop: " + TotPop + " | " + "Required pop: " + NegPop + " | " + "End result :" + EndPop);
 }
+
+
+function ExportData() {
+  var data = {};
+  $(".TabData.active").find("input, select, textarea").each(function () {
+    var firstClass = $(this).attr("class")?.split(" ")[0]; // Get the first class
+    if (firstClass) {
+      if ($(this).is(":checkbox")) {
+        data[firstClass] = $(this).prop("checked");
+      } else if ($(this).is(":radio")) {
+        if ($(this).prop("checked")) {
+          data[firstClass] = $(this).val();
+        }
+      } else {
+        data[firstClass] = $(this).val();
+      }
+    }
+  });
+  var jsonString = JSON.stringify(data);
+  var compressed = LZString.compressToBase64(jsonString);
+  $("#StringID").val(compressed);
+}
+
+function ImportData() {
+  var compressed = $("#StringID").val();
+  if (!compressed) return;
+  var jsonString = LZString.decompressFromBase64(compressed);
+  if (!jsonString) {
+    alert("Decoding failed: Please select the right tab. Or invalid data.");
+    return;
+  }
+  var data = JSON.parse(jsonString);
+  $.each(data, function (className, value) {
+    var field = $("." + className); // Select the element based on the class name
+    if (field.length) {
+      if (field.is(":checkbox")) {
+        field.prop("checked", value);
+      } else if (field.is(":radio")) {
+        $('input[name="' + field.attr("name") + '"][value="' + value + '"]').prop("checked", true);
+      } else {
+        field.val(value);
+      }
+
+      if (!field.is(":checkbox") && !field.is(":radio")) {
+        var numericVal = Number(field.val());
+        if (!isNaN(numericVal) && numericVal > 0) {
+          var gp = field.parent().parent();
+          if (gp.is("tr")) {
+            gp.fadeIn(200);
+          }
+        }
+      }
+    }
+  });
+}
+
+// Export:
+/*
+ function ExportData() {
+      var data = {};
+      $(".TabData.active").find("input, select, textarea").each(function () {
+        var id = $(this).attr("id");
+        if (id) {
+          if ($(this).is(":checkbox")) {
+            data[id] = $(this).prop("checked");
+          } else if ($(this).is(":radio")) {
+            if ($(this).prop("checked")) {
+              data[id] = $(this).val();
+            }
+          } else {
+            data[id] = $(this).val();
+          }
+        }
+      });
+      var jsonString = JSON.stringify(data);
+      var compressed = LZString.compressToBase64(jsonString);
+      $("#StringID").val(compressed);
+    }
+
+function ImportData() {
+  var compressed = $("#StringID").val();
+  if (!compressed) return;
+  var jsonString = LZString.decompressFromBase64(compressed);
+  if (!jsonString) {
+    alert("Decoding failed: Please select the right tab. Or invalid data.");
+    return;
+  }
+  var data = JSON.parse(jsonString);
+  $.each(data, function (id, value) {
+    var field = $("#" + id);
+    if (field.length) {
+      if (field.is(":checkbox")) {
+        field.prop("checked", value);
+      } else if (field.is(":radio")) {
+        $('input[name="' + field.attr("name") + '"][value="' + value + '"]').prop("checked", true);
+      } else {
+        field.val(value);
+      }
+      
+      if (!field.is(":checkbox") && !field.is(":radio")) {
+        var numericVal = Number(field.val());
+        if (!isNaN(numericVal) && numericVal > 0) {
+          var gp = field.parent().parent();
+          if (gp.is("tr")) {
+            gp.fadeIn(200);
+          }
+        }
+      }
+    }
+  });
+}*/
