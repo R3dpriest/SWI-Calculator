@@ -249,7 +249,7 @@ function CalculateModules() {
 	}
 	$('').fadeIn(500);
     let SwapArray = JSON.parse(JSON.stringify(Modules));		let SwapResources = JSON.parse(JSON.stringify(resources));
-	let multiplier = 0; 	let ConsBuffer = "";	let PopBuffer = "";	let RawBuffer = "";	let RawS = 0;	let RawL = 0;
+	let multiplier = 0; 	let ConsBuffer = "";	let PopBuffer = "";	let RawBuffer = "";	let RawS = 0;	let RawL = 0; let StoreLConvert; let StoreSConvert; let StoreS = 0; let StoreL = 0;
 	let StylePref = Number($("#StylePref").val());		let ScalePref = Number($("#ScalePref").val());
 	let SithPop = 0;	let GenPop = 0;		let TotPop = 0;			let NegPop = 0;		let EndPop = 0;
 	let Sstorage = 0;	let Lstorage = 0;	let Cstorage = 0;	let CalcEffPref = Number($("#CalcEffPref").val()); let CalcMod;
@@ -420,18 +420,23 @@ function CalculateModules() {
 	//Add raw resources.
 	let ResourceSArray = SwapResources.filter(item => item.Storage === 2);
 	ResourceSArray.forEach(ResA => {
-		let RawConvert = ResA.InVolume * ResA.StorageVolume;
-		RawBuffer += `<tr><td>${ResA.Name}</td><td>${RawConvert}</td><td></td></tr>`;
-		RawS += Math.ceil(RawS + RawConvert);
+		console.log(RawS);
+		let RawConvert = ResA.InVolume;
+		let StoreSConvert = ResA.InVolume * ResA.StorageVolume;
+		RawBuffer += `<tr><td>${ResA.Name}</td><td>${RawConvert}</td><td>${StoreSConvert}<td></td><td></td></tr>`;
+		RawS = Math.ceil(RawS + RawConvert);
+		StoreS = Math.ceil(StoreS + StoreSConvert);
 	});
-	RawBuffer += `<tr><td><b>Total Solid</b></td><td>${RawS}</td><td>${Sstorage}</td></tr>`;
+	RawBuffer += `<tr><td><b>Total Solid</b></td><td>${RawS}</td><<td>${StoreS}</td><td>${Sstorage}</td></tr>`;
 	let ResourceLArray = SwapResources.filter(item => item.Storage === 3);
 	ResourceLArray.forEach(ResB => {
-		let RawsConvert = ResB.InVolume * ResB.StorageVolume;
-		RawBuffer += `<tr><td>${ResB.Name}</td><td>${RawsConvert}</td><td></td></tr>`;
+		let RawsConvert = ResB.InVolume;
+		let StoreLConvert = ResB.InVolume * ResB.StorageVolume;
+		RawBuffer += `<tr><td>${ResB.Name}</td><td>${RawsConvert}</td><td>${StoreLConvert}</td><td></td></tr>`;
 		RawL = Math.ceil(RawL + RawsConvert);
+		StoreL = Math.ceil(StoreL + StoreLConvert);
 	});
-	RawBuffer += `<tr><td><b>Total Liquid</b></td><td>${RawL}</td><td>${Lstorage}</td></tr>`;
+	RawBuffer += `<tr><td><b>Total Liquid</b></td><td>${RawL}</td><td>${StoreL}</td><td>${Lstorage}</td></tr>`;
 	$('#RawContent tbody tr').remove();
 	$('#RawContent tbody').append(RawBuffer);
 	$('#RawContainer div').slideDown(350);
@@ -445,7 +450,6 @@ function CalculateModules() {
 	$('#ConstructionContent tbody').append(ConsBuffer);
 	$('#ConstructionContainer div').slideDown(350);
 	SwapResources = JSON.parse(JSON.stringify(resources));
-//	console.log("Generic pop: " + GenPop + " | " + "Sith pop: " + SithPop + " | " + "Total pop: " + TotPop + " | " + "Required pop: " + NegPop + " | " + "End result :" + EndPop);
 }
 
 
