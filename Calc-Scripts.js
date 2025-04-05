@@ -1,8 +1,11 @@
+/* Globals */
+let calcManiSheet;
+
 $(document).ready(function() {
 	$('#SortContainer').on('change', '.Sort', SelectSort);
 	//note to self, dont move.
 	var FuncMapping = {"Name": 0, "Tier": 1, "Type": 2, "Style": 3 };
-	function filterAndSortTable() {
+	function filterAndSortTable(){
 		var FuncSortA = $('#SimpleSorterA').val();
 		var FuncSortIndex = FuncMapping[FuncSortA];
 		var sortOrderRaw = $('#SimpleSorterB').val();
@@ -45,8 +48,31 @@ $(document).ready(function() {
 	$('#SimpleModules').change(function(){const selectedOption = $(this).find(':selected'); const selectedValue = selectedOption.val(); const selectedClass = selectedOption.attr('class'); if (selectedValue) { Revealer(selectedValue, 'id', 'ModId'); $('#SimpleModules').prop('selectedIndex', 0);}});
     $(document).on("click",".SwiBin",function(){$(this.parentElement.parentElement).fadeOut(500);this.parentElement.parentElement.children[4].children[0].value="0";});
 	$(document).on("click",".SwiClean",function(){this.parentElement.parentElement.children[4].children[0].value = "0";});
+	$(".Drop-But").click(function (){const nextSibling = $(this).next();if (nextSibling.is(":visible")){nextSibling.slideUp(200);} else {nextSibling.slideDown(200);}
+	});
+	$(document).on("change", "input[type=checkbox]", function () {
+    const classList = $(this).attr("class").split(" ");
+    if (classList[0] === "FilterToggle") {
+        const combinedClass = `.${classList[1]}${classList[2]}`;
+        if (this.checked) {
+            $(combinedClass).css("display", "table-cell"); // Allows "table-cell" when checked
+        } else {
+            $(combinedClass).attr("style", "display: none !important"); // Overpowers other rules
+        }
+        console.log('cell');
+    }
+    if (classList[0] === "FilterToggleRow") {
+        const combinedClass = `.${classList[1]}${classList[2]}`;
+        if (this.checked) {
+            $(combinedClass).css("display", "table-row"); // Allows "table-row" when checked
+        } else {
+            $(combinedClass).attr("style", "display: none !important"); // Overpowers other rules
+        }
+        console.log('row');
+    }
 });
 
+});
 
 const Tabs = $('.Tab');
 const TabData = $('.TabData');
@@ -195,10 +221,10 @@ function CalculateModules() {
 	}
 	$('').fadeIn(500);
     let SwapArray = JSON.parse(JSON.stringify(Modules));		let SwapResources = JSON.parse(JSON.stringify(resources));
-	let multiplier = 0; 	let ConsBuffer = "";	let PopBuffer = "";	let RawBuffer = "";	let RawS = "";	let RawL = "";
+	let multiplier = 0; 	let ConsBuffer = "";	let PopBuffer = "";	let RawBuffer = "";	let RawS = 0;	let RawL = 0;
 	let StylePref = Number($("#StylePref").val());		let ScalePref = Number($("#ScalePref").val());
 	let SithPop = 0;	let GenPop = 0;		let TotPop = 0;			let NegPop = 0;		let EndPop = 0;
-	let Sstorage = 0;	let Lstorage = 0;	let Cstorage = 0;
+	let Sstorage = 0;	let Lstorage = 0;	let Cstorage = 0;	let CalcEffPref = Number($("#CalcEffPref").val()); let CalcMod;
 	function SubRoutine(x){
 		if (x === 0) {
 			filteredArray = SwapArray.filter(item => item.Type === 1 || item.Type === 3);
@@ -219,7 +245,6 @@ function CalculateModules() {
 								switch(ModuleItem.Race){
 									case 1:
 										GenPop += ModuleItem.Population * multiplier;
-
 									break;
 									case 2:
 										SithPop += ModuleItem.Population * multiplier;
@@ -268,13 +293,18 @@ function CalculateModules() {
 								let OupRVal = ModuleItem[OupR]; let OupVVal = ModuleItem[OupV] * multiplier;
 								let OupTar = SwapResources.find(item => item.id === OupRVal);
 								if(OupTar){
-									OupTar.OutVolume = OupTar.OutVolume + OupVVal;
+									if(CalcEffPref === 1){
+										CalcMod = 1 + (1 * ModuleItem.MaxEffeciency);
+									} else {
+										CalcMod = 1;
+									}
+									OupTar.OutVolume = Math.ceil(OupTar.OutVolume + (OupVVal * CalcMod));
 								}
 							}
 						}
 					}
 				}
-			});		
+			});
 			const filteredResources = SwapResources.filter((resource) => resource.Tier === MT-1 && resource.InVolume !== 0);
 			filteredResources.forEach(filter => {
 				let AdModule = SwapArray.find(item => item.OutputResource1 === filter.id && item.Style === StylePref);
@@ -284,11 +314,16 @@ function CalculateModules() {
 				if (AdModule) {
 				let Modbuffer = Math.abs(filter.InVolume);
 				let ModNeed;
+				if(CalcEffPref === 1){
+					CalcMod = 1 + (1 * AdModule.MaxEffeciency);
+				} else {
+					CalcMod = 1;
+				}
 				if(filter.id === 1){
 					let SunPref = Number($("#SunPref").val());
-					ModNeed = Math.ceil(Modbuffer / ((AdModule.OutputVolume1 / 100) * SunPref));
+					ModNeed = Math.ceil(Modbuffer / (((AdModule.OutputVolume1 * CalcMod) / 100) * SunPref ));
 				} else {
-					ModNeed = Math.ceil(Modbuffer / AdModule.OutputVolume1);
+					ModNeed = Math.ceil(Modbuffer / AdModule.OutputVolume1 * CalcMod);
 				}
 				if(ScalePref === 0){
 					let ModGrab = document.getElementById(`Input_M_`+AdModule.id).value;
@@ -357,14 +392,16 @@ function CalculateModules() {
 	//Add raw resources.
 	let ResourceSArray = SwapResources.filter(item => item.Storage === 2);
 	ResourceSArray.forEach(ResA => {
-		RawBuffer += `<tr><td>${ResA.Name}</td><td>${ResA.InVolume}</td><td></td></tr>`;
-		RawS = Math.ceil(RawS + Number(ResA.InVolume));
+		let RawConvert = ResA.InVolume * ResA.StorageVolume;
+		RawBuffer += `<tr><td>${ResA.Name}</td><td>${RawConvert}</td><td></td></tr>`;
+		RawS += Math.ceil(RawS + RawConvert);
 	});
 	RawBuffer += `<tr><td><b>Total Solid</b></td><td>${RawS}</td><td>${Sstorage}</td></tr>`;
 	let ResourceLArray = SwapResources.filter(item => item.Storage === 3);
 	ResourceLArray.forEach(ResB => {
-		RawBuffer += `<tr><td>${ResB.Name}</td><td>${ResB.InVolume}</td><td></td></tr>`;
-		RawL = Math.ceil(RawL + Number(ResB.InVolume));
+		let RawsConvert = ResB.InVolume * ResB.StorageVolume;
+		RawBuffer += `<tr><td>${ResB.Name}</td><td>${RawsConvert}</td><td></td></tr>`;
+		RawL = Math.ceil(RawL + RawsConvert);
 	});
 	RawBuffer += `<tr><td><b>Total Liquid</b></td><td>${RawL}</td><td>${Lstorage}</td></tr>`;
 	$('#RawContent tbody tr').remove();
@@ -385,111 +422,167 @@ function CalculateModules() {
 
 
 function ExportData() {
-  var data = {};
-  $(".TabData.active").find("input, select, textarea").each(function () {
-    var firstClass = $(this).attr("class")?.split(" ")[0]; // Get the first class
-    if (firstClass) {
-      if ($(this).is(":checkbox")) {
-        data[firstClass] = $(this).prop("checked");
-      } else if ($(this).is(":radio")) {
-        if ($(this).prop("checked")) {
-          data[firstClass] = $(this).val();
-        }
-      } else {
-        data[firstClass] = $(this).val();
-      }
-    }
-  });
-  var jsonString = JSON.stringify(data);
-  var compressed = LZString.compressToBase64(jsonString);
-  $("#StringID").val(compressed);
+	var data = {};
+	$(".TabData.active").find("input, select, textarea").each(function () {
+	var firstClass = $(this).attr("class")?.split(" ")[0]; // Get the first class
+	if (firstClass) {
+		if ($(this).is(":checkbox")) {
+			data[firstClass] = $(this).prop("checked");
+		} else if ($(this).is(":radio")) {
+			if ($(this).prop("checked")) {
+				data[firstClass] = $(this).val();
+			}
+			} else {
+			data[firstClass] = $(this).val();
+			}
+		}
+	});
+	var jsonString = JSON.stringify(data);
+	var compressed = LZString.compressToBase64(jsonString);
+	$("#StringID").val(compressed);
 }
 
 function ImportData() {
-  var compressed = $("#StringID").val();
-  if (!compressed) return;
-  var jsonString = LZString.decompressFromBase64(compressed);
-  if (!jsonString) {
-    alert("Decoding failed: Please select the right tab. Or invalid data.");
-    return;
-  }
-  var data = JSON.parse(jsonString);
-  $.each(data, function (className, value) {
-    var field = $("." + className); // Select the element based on the class name
-    if (field.length) {
-      if (field.is(":checkbox")) {
-        field.prop("checked", value);
-      } else if (field.is(":radio")) {
-        $('input[name="' + field.attr("name") + '"][value="' + value + '"]').prop("checked", true);
-      } else {
-        field.val(value);
-      }
-
-      if (!field.is(":checkbox") && !field.is(":radio")) {
-        var numericVal = Number(field.val());
-        if (!isNaN(numericVal) && numericVal > 0) {
-          var gp = field.parent().parent();
-          if (gp.is("tr")) {
-            gp.fadeIn(200);
-          }
-        }
-      }
-    }
-  });
+	var compressed = $("#StringID").val();
+	if (!compressed) return;
+	var jsonString = LZString.decompressFromBase64(compressed);
+	if (!jsonString) {
+		alert("Decoding failed: Please select the right tab. Or invalid data.");
+		return;
+	}
+	var data = JSON.parse(jsonString);
+	$.each(data, function (className, value) {
+		var field = $("." + className);
+		if (field.length) {
+			if (field.is(":checkbox")) {
+				field.prop("checked", value);
+			} else if (field.is(":radio")) {
+				$('input[name="' + field.attr("name") + '"][value="' + value + '"]').prop("checked", true);
+			} else {
+				field.val(value);
+			}
+				if (!field.is(":checkbox") && !field.is(":radio")) {
+				var numericVal = Number(field.val());
+				if (!isNaN(numericVal) && numericVal > 0) {
+					var gp = field.parent().parent();
+					if (gp.is("tr")) {
+						gp.fadeIn(200);
+					}
+				}
+			}
+		}
+	});
 }
 
-// Export:
-/*
- function ExportData() {
-      var data = {};
-      $(".TabData.active").find("input, select, textarea").each(function () {
-        var id = $(this).attr("id");
-        if (id) {
-          if ($(this).is(":checkbox")) {
-            data[id] = $(this).prop("checked");
-          } else if ($(this).is(":radio")) {
-            if ($(this).prop("checked")) {
-              data[id] = $(this).val();
-            }
-          } else {
-            data[id] = $(this).val();
-          }
-        }
-      });
-      var jsonString = JSON.stringify(data);
-      var compressed = LZString.compressToBase64(jsonString);
-      $("#StringID").val(compressed);
+function PopulateSubmenu(TarArray, TarOpt, TarIntroA, TarIntroB, UniTar, TarClassA, TarClassB, TarLocA, TarLocB, FolLine, FolClass){
+	if(TarLocA && UniTar){
+		let SwapArray = JSON.parse(JSON.stringify(TarArray));
+		let SwapExit = "";
+		if(TarIntroA && TarIntroB){
+			SwapExit += `<div class="${TarIntroB}">${TarIntroA}</div>`;
+		}
+		switch(TarOpt){ 
+			case 1:
+				SwapArray.forEach(Entry => {
+					let Opt = "";
+					if (Entry.Check) {
+						if (Entry.Check === 1) {
+							Opt = "checked";
+						}
+					}
+					SwapExit += `<div class="${TarClassA}"><label for="${UniTar}${Entry.id}"><input id="${UniTar}${Entry.id}" class="${UniTar}${Entry.id} ${TarClassB}" type="checkbox" ${Opt}>${Entry.Name}</label></div>`;
+				});
+			break;
+			default:
+			break;
+		}
+		if(FolLine === 1){
+			if(!FolClass){
+				SwapExit += `<div class="dropdown-div"></div>`;
+			} else { 
+				SwapExit += `<div class="${FolClass}"></div>`;
+			}
+		}
+		if(TarLocB == "id" || TarLocB == "class" ){
+			if(TarLocB == "id"){
+				$('#'+TarLocA).append(SwapExit);
+			} else {
+				$('.'+TarLocA).append(SwapExit);			
+			}
+		}
+		
+	} else { console.log('Critical error. No menu location or unique target selected.'); }
+}
+
+//Note to self dump values inside html page to bypass safety
+function updateCssRule(selector, property, value) {
+    const styleElement = document.querySelector("style"); // Find the <style> element
+    if (!styleElement) {
+        console.error("No <style> tag found.");
+        return;
+    }
+    const styleSheet = Array.from(document.styleSheets).find(sheet =>
+        sheet.ownerNode === styleElement
+    );
+
+    if (!styleSheet) {
+        console.error("No stylesheet associated with the <style> tag.");
+        return;
     }
 
-function ImportData() {
-  var compressed = $("#StringID").val();
-  if (!compressed) return;
-  var jsonString = LZString.decompressFromBase64(compressed);
-  if (!jsonString) {
-    alert("Decoding failed: Please select the right tab. Or invalid data.");
-    return;
-  }
-  var data = JSON.parse(jsonString);
-  $.each(data, function (id, value) {
-    var field = $("#" + id);
-    if (field.length) {
-      if (field.is(":checkbox")) {
-        field.prop("checked", value);
-      } else if (field.is(":radio")) {
-        $('input[name="' + field.attr("name") + '"][value="' + value + '"]').prop("checked", true);
-      } else {
-        field.val(value);
-      }
-      
-      if (!field.is(":checkbox") && !field.is(":radio")) {
-        var numericVal = Number(field.val());
-        if (!isNaN(numericVal) && numericVal > 0) {
-          var gp = field.parent().parent();
-          if (gp.is("tr")) {
-            gp.fadeIn(200);
-          }
+    $.each(styleSheet.cssRules, (_, rule) => {
+        if (rule.selectorText === selector) {
+            rule.style[property] = value;
         }
-      }
-    }
-  });
-}*/
+    });
+}
+
+function SpreadSheet() {
+	let SwapResources = JSON.parse(JSON.stringify(resources));	let SwapArray = JSON.parse(JSON.stringify(Modules));
+	SwapArray.sort((a, b) => a.Type - b.Type);
+	let Buffer = `<table><thead><tr><th>Module</th><th>Input</th>`;
+	SwapResources.forEach(AResA => {
+		Buffer += `<th class="Side Tyn${AResA.Type} Stn${AResA.Style} Tin${AResA.Tier} Sto${AResA.Storage}">${AResA.Name}</th>`;
+	});
+	Buffer += `</tr></thead><tbody><tr><td></td><td>Total</td>`;
+	SwapResources.forEach(AResB => {
+		Buffer += `<td class="Tyn${AResB.Type} Stn${AResB.Style} Tin${AResB.Tier} Sto${AResB.Storage}" id="SprdTop${AResB.id}">0</td>`;
+	});
+	Buffer += `</tr>`;
+	SwapArray.forEach(moduleA => {
+		Buffer += `<tr class="rTyn${moduleA.Type} rStn${moduleA.Style} rTin${moduleA.Tier}"><td>${moduleA.Name}</td><td><input type="number" id="Inp${moduleA.id}"></td>`;
+		SwapResources.forEach(AResC => {	let Temp = "";
+			if (AResC.id === moduleA.InputResource1 || AResC.id === moduleA.InputResource2 || AResC.id === moduleA.InputResource3 || AResC.id === moduleA.InputResource4 || AResC.id === moduleA.InputResource5 || AResC.id === moduleA.OutputResource1 || AResC.id === moduleA.OutputResource2){
+				Temp = "0";
+			}
+				Buffer += `<td class="Tyn${AResC.Type} Stn${AResC.Style} Tin${AResC.Tier} Sto${AResC.Storage}" id="Mod${moduleA.id}Res${AResC.id}">${Temp}</td>`;
+		});
+		Buffer += `</tr>`;
+	});
+	Buffer += `<tr><td></td><td>Total</td>`;
+	SwapResources.forEach(AResD => {
+		Buffer += `<td class="Tyn${AResD.Type} Stn${AResD.Style} Tin${AResD.Tier} Sto${AResD.Storage}" id="SprdBot${AResD.id}">0</td>`;
+	});
+	Buffer += `</tr><tr><td>Module</td><td>Input</td>`;
+	SwapResources.forEach(AResE => {
+		Buffer += `<td class="Side Tyn${AResE.Type} Stn${AResE.Style} Tin${AResE.Tier} Sto${AResE.Storage}">${AResE.Name}</td>`;
+	});
+	Buffer += `</tr></tbody></table>`;
+    $('#SpreadContainer button').remove();
+    $('#SpreadContainer').append(Buffer);
+}
+
+//Populate spreadsheet
+let Firstcheck = 0;
+function RunOnce(){
+	if(Firstcheck === 0){
+		PopulateSubmenu(Type, 1, 'Type', 'dropdown-header Highlight F22', 'FilterToggleRow rTyn ', '', '', 'SRow', 'id', 1, '');
+		PopulateSubmenu(Style, 1, 'Faction', 'dropdown-header Highlight F22', 'FilterToggleRow rStn ', '', '', 'SRow', 'id', 1, '');
+		PopulateSubmenu(Tier, 1, 'Tier', 'dropdown-header Highlight F22', 'FilterToggleRow rTin ', '', '', 'SRow', 'id', 0, '');
+		PopulateSubmenu(Storage, 1, 'Storage', 'dropdown-header Highlight F22', 'FilterToggle Sto ', '', '', 'SColumn', 'id', 1, '');
+		PopulateSubmenu(Type, 1, 'Type', 'dropdown-header Highlight F22', 'FilterToggle Tyn ', '', '', 'SColumn', 'id', 1, '');
+		PopulateSubmenu(Style, 1, 'Faction', 'dropdown-header Highlight F22', 'FilterToggle Stn ', '', '', 'SColumn', 'id', 1, '');
+		PopulateSubmenu(Tier, 1, 'Tier', 'dropdown-header Highlight F22', 'FilterToggle Tin ', '', '', 'SColumn', 'id', 0, '');
+		Firstcheck++;
+	}
+}

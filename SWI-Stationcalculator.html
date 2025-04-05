@@ -7,12 +7,27 @@
 	<script type="text/javascript" src="Array-DB.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v2.0003">
-    <title>SWI - Station calculator V2.0003 (Beta)</title>
+	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v2.0004">
+    <title>SWI - Station calculator V2.0004 (Beta)</title>
+	<style>
+		
+.Tin0{display: table-cell;}	.Tin1{display: table-cell;}	.Tin2{display: table-cell;}	.Tin3{display: table-cell;}	.Tin4{display: table-cell;}
+.Stn1{display: table-cell;}	.Stn2{display: table-cell;}	.Stn3{display: table-cell;}	.Stn4{display: table-cell;}
+.Tyn1{display: table-cell;}	.Tyn2{display: table-cell;}	.Tyn3{display: table-cell;}	.Tyn4{display: table-cell;}	.Tyn5{display: none;}	.Tyn6{display: table-cell;}	
+.Sto1{display: table-cell;}	.Sto2{display: table-cell;} .Sto3{display: table-cell;}
+.rTin0, .rTin1, .rTin2, .rTin3, .rTin4, .rStn1, .rStn2, .rStn3, .rStn4 { display: table-row; }
+.rTyn1{display: table-row; background: #eefff9;}
+.rTyn2{display: table-row; background: #e7fbf4;}
+.rTyn3{display: table-row; background: #e1f7ef;}
+.rTyn4{display: table-row; background: #def2eb;}
+.rTyn5{display: none !important; background: #eefff9;}
+.rTyn6{display: none !important; background: #eefff9;}
+
+</style>
 </head>
 <body>
 <div class="Calc-Container">
-	<div class="Gr-item1"><h1>SWI - Station calculator V2.0003 (Beta)</h1></div>
+	<div class="Gr-item1"><h1>SWI - Station calculator V2.0004 (Beta)</h1></div>
 	<div class="Gr-item2">
 		<div class="Ta1">
 			<div class="Ta1-01">
@@ -28,9 +43,9 @@
 					<br>
 				<b class="Highlight F22"><u>Currently has:</u></b><br>
 				<b class="Highlight">2270</b> lines of javascript functioning as a database.<br>
-				<b class="Highlight">374</b> lines of javascript most of them dynamic scripts.<br>
+				<b class="Highlight">558</b> lines of javascript most of them dynamic scripts.<br>
 				<b class="Highlight">+/- 177</b> lines of css some of them could be scrapped<br>
-				<b class="Highlight">+/- 190</b> lines of html<br><br>
+				<b class="Highlight">228</b> lines of html<br><br>
 				
 				
 				<b class="Highlight F22"><u>Outro</u></b><br>
@@ -120,20 +135,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="TabData Complex">
-					<div id="SortContainer" class="InBl"> Sort by:
-						<select id="SimpleSorterC" class=" SRB Sort h40 w100">
-							<option value="Name" class="OpSith">Alphabet</option>
-							<option value="Style">Faction</option>
-							<option value="Tier">Tier</option>
-							<option value="Type"selected>Type</option>
-						</select> Order: 
-						<select id="SimpleSorterD" class="SRC Sort h40 w100">
-							<option value="Ascending" selected>Ascending </option>
-							<option value="descending">Descending </option>
-						</select><br>
+				<div class="TabData Complex" onclick="RunOnce();">
+				<div>
+				<div class="In">
+					<div class="dropdown In">
+					<button class="Drop-But dropdown-button">Row Filter</button>
+					<div class="dropdown-menu" id="SRow"></div></div>
+				</div>
+				<div class="In">
+					<div class="dropdown In">
+					<button class="Drop-But dropdown-button">Column Filter</button>
+					<div class="dropdown-menu" id="SColumn"></div>
 					</div>
-					
+				</div>
+				</div>
+				<div id="SpreadContainer"><button class="MainSwitch" onclick="SpreadSheet();">Generate the spreadsheet</button></div>	
 				</div>
 				<div class="TabData Info">
 					<h3>Explenation</h3>
@@ -163,13 +179,17 @@
 					<b class="Highlight">18.</b>Population calculation<br>
 					<b class="Highlight">19.</b>Construction items in the UI<br>
 					<b class="Highlight">20.</b>Resources are now shown in the UI<br>
+					<b class="Highlight">21.</b>Station calculator can now calculate as if you are @ effeciency<br>
+					<b class="Highlight">22.</b>stat made with spreadsheet functionality<br>
+					<b class="Highlight">23.</b>Filters now work WAY better then the ones of the old version.<br>
+					<b class="Highlight">24.</b>Dynamic filtering option<br>
 					<b class="Highlight F22">Soon?</b><br>
-					<b class="Highlight">1.</b>Effeciency calculation<br>
+					<b class="Highlight">1.</b>Other 50% of effeciency calculation<br>
 					<b class="Highlight">2.</b>Something i contemplate<br>
 					<b class="Highlight">3.</b>In and Export functionality<br>
 					<b class="Highlight F22">After?</b><br>
 					<b class="Highlight">1.</b> Start on the resource calculation<br>
-					<b class="Highlight">2.</b> Perhaps spreadsheet functionality?<br>
+					
 					<b class="Highlight">3.</b> If people provice me with list of miners & cargo capacity i could calculate how many mining loads of a X ship are needed to fill requirements.<br>
 					<b class="Highlight F22">Bug fixxes</b><br>
 					<b class="Highlight">- </b>Fixxed the file link in -old version.<br>
@@ -186,6 +206,7 @@
 			<div Class="OpCon"><div class="C-H" title="Select this style module, and if its not arround grab any other.">Module preference: </div><div><select class="h40 w100" id="StylePref"></select></div></div>
 			<div Class="OpCon"><div class="C-H" title="Can I downscale your own input if calculations suggest you need less?">Downscaling allowed: </div><div><select class="h40 w100" id="ScalePref"><option value="0" selected>No keep it</option><option value="1">Downscale</option></select></div></div>
 			<div Class="OpCon"><div class="C-H" title="Every sector has a % of sunlight. Usually between (0-400%)">Sunlight (%): </div><div><input id="SunPref" class="h34 w100" type="number" value="100"></div></div>
+			<div Class="OpCon"><div class="C-H" title="This will give you lower modulese, because it assumes each module runs on peak effeciency. If you select this and do not meet population requirements... your station will be ineffecient.">Adjust for max effenciency?</div><div><select id="CalcEffPref" class="h40 w100"><option value="0">No</option><option value="1">Yes</option></select></div></div>
 		</div>
 	</div>
 	<div class="Gr-item4">

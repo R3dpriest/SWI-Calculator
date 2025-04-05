@@ -10,6 +10,7 @@ h3:hover {color: #373333;}
 .ExMenu div table tbody tr td:first-child{padding-right: 10px;}
 .ExMenuA div table thead tr th{text-align: left; width: 100px;}
 
+#SpreadContainer table{border-collapse: collapse;}
 #DataContent{min-width: 514px; max-width: 600px;}
 #DataContent thead tr th, #DataContent tbody tr td {text-align: left;}
 #DataContent thead tr th{border-bottom: 2px solid #388e3c;}
@@ -20,11 +21,7 @@ h3:hover {color: #373333;}
 #CalcContent thead tr th:nth-of-type(4), #CalcContent tbody tr td:nth-of-type(4){min-width: 100px;}
 #CalcContent thead tr th:nth-of-type(3), #CalcContent tbody tr td:nth-of-type(3){min-width: 100px;}
 #CalcContent thead tr th:nth-of-type(2), #CalcContent tbody tr td:nth-of-type(2){min-width: 150px;}
-.rc0{background: #F0FFF0;}
-.rc1{background: #A6F2F2;}
-.rc2{background: #CCFFFF;}
-.rc3{background: #E6CCFF;}
-.rc4{background: #FFDEB3;}
+.rc0{background: #F0FFF0;} .rc1{background: #A6F2F2;} .rc2{background: #CCFFFF;} .rc3{background: #E6CCFF;} .rc4{background: #FFDEB3;}
 .rch{background: linear-gradient(to right, #e5eee6, #d7d7d7); border: 0px; display: none; color: #388e3c;}
 
 /* Inputs */
@@ -45,32 +42,34 @@ option{background-color: #edf7ee; color: #373333;}
 /* Buttons */
 .Op-But{width: 95%; height: 95%; font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: bold; color: #373333; background: linear-gradient(to bottom, #edf7ee, #e0e0e0); border: none; border-radius: 8px; box-shadow: 0 5px #e0f5e182; cursor: pointer; position: relative; transition: box-shadow 0.2s ease, background-color 2s ease; border: 1px solid #4caf50;}
 .Op-But:hover{ background: linear-gradient(to bottom, #e0e0e0, #edf7ee); box-shadow: 0 3px #f7f9fc; color: #388e3c;}
-.Op-But:active{ box-shadow: 0 4px #bde4bf82; transform: translateY(3px); }
+.Op-But:active{box-shadow: 0 4px #bde4bf82; transform: translateY(3px); }
 
 .OpCon{padding: 1px; width: calc(max-content - 2px); display: inline-flex; align-items: center; max-width: 300px;}
 .OpCon div:first-child{text-align: left; width: 205px; display: inline;}
 .OpCon div:last-child{text-align: right; width: min-content; display: inline; margin-left: auto;}
+.MainSwitch{position: relative; box-shadow: 0 5px #e0f5e182; cursor: pointer; background:linear-gradient(to bottom, #e0e0e0, #edf7ee); box-shadow: 0 3px #f7f9fc; color: #388e3c; padding:10px; border-radius: 15px; font-size: 25px; font-family: 'Poppins', sans-serif; transition: box-shadow 0.2s ease, background-color 2s ease; border: 1px solid #4caf50;}
+.MainSwitch:hover{background:linear-gradient(to bottom, #edf7ee, #e0e0e0);}
+/* drop down button & menu */
+.Drop-But{padding: 10px; font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: bold; color: #373333; background: linear-gradient(to bottom, #edf7ee, #e0e0e0); border: none; border-radius: 8px; box-shadow: 0 5px #e0f5e182; cursor: pointer; position: relative; transition: box-shadow 0.2s ease, background-color 2s ease; border: 1px solid #4caf50;}
+.Drop-But:hover{background: linear-gradient(to bottom, #e0e0e0, #edf7ee); box-shadow: 0 3px #f7f9fc; color: #388e3c;}
+.Drop-But:active{box-shadow: 0 3px #bde4bf82; transform: translateY(2px);}
+.dropdown{position: relative;}
+.dropdown-menu{z-index: 40; position: absolute; display: none; border: 2px solid #4caf50; background-color: #ebeff4; max-width: 320px; width: 320px; padding: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); left: 0; top: 26px;}
+.dropdown-menu div{align-items: center; display: inline-flex; text-align: center;}
+.dropdown-menu div label{display: flex; align-items: center;}
+.dropdown-div{border: 1px solid #95bb97; width: 100%; overflow: hidden; white-space: nowrap;}
+.dropdown-header{justify-content: center; display: flex!important;}
 
 .Highlight{color: #388e3c;}
-.F22{font-size: 22px;}
-.F16{font-size: 16px;}
-.R-Sith::after{content: url('Sith.png');}
-.M-Sith td:first-child::after {content: url('Sith.png');}
-.M-Imp td:first-child::after {content: url('Imp.png');}
+.F22{font-size: 22px;} .F16{font-size: 16px;} .InBl{display: inline-block;} .In{display: inline;} .w200{width: 200px;}
+.w100{width: 100px;} .h34{height: 34px!important;} .h40{height: 40px;} .h100{height: 100px!important;} .h100i{height: 100%;}
+.C-H{cursor: help;} .OptSpan{width: 22px; height: 22px; cursor: pointer;} .Side{writing-mode: vertical-lr; transform: rotate(180deg); padding: 6px;}
+
+/* General identifierse */
 .O-Imperial{background: #fff!important;}
 .O-Republic{background: #DAF1F9!important;}
 .O-Sith{background: #FFBFBF!important;}
 .O-General{background: #edf7ee !important;}
-.SimpleIcon{vertical-align: middle;}
-.InBl{display: inline-block;}
-.w200{width: 200px;}
-.w100{width: 100px;}	
-.h34{height: 34px!important;}
-.h40{height: 40px;}
-.h100{height: 100px!important;}
-.h100i{height: 100%;}
-.C-H{cursor: help;}
-.OptSpan{width: 22px; height: 22px; cursor: pointer;}
 
 .Options-Container {
     display: grid;
@@ -104,20 +103,8 @@ option{background-color: #edf7ee; color: #373333;}
 .Ta1-01 div:hover {color: #373333; background: linear-gradient(to bottom, #e0e0e0, #edf7ee);}
 .Ta1-01 div.active {color: #ffffff; background: linear-gradient(to bottom, #4caf50, #81c784); cursor: default;}
 .Ta1-02{grid-area: Ta1-02;}
-.TabData {
-	display: none;
-	border: 2px solid #4caf50;
-	background-color: #f7f9fc; padding: 5px;
-	border-radius: 0px 0px 8px 8px;
-	min-height: 300px;
-}
-.TabData.active {
-	display: block;
-}
-.TagText{
-	padding: 5px;
-}
-.SimpleBox{display: inline-block; margin: 2px; border-radius: 2px; border: 1px solid #4caf50; height: 27px;}
+.TabData { display: none; border: 2px solid #4caf50; background-color: #f7f9fc; padding: 5px; border-radius: 0px 0px 8px 8px; min-height: 300px; }
+.TabData.active {display: block;} .TagText{padding: 5px;} SimpleBox{display: inline-block; margin: 2px; border-radius: 2px; border: 1px solid #4caf50; height: 27px;}
 .SimpleBox div{display: inline-block; padding: 2px; height: 100%; align-items: center;}
 
 @media (min-width: 1250px) {
@@ -259,6 +246,8 @@ option{background-color: #edf7ee; color: #373333;}
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 38px);
 	gap: 3px;
+	
+
 }
 .Op3 div{align-items: center; display:flex;}
 .Op3 div label{align-items: center; display:flex;}
