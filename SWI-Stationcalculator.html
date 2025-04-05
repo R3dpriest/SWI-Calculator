@@ -16,13 +16,13 @@
 .Tyn1{display: table-cell;}	.Tyn2{display: table-cell;}	.Tyn3{display: table-cell;}	.Tyn4{display: table-cell;}	.Tyn5{display: none;}	.Tyn6{display: table-cell;}	
 .Sto1{display: table-cell;}	.Sto2{display: table-cell;} .Sto3{display: table-cell;}
 .rTin0, .rTin1, .rTin2, .rTin3, .rTin4, .rStn1, .rStn2, .rStn3, .rStn4 { display: table-row; }
-.rTyn1{display: table-row; background: #eefff9;}
-.rTyn2{display: table-row; background: #e7fbf4;}
-.rTyn3{display: table-row; background: #e1f7ef;}
-.rTyn4{display: table-row; background: #def2eb;}
-.rTyn5{display: table-row; background: #eefff9;}
-.rTyn6{display: table-row; background: #eefff9;}
-
+.rTyn1{display: table-row;}
+.rTyn2{display: table-row;}
+.rTyn3{display: table-row;}
+.rTyn4{display: table-row;}
+.rTyn5{display: table-row;}
+.rTyn6{display: table-row;}
+.Side{writing-mode: vertical-lr; transform: rotate(180deg); min-width: 10px; text-align: center; vertical-align: middle; padding: 1px 6px;}
 </style>
 </head>
 <body>
@@ -31,7 +31,7 @@
 	<div class="Gr-item2">
 		<div class="Ta1">
 			<div class="Ta1-01">
-				<div class="Tab active">Info</div><div class="Tab">Simple</div><div class="Tab">Spreadsheet</div><div class="Tab">Changelog</div>
+				<div class="Tab active">Info</div><div class="Tab">Simple</div><div class="Tab" onclick="RunOnce();">Spreadsheet</div><div class="Tab">Changelog</div>
 			</div>
 			<div class="Ta1-11">
 				<div class="TabData TagText active Welcome">
@@ -135,7 +135,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="TabData Complex" onclick="RunOnce();">
+				<div class="TabData Complex">
 				<div>
 				<div class="In">
 					<div class="dropdown In">
@@ -148,15 +148,15 @@
 					<div class="dropdown-menu" id="SColumn"></div>
 					</div>
 				</div>
-				</div>
-				<div id="SpreadContainer"><button class="MainSwitch" onclick="SpreadSheet();">Generate the spreadsheet</button></div>	
+				</div><button class="MainSwitch" onclick="Render();">Generate the spreadsheet</button>
+				<div id="SpreadContainer"><table id="SpreadTable"></table></div>	
 				</div>
 				<div class="TabData Info">
 					<h3>Explenation</h3>
-					<b class="Highlight F22"><u>Alpha for the calculator 2.0</u></b><br>
-					<b class="Highlight">1.</b>The menu on the bottom has not been stripped yet. Ignore<br>
-					<b class="Highlight">2.</b>I am adding basic functionality right now.<br>
-					<b class="Highlight">3.</b>Expect it to be an extremely borked previeuw, but feel free to give me suggestions based on the current state.<br>
+					<b class="Highlight F22"><u>Beta for the calculator 2.0</u></b><br>
+					<b class="Highlight">1.</b>Working on some idea's<br>
+					<b class="Highlight">2.</b>I am addding features, but as i do i might mess with the math. So if things 'Don't feel right' let me know what<br>
+					<b class="Highlight">3.</b>The current state is not finalized but a lot of things work.<br>
 				
 					<b class="Highlight F22">What has been added?</b><br>
 					<b class="Highlight">1.</b>More data handles in the modules, for the potential to add more features.<br>

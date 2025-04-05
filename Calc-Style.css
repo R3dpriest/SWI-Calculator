@@ -9,8 +9,9 @@ h3:hover {color: #373333;}
 .ExMenu div:last-child{display: none; border-radius: 5px; background: linear-gradient(to right, #edf7ee, #e0e0e0); border: 2px solid #4caf50; box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.15);}
 .ExMenu div table tbody tr td:first-child{padding-right: 10px;}
 .ExMenuA div table thead tr th{text-align: left; width: 100px;}
-
-#SpreadContainer table{border-collapse: collapse;}
+#SpreadContainer{display: none;}
+#SpreadContainer table{border-collapse: collapse; table-layout: fixed; width: auto; height: auto;}
+#SpreadContainer table tbody tr td{text-align: center; vertical-align: middle;}
 #DataContent{min-width: 514px; max-width: 600px;}
 #DataContent thead tr th, #DataContent tbody tr td {text-align: left;}
 #DataContent thead tr th{border-bottom: 2px solid #388e3c;}
@@ -63,13 +64,25 @@ option{background-color: #edf7ee; color: #373333;}
 .Highlight{color: #388e3c;}
 .F22{font-size: 22px;} .F16{font-size: 16px;} .InBl{display: inline-block;} .In{display: inline;} .w200{width: 200px;}
 .w100{width: 100px;} .h34{height: 34px!important;} .h40{height: 40px;} .h100{height: 100px!important;} .h100i{height: 100%;}
-.C-H{cursor: help;} .OptSpan{width: 22px; height: 22px; cursor: pointer;} .Side{writing-mode: vertical-lr; transform: rotate(180deg); padding: 6px;}
+.C-H{cursor: help;} .OptSpan{width: 22px; height: 22px; cursor: pointer;}
 
 /* General identifierse */
 .O-Imperial{background: #fff!important;}
 .O-Republic{background: #DAF1F9!important;}
 .O-Sith{background: #FFBFBF!important;}
 .O-General{background: #edf7ee !important;}
+
+/*spreadsheet layout*/
+.raTyn1{background: #F4F3F3;} .rbTyn1{background: #EEE9E9;}
+.raTyn2{background: #FFF8F5;} .rbTyn2{background: #F9EFEB;}
+.raTyn3{background: #F0FFF0;} .rbTyn3{background: #E7F9E7;}
+.raTyn4{background: #F0F8FF;} .rbTyn4{background: #E7F0F9;}
+.raTyn5{background: #FAF3E0;} .rbTyn5{background: #F4ECD7;}
+.raTyn6{background: #F2F2F2;} .rbTyn6{background: #ECE8E8;}
+.caSto1{background: #ffeed8;} .cbSto1{background: #f9e6cf;}
+.caSto2{background: #e4ffff;} .cbSto2{background: #dbf9f9;}
+.caSto3{background: #f8f6ff;} .cbSto3{background: #efedf9;}
+.highlight-column{background: #FFCFBC!important; border-left: 1px solid #af554c; border-right: 1px solid #af554c;}	.highlight-row{background: #FFCFBC!important; border-top: 1px solid #af554c; border-bottom: 1px solid #af554c;}
 
 .Options-Container {
     display: grid;
@@ -98,7 +111,7 @@ option{background-color: #edf7ee; color: #373333;}
 }
 .Ta1-01{grid-area: Ta1-01;}
 .Ta1-01 div{
-	display: inline-block;	border-radius: 8px 8px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;	border-top: 2px solid #4caf50; padding: 4px 10px;
+	display: inline-block;	border-radius: 8px 8px 0px 0px; border-left: 2px solid #4caf50;	border-right: 2px solid #4caf50;	border-top: 2px solid #4caf50; padding: 3px 7px;
 	font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: bold; color: #388e3c; background: linear-gradient(to bottom, #edf7ee, #e0e0e0);	cursor: pointer;}
 .Ta1-01 div:hover {color: #373333; background: linear-gradient(to bottom, #e0e0e0, #edf7ee);}
 .Ta1-01 div.active {color: #ffffff; background: linear-gradient(to bottom, #4caf50, #81c784); cursor: default;}

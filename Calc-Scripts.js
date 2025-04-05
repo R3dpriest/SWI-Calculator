@@ -1,6 +1,33 @@
 /* Globals */
 let calcManiSheet;
 
+document.addEventListener('DOMContentLoaded', () => { 
+  document.querySelectorAll('td').forEach(cell => { 
+
+    cell.addEventListener('mouseenter', () => {
+      const table = cell.closest('table');
+      const colIndex = cell.cellIndex;
+
+      Array.from(table.rows).forEach(row => {
+        row.cells[colIndex].classList.add('highlight-column');
+      });
+
+      cell.parentElement.classList.add('highlight-row');
+    });
+
+    cell.addEventListener('mouseleave', () => {
+      const table = cell.closest('table');
+      const colIndex = cell.cellIndex;
+
+      Array.from(table.rows).forEach(row => {
+        row.cells[colIndex].classList.remove('highlight-column');
+      });
+
+      cell.parentElement.classList.remove('highlight-row');
+    });
+  });
+});
+
 $(document).ready(function() {
 	$('#SortContainer').on('change', '.Sort', SelectSort);
 	//note to self, dont move.
@@ -50,28 +77,29 @@ $(document).ready(function() {
 	$(document).on("click",".SwiClean",function(){this.parentElement.parentElement.children[4].children[0].value = "0";});
 	$(".Drop-But").click(function (){const nextSibling = $(this).next();if (nextSibling.is(":visible")){nextSibling.slideUp(200);} else {nextSibling.slideDown(200);}
 	});
-	$(document).on("change", "input[type=checkbox]", function () {
-    const classList = $(this).attr("class").split(" ");
-    if (classList[0] === "FilterToggle") {
-        const combinedClass = `.${classList[1]}${classList[2]}`;
-        if (this.checked) {
-            $(combinedClass).css("display", "table-cell"); // Allows "table-cell" when checked
-        } else {
-            $(combinedClass).attr("style", "display: none !important"); // Overpowers other rules
-        }
-        console.log('cell');
-    }
-    if (classList[0] === "FilterToggleRow") {
-        const combinedClass = `.${classList[1]}${classList[2]}`;
-        if (this.checked) {
-            $(combinedClass).css("display", "table-row"); // Allows "table-row" when checked
-        } else {
-            $(combinedClass).attr("style", "display: none !important"); // Overpowers other rules
-        }
-        console.log('row');
-    }
-});
+	$(document).on("change", "input[type=checkbox]", function(){const classList = $(this).attr("class").split(" "); if(classList[0] === "FilterToggle"){ const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-cell"); } else { $(combinedClass).attr("style", "display: none !important");}}
+    if (classList[0] === "FilterToggleRow") {const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-row"); } else { $(combinedClass).attr("style", "display: none !important");}}});
+	$('#SpreadTable').on('mouseenter', 'td', function () {
+    const table = $(this).closest('table');
+    const colIndex = $(this).index(); // Get column index
 
+    table.find('tr').each(function () {
+      $(this).find('td').eq(colIndex).addClass('highlight-column');
+    });
+
+    $(this).parent().addClass('highlight-row'); // Highlight the row
+  });
+
+  $('#SpreadTable').on('mouseleave', 'td', function () {
+    const table = $(this).closest('table');
+    const colIndex = $(this).index();
+
+    table.find('tr').each(function () {
+      $(this).find('td').eq(colIndex).removeClass('highlight-column');
+    });
+
+    $(this).parent().removeClass('highlight-row'); // Remove row highlight
+  });
 });
 
 const Tabs = $('.Tab');
@@ -517,65 +545,74 @@ function PopulateSubmenu(TarArray, TarOpt, TarIntroA, TarIntroB, UniTar, TarClas
 //Note to self dump values inside html page to bypass safety
 function updateCssRule(selector, property, value) {
     const styleElement = document.querySelector("style"); // Find the <style> element
-    if (!styleElement) {
-        console.error("No <style> tag found.");
-        return;
-    }
-    const styleSheet = Array.from(document.styleSheets).find(sheet =>
-        sheet.ownerNode === styleElement
-    );
-
-    if (!styleSheet) {
-        console.error("No stylesheet associated with the <style> tag.");
-        return;
-    }
-
-    $.each(styleSheet.cssRules, (_, rule) => {
-        if (rule.selectorText === selector) {
-            rule.style[property] = value;
-        }
-    });
+	if (!styleElement){console.error("<Style> Not Found"); return;}
+	const styleSheet = Array.from(document.styleSheets).find(sheet => sheet.ownerNode === styleElement );
+    if(!styleSheet){console.error("Style Not Found"); return;}
+	$.each(styleSheet.cssRules, (_, rule) => {
+		if (rule.selectorText === selector) {
+			rule.style[property] = value;
+		}
+	});
 }
 
-function SpreadSheet() {
+function SpreadSheet(){
 	let SwapResources = JSON.parse(JSON.stringify(resources));	let SwapArray = JSON.parse(JSON.stringify(Modules));
+	let Z = 0;	let c1 = 0; let E1 =  ""; let c2 = 0; let E2 =  ""; let c3 = 0; let E3 =  ""; let c4 = 0; let E4 =  "";
 	SwapArray.sort((a, b) => a.Type - b.Type);
-	let Buffer = `<table><thead><tr><th>Module</th><th>Input</th>`;
+	SwapResources.sort((a, b) => b.Storage - a.Storage);
+	let Buffer = `<thead><tr><th>Module</th><th>Input</th>`;
 	SwapResources.forEach(AResA => {
-		Buffer += `<th class="Side Tyn${AResA.Type} Stn${AResA.Style} Tin${AResA.Tier} Sto${AResA.Storage}">${AResA.Name}</th>`;
+		if(c1 % 2 === 0) { E1 = " caSto"+AResA.Storage; } else { E1 = " cbSto"+AResA.Storage;}
+		Buffer += `<th class="Side Tyn${AResA.Type} Stn${AResA.Style} Tin${AResA.Tier} Sto${AResA.Storage}${E1}">${AResA.Name}</th>`;
+		c1++;
 	});
-	Buffer += `</tr></thead><tbody><tr><td></td><td>Total</td>`;
+	Buffer += `<th>Module</th></tr></thead><tbody><tr><td></td><td>Total</td>`;
 	SwapResources.forEach(AResB => {
-		Buffer += `<td class="Tyn${AResB.Type} Stn${AResB.Style} Tin${AResB.Tier} Sto${AResB.Storage}" id="SprdTop${AResB.id}">0</td>`;
+		if(c2 % 2 === 0) { E2 = " caSto"+AResB.Storage; } else { E2 = " cbSto"+AResB.Storage;}
+		Buffer += `<td class="Tyn${AResB.Type} Stn${AResB.Style} Tin${AResB.Tier} Sto${AResB.Storage}${E2}" id="SprdTop${AResB.id}">0</td>`;
+		c2++;
 	});
 	Buffer += `</tr>`;
 	SwapArray.forEach(moduleA => {
-		Buffer += `<tr class="rTyn${moduleA.Type} rStn${moduleA.Style} rTin${moduleA.Tier}"><td>${moduleA.Name}</td><td><input type="number" id="Inp${moduleA.id}"></td>`;
-		SwapResources.forEach(AResC => {	let Temp = "";
-			if (AResC.id === moduleA.InputResource1 || AResC.id === moduleA.InputResource2 || AResC.id === moduleA.InputResource3 || AResC.id === moduleA.InputResource4 || AResC.id === moduleA.InputResource5 || AResC.id === moduleA.OutputResource1 || AResC.id === moduleA.OutputResource2){
+		let Ex = "";
+		if(Z % 2 === 0) { Ex = " raTyn"+moduleA.Type; } else { Ex = " rbTyn"+moduleA.Type;  }
+		Buffer += `<tr class="rTyn${moduleA.Type} rStn${moduleA.Style} rTin${moduleA.Tier}${Ex}"><td>${moduleA.Name}</td><td><input type="number" id="Inp${moduleA.id}"></td>`;
+		SwapResources.forEach(AResC => {	let Temp = ""; 
+			if(AResC.id === moduleA.InputResource1 || AResC.id === moduleA.InputResource2 || AResC.id === moduleA.InputResource3 || AResC.id === moduleA.InputResource4 || AResC.id === moduleA.InputResource5 || AResC.id === moduleA.OutputResource1 || AResC.id === moduleA.OutputResource2){
 				Temp = "0";
 			}
 				Buffer += `<td class="Tyn${AResC.Type} Stn${AResC.Style} Tin${AResC.Tier} Sto${AResC.Storage}" id="Mod${moduleA.id}Res${AResC.id}">${Temp}</td>`;
 		});
-		Buffer += `</tr>`;
+		Buffer += `<td>${moduleA.Name}</td></tr>`;
+		Z++;	
 	});
 	Buffer += `<tr><td></td><td>Total</td>`;
 	SwapResources.forEach(AResD => {
-		Buffer += `<td class="Tyn${AResD.Type} Stn${AResD.Style} Tin${AResD.Tier} Sto${AResD.Storage}" id="SprdBot${AResD.id}">0</td>`;
+		if(c3 % 2 === 0) { E3 = " caSto"+AResD.Storage; } else { E3 = " cbSto"+AResD.Storage;}
+		Buffer += `<td class="Tyn${AResD.Type} Stn${AResD.Style} Tin${AResD.Tier} Sto${AResD.Storage}${E3}" id="SprdBot${AResD.id}">0</td>`;
+		c3++;
 	});
 	Buffer += `</tr><tr><td>Module</td><td>Input</td>`;
 	SwapResources.forEach(AResE => {
-		Buffer += `<td class="Side Tyn${AResE.Type} Stn${AResE.Style} Tin${AResE.Tier} Sto${AResE.Storage}">${AResE.Name}</td>`;
+		if(c4 % 2 === 0) { E4 = " caSto"+AResE.Storage; } else { E4 = " cbSto"+AResE.Storage;}
+		Buffer += `<td class="Side Tyn${AResE.Type} Stn${AResE.Style} Tin${AResE.Tier} Sto${AResE.Storage}${E4}">${AResE.Name}</td>`;
+		c4++;
 	});
-	Buffer += `</tr></tbody></table>`;
-    $('#SpreadContainer button').remove();
-    $('#SpreadContainer').append(Buffer);
+	Buffer += `<td>Module</td></tr></tbody>`;
+	$('#SpreadTable').append(Buffer);
+}
+function Render(){
+	updateCssRule('.rTyn5' ,'display', 'none');
+	updateCssRule('.rTyn6' ,'display', 'none');
+	$('.MainSwitch').remove();
+	$('#SpreadContainer').fadeIn(100);
 }
 
 //Populate spreadsheet
 let Firstcheck = 0;
 function RunOnce(){
 	if(Firstcheck === 0){
+		SpreadSheet();
 		PopulateSubmenu(Type, 1, 'Type', 'dropdown-header Highlight F22', 'FilterToggleRow rTyn ', '', '', 'SRow', 'id', 1, '');
 		PopulateSubmenu(Style, 1, 'Faction', 'dropdown-header Highlight F22', 'FilterToggleRow rStn ', '', '', 'SRow', 'id', 1, '');
 		PopulateSubmenu(Tier, 1, 'Tier', 'dropdown-header Highlight F22', 'FilterToggleRow rTin ', '', '', 'SRow', 'id', 0, '');
