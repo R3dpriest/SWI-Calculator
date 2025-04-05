@@ -18,8 +18,8 @@ const Type = [
 	{id: 2, Name: "Refined", Check: 1},
 	{id: 3, Name: "Agricultural", Check: 1},
 	{id: 4, Name: "Tech", Check: 1},
-	{id: 5, Name: "Storage", Check: 0},
-	{id: 6, Name: "Habitat", Check: 0}
+	{id: 5, Name: "Storage", Check: 1},
+	{id: 6, Name: "Habitat", Check: 1}
 ];
 const Tier = [
 	{id: 0, Name: "Tier 0", Check: 1},
