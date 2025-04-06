@@ -241,6 +241,91 @@ function Resources(){
 		$('#ResourceContent tbody').append(FuncAddRow);
 	});
 }
+let SwapResources = JSON.parse(JSON.stringify(resources));
+let SithPop = 0;	let GenPop = 0;		let TotPop = 0;			let NegPop = 0;		let EndPop = 0;
+function CalcPop(TarA, TarB, TarC){
+	let MathFood = 0; let MathMed = 0; let BufFood = []; let BufMed = []; let PopBuffer = "";
+	BufFood.length = 0;	BufMed.length = 0;
+	if(GenPop !== 0){
+		BufFood = SwapResources.find(resource => resource.id === 18);
+		MathFood = -Math.ceil(BufFood.InVolume+(GenPop * 2.25));
+		BufFood.InVolume = MathFood;
+		BufMed = SwapResources.find(resource => resource.id === 22);
+		MathMed = -Math.ceil(BufMed.InVolume+(GenPop * 1.35));
+		BufMed.InVolume = MathMed;
+		PopBuffer += `<tr><td>Generic housing</td><td>${GenPop}</td></tr>`;
+	}
+	if(SithPop !== 0){
+		let BufVat = SwapResources.find(resource => resource.id === 42);
+		let MathVat = -Math.ceil(BufVat.InVolume + (SithPop * 1.65));
+		BufVat.InVolume = MathVat;
+		PopBuffer += `<tr><td>Sith housing</td><td>${SithPop}</td></tr>`;
+	}
+	if(SithPop !== 0 || GenPop !== 0){
+		SubRoutine(0);
+		PopBuffer += `<tr><td>Total housing</td><td>${TotPop}</td></tr>`;
+	}
+	PopBuffer += `<tr><td>Population needed</td><td>${NegPop}</td></tr>`;
+	$(TarA).remove();
+	$(TarB).append(PopBuffer);
+	$(TarC).slideDown(350);
+}
+function NormalResources(TarA, TarB, TarC){
+const Rfilt = Type;
+	$('#CalcContent tbody tr').remove();
+	for (let RT = 0; RT < Rfilt.length; RT++) {
+		let TotC = "";
+		let I = 0;
+		let Rlabel = Rfilt[RT].Name;
+		TotC += `<tr class="rch" id="rch${RT}"><td></td><td>${Rlabel}</td><td></td><td></td></tr>`;
+		let ResCalcArray = SwapResources.filter(Ritem => Ritem.Storage === 1 && Ritem.Type === Rfilt[RT].id); // Match Type ID
+		ResCalcArray.forEach(Ritems => {
+			if (Ritems.InVolume !== 0 || Ritems.OutVolume !== 0) {
+				TotC += `<tr><td title="Tier ${Ritems.Tier}" class="rc${Ritems.Tier}"></td><td>${Ritems.Name}</td><td>${Ritems.InVolume}</td><td>${Ritems.OutVolume}</td></tr>`;
+				I++;
+			}
+		});
+		if (I !== 0) {
+			$(TarA).append(TotC);
+			$(TarB + RT).fadeIn(200);
+		}
+	}
+	$(TarC).slideDown(350);
+}
+function RawResource(TarA, TarB, TarC){
+let RawBuffer = "";	let RawS = 0;	let RawL = 0; let StoreLConvert; let StoreSConvert; let StoreS = 0; let StoreL = 0; let Sstorage = 0;	let Lstorage = 0;	let Cstorage = 0;
+let ResourceSArray = SwapResources.filter(item => item.Storage === 2);
+	ResourceSArray.forEach(ResA => {
+		console.log(RawS);
+		let RawConvert = ResA.InVolume;
+		let StoreSConvert = ResA.InVolume * ResA.StorageVolume;
+		RawBuffer += `<tr><td>${ResA.Name}</td><td>${RawConvert}</td><td>${StoreSConvert}<td></td><td></td></tr>`;
+		RawS = Math.ceil(RawS + RawConvert);
+		StoreS = Math.ceil(StoreS + StoreSConvert);
+	});
+	RawBuffer += `<tr><td><b>Total Solid</b></td><td>${RawS}</td><<td>${StoreS}</td><td>${Sstorage}</td></tr>`;
+	let ResourceLArray = SwapResources.filter(item => item.Storage === 3);
+	ResourceLArray.forEach(ResB => {
+		let RawsConvert = ResB.InVolume;
+		let StoreLConvert = ResB.InVolume * ResB.StorageVolume;
+		RawBuffer += `<tr><td>${ResB.Name}</td><td>${RawsConvert}</td><td>${StoreLConvert}</td><td></td></tr>`;
+		RawL = Math.ceil(RawL + RawsConvert);
+		StoreL = Math.ceil(StoreL + StoreLConvert);
+	});
+	RawBuffer += `<tr><td><b>Total Liquid</b></td><td>${RawL}</td><td>${StoreL}</td><td>${Lstorage}</td></tr>`;
+	$(TarA).remove();
+	$(TarB).append(RawBuffer);
+	$(TarC).slideDown(350);
+}
+function ConstrResource(TarA, TarB){
+let ConsBuffer = "";  const ConstrResources = SwapResources.filter((resource) => resource.ConstrVolume !== 0);
+ConstrResources.forEach(Constrfilter => {
+	ConsBuffer += `<tr id="ConsId${Constrfilter.id}" data-type="${Constrfilter.Type}" data-tier="${Constrfilter.Tier}" data-Style="${Constrfilter.Style}"><td>${Constrfilter.Name}</td><td style="display: none;" >${Constrfilter.Tier}</td><td style="display: none;">${Constrfilter.Type}</td><td style="display: none;" >${Constrfilter.Style}</td><td>${Constrfilter.ConstrVolume}</td></tr>`;
+});
+$(TarA+'tbody tr').remove();
+$(TarA+' tbody').append(ConsBuffer);
+$(TarB+' div').slideDown(350);
+}
 
 function CalculateModules() {
 	if($('.App02:visible').length == 0){
@@ -248,11 +333,11 @@ function CalculateModules() {
 		$('.App03').fadeIn(500);
 	}
 	$('').fadeIn(500);
-    let SwapArray = JSON.parse(JSON.stringify(Modules));		let SwapResources = JSON.parse(JSON.stringify(resources));
-	let multiplier = 0; 	let ConsBuffer = "";	let PopBuffer = "";	let RawBuffer = "";	let RawS = 0;	let RawL = 0; let StoreLConvert; let StoreSConvert; let StoreS = 0; let StoreL = 0;
+    let SwapArray = JSON.parse(JSON.stringify(Modules));
+	let multiplier = 0;
 	let StylePref = Number($("#StylePref").val());		let ScalePref = Number($("#ScalePref").val());
-	let SithPop = 0;	let GenPop = 0;		let TotPop = 0;			let NegPop = 0;		let EndPop = 0;
-	let Sstorage = 0;	let Lstorage = 0;	let Cstorage = 0;	let CalcEffPref = Number($("#CalcEffPref").val()); let CalcMod;
+	SithPop = 0;	GenPop = 0;	TotPop = 0;	NegPop = 0;	EndPop = 0;
+	let CalcEffPref = Number($("#CalcEffPref").val()); let CalcMod;
 	function SubRoutine(x){
 		if (x === 0) {
 			filteredArray = SwapArray.filter(item => item.Type === 1 || item.Type === 3);
@@ -367,90 +452,13 @@ function CalculateModules() {
 	}
 	SubRoutine(1);
 	//deal with population
-	let MathFood = 0; let MathMed = 0; let BufFood = []; let BufMed = [];
-	BufFood.length = 0;	BufMed.length = 0;
-	if(GenPop !== 0){
-		BufFood = SwapResources.find(resource => resource.id === 18);
-		MathFood = -Math.ceil(BufFood.InVolume+(GenPop * 2.25));
-		BufFood.InVolume = MathFood;
-		BufMed = SwapResources.find(resource => resource.id === 22);
-		MathMed = -Math.ceil(BufMed.InVolume+(GenPop * 1.35));
-		BufMed.InVolume = MathMed;
-		PopBuffer += `<tr><td>Generic housing</td><td>${GenPop}</td></tr>`;
-	}
-	if(SithPop !== 0){
-		let BufVat = SwapResources.find(resource => resource.id === 42);
-		let MathVat = -Math.ceil(BufVat.InVolume + (SithPop * 1.65));
-		BufVat.InVolume = MathVat;
-		PopBuffer += `<tr><td>Sith housing</td><td>${SithPop}</td></tr>`;
-	}
-	if(SithPop !== 0 || GenPop !== 0){
-		SubRoutine(0);
-		PopBuffer += `<tr><td>Total housing</td><td>${TotPop}</td></tr>`;
-	}
-	PopBuffer += `<tr><td>Population needed</td><td>${NegPop}</td></tr>`;
-	$('#PopulationContent tbody tr').remove();
-	$('#PopulationContent tbody').append(PopBuffer);
-	$('#PopulationContainer div').slideDown(350);
-	
-	//Effenciency
-	// EfRes = Math.floor(module.outputVolume1 * multiplier * (1 + (PosiPop/NegaPop * module.MaxEffeciency)));
-	
-	const Rfilt = Type;
-	$('#CalcContent tbody tr').remove();
-	for (let RT = 0; RT < Rfilt.length; RT++) {
-		let TotC = "";
-		let I = 0;
-		let Rlabel = Rfilt[RT].Name;
-		TotC += `<tr class="rch" id="rch${RT}"><td></td><td>${Rlabel}</td><td></td><td></td></tr>`;
-		let ResCalcArray = SwapResources.filter(Ritem => Ritem.Storage === 1 && Ritem.Type === Rfilt[RT].id); // Match Type ID
-		ResCalcArray.forEach(Ritems => {
-			if (Ritems.InVolume !== 0 || Ritems.OutVolume !== 0) {
-				TotC += `<tr><td title="Tier ${Ritems.Tier}" class="rc${Ritems.Tier}"></td><td>${Ritems.Name}</td><td>${Ritems.InVolume}</td><td>${Ritems.OutVolume}</td></tr>`;
-				I++;
-			}
-		});
-		if (I !== 0) {
-			$('#CalcContent tbody').append(TotC);
-			$('#rch' + RT).fadeIn(200);
-		}
-	}
-	$('#CalcContainer div').slideDown(350);
-
-	//Add raw resources.
-	let ResourceSArray = SwapResources.filter(item => item.Storage === 2);
-	ResourceSArray.forEach(ResA => {
-		console.log(RawS);
-		let RawConvert = ResA.InVolume;
-		let StoreSConvert = ResA.InVolume * ResA.StorageVolume;
-		RawBuffer += `<tr><td>${ResA.Name}</td><td>${RawConvert}</td><td>${StoreSConvert}<td></td><td></td></tr>`;
-		RawS = Math.ceil(RawS + RawConvert);
-		StoreS = Math.ceil(StoreS + StoreSConvert);
-	});
-	RawBuffer += `<tr><td><b>Total Solid</b></td><td>${RawS}</td><<td>${StoreS}</td><td>${Sstorage}</td></tr>`;
-	let ResourceLArray = SwapResources.filter(item => item.Storage === 3);
-	ResourceLArray.forEach(ResB => {
-		let RawsConvert = ResB.InVolume;
-		let StoreLConvert = ResB.InVolume * ResB.StorageVolume;
-		RawBuffer += `<tr><td>${ResB.Name}</td><td>${RawsConvert}</td><td>${StoreLConvert}</td><td></td></tr>`;
-		RawL = Math.ceil(RawL + RawsConvert);
-		StoreL = Math.ceil(StoreL + StoreLConvert);
-	});
-	RawBuffer += `<tr><td><b>Total Liquid</b></td><td>${RawL}</td><td>${StoreL}</td><td>${Lstorage}</td></tr>`;
-	$('#RawContent tbody tr').remove();
-	$('#RawContent tbody').append(RawBuffer);
-	$('#RawContainer div').slideDown(350);
-	
-	//Add construction resources.
-	const ConstrResources = SwapResources.filter((resource) => resource.ConstrVolume !== 0);
-	ConstrResources.forEach(Constrfilter => {
-		ConsBuffer += `<tr id="ConsId${Constrfilter.id}" data-type="${Constrfilter.Type}" data-tier="${Constrfilter.Tier}" data-Style="${Constrfilter.Style}"><td>${Constrfilter.Name}</td><td style="display: none;" >${Constrfilter.Tier}</td><td style="display: none;">${Constrfilter.Type}</td><td style="display: none;" >${Constrfilter.Style}</td><td>${Constrfilter.ConstrVolume}</td></tr>`;
-	});
-	$('#ConstructionContent tbody tr').remove();
-	$('#ConstructionContent tbody').append(ConsBuffer);
-	$('#ConstructionContainer div').slideDown(350);
+	CalcPop('#PopulationContent tbody tr', '#PopulationContent tbody', '#PopulationContainer div');
+	NormalResources('#CalcContent tbody', '#rch', '#CalcContainer div');
+	RawResource('#RawContent tbody tr', '#RawContent tbody', '#RawContainer div')
+	ConstrResource('#ConstructionContent', '#ConstructionContainer');
 	SwapResources = JSON.parse(JSON.stringify(resources));
 }
+
 
 
 function ExportData() {
@@ -580,7 +588,7 @@ function SpreadSheet(){
 	SwapArray.forEach(moduleA => {
 		let Ex = "";
 		if(Z % 2 === 0) { Ex = " raTyn"+moduleA.Type; } else { Ex = " rbTyn"+moduleA.Type;  }
-		Buffer += `<tr class="rTyn${moduleA.Type} rStn${moduleA.Style} rTin${moduleA.Tier}${Ex}"><td>${moduleA.Name}</td><td><input type="number" id="Inp${moduleA.id}"></td>`;
+		Buffer += `<tr class="rTyn${moduleA.Type} rStn${moduleA.Style} rTin${moduleA.Tier}${Ex}"><td>${moduleA.Name}</td><td><input class="ModId${moduleA.id}" type="number" id="Inp${moduleA.id}"></td>`;
 		SwapResources.forEach(AResC => {	let Temp = ""; 
 			if(AResC.id === moduleA.InputResource1 || AResC.id === moduleA.InputResource2 || AResC.id === moduleA.InputResource3 || AResC.id === moduleA.InputResource4 || AResC.id === moduleA.InputResource5 || AResC.id === moduleA.OutputResource1 || AResC.id === moduleA.OutputResource2){
 				Temp = "0";

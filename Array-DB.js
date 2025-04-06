@@ -72,12 +72,12 @@ const resources = [
 	{id: 40, Name: "Weapon Comp", Tier: 3, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 20},
 	{id: 41, Name: "Bacta Solution", Tier: 2, Type: 3, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 4},
 	{id: 42, Name: "Cloning Vats", Tier: 3, Type: 3, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 2},
-	{id: 43, Name: "Dark Fusion Cell", Tier: 2, Type: 2, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 50},
+	{id: 43, Name: "Dark Fusion Cell", Tier: 2, Type: 2, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0},
 	{id: 44, Name: "Fibersteel", Tier: 2, Type: 2, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 1},
 	{id: 45, Name: "Obsidian Composite", Tier: 2, Type: 4, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 20},
-	{id: 46, Name: "Hutt spice", Tier: 3, Type: 4, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 3},
-	{id: 47, Name: "Hutt Chemicals", Tier: 2, Type: 4, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 6},
-	{id: 48, Name: "Contraband Alchol", Tier: 3, Type: 4, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 2}
+	{id: 46, Name: "Hutt spice", Tier: 3, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 3},
+	{id: 47, Name: "Hutt Chemicals", Tier: 2, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 6},
+	{id: 48, Name: "Contraband Alchol", Tier: 3, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 2}
 ];
 
 	//DATA ~ Modules
@@ -404,7 +404,7 @@ const resources = [
 	 	InputResource4: 11,
 	 	InputVolume4: -1080,
 		OutputResource1: 22,
-		OutputVolume1: 6960,
+		OutputVolume1: 7488,
 		Population: -90,
 		MaxEffeciency: 0.25,
 		Style: 1,
@@ -847,7 +847,7 @@ const resources = [
 		Type: 4
 	},			
 	{	id: 35,
-		Name: "Bacta Solution", 
+		Name: "Bacta Blender", 
 		Title: "Sith Bacta Solution module",
 	 	InputResource1: 1,
 	 	InputVolume1: -1919,
@@ -1458,7 +1458,7 @@ const resources = [
 	 	InputResource4: 11,
 	 	InputVolume4: -1080,
 		OutputResource1: 22,
-		OutputVolume1: 6960,
+		OutputVolume1: 7488,
 		Population: -90,
 		MaxEffeciency: 0.25,
 		Style: 3,
@@ -2270,7 +2270,7 @@ const resources = [
 		Title: "Produces controband alchol",
 	 	InputResource1: 1,
 	 	InputVolume1: -900,
-	 	InputResource2: 43,
+	 	InputResource2: 39,
 	 	InputVolume2: -2250,
 		InputResource3: 11,
 	 	InputVolume3: -1800,
