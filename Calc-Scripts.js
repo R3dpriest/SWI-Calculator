@@ -241,8 +241,46 @@ function Resources(){
 		$('#ResourceContent tbody').append(FuncAddRow);
 	});
 }
-let SwapResources = JSON.parse(JSON.stringify(resources));
+let SwapResources = JSON.parse(JSON.stringify(resources));	//let ModNeed;
 let SithPop = 0;	let GenPop = 0;		let TotPop = 0;			let NegPop = 0;		let EndPop = 0;
+/*function Modifier(AdModule, filter){
+	let Modbuffer = Math.abs(filter.InVolume); 	
+	if(CalcEffPref === 1){
+		CalcMod = 1 + (1 * AdModule.MaxEffeciency);
+	} else {
+		CalcMod = 1;
+	}
+	if(AdModule.length > 1) {
+		
+		if(filter.id === 1){
+			ModNeed = Math.ceil(Modbuffer / (((AdModule.OutputVolume1 * CalcMod) / 100) * SunPref ));
+		} else {
+			ModNeed = Math.ceil(Modbuffer / AdModule.OutputVolume1 * CalcMod);
+		}
+	} else {
+		
+		
+	}
+	return ModNeed;
+}
+function CalcRun(MT, SwapArray){
+	const filteredResources = SwapResources.filter((resource) => resource.Tier === MT-1 && resource.InVolume !== 0);
+	filteredResources.forEach(filter => {
+	let AdModule = SwapArray.find(item => item.OutputResource1 === filter.id && item.Style === StylePref);
+	if (!AdModule) {
+		AdModule = SwapArray.find(item => item.OutputResource1 === filter.id);
+	}
+	Modifier(AdModule, filter);
+	if(ScalePref === 0){
+		let ModGrab = document.getElementById(`Input_M_`+AdModule.id).value;
+	if(ModGrab < ModNeed){
+		$(`#Input_M_${AdModule.id}`).val(ModNeed);
+		}
+	} else { 
+	$(`#Input_M_${AdModule.id}`).val(ModNeed); }
+	$(`#Input_M_${AdModule.id}`).parent().parent().slideDown(350);				
+	});
+}*/
 function CalcPop(TarA, TarB, TarC){
 	let MathFood = 0; let MathMed = 0; let BufFood = []; let BufMed = []; let PopBuffer = "";
 	BufFood.length = 0;	BufMed.length = 0;
@@ -273,14 +311,18 @@ function CalcPop(TarA, TarB, TarC){
 function NormalResources(TarA, TarB, TarC){
 const Rfilt = Type;
 	$('#CalcContent tbody tr').remove();
+	console.log(SwapResources);
 	for (let RT = 0; RT < Rfilt.length; RT++) {
-		let TotC = "";
+		let TotC = ""; let TempA = 0;
 		let I = 0;
 		let Rlabel = Rfilt[RT].Name;
 		TotC += `<tr class="rch" id="rch${RT}"><td></td><td>${Rlabel}</td><td></td><td></td></tr>`;
-		let ResCalcArray = SwapResources.filter(Ritem => Ritem.Storage === 1 && Ritem.Type === Rfilt[RT].id); // Match Type ID
+		let ResCalcArray = SwapResources.filter(Ritem => Ritem.Storage === 1 && Ritem.Type === Rfilt[RT].id);
 		ResCalcArray.forEach(Ritems => {
 			if (Ritems.InVolume !== 0 || Ritems.OutVolume !== 0) {
+				if(Ritems.id === 1){
+					TempA = "";
+				}
 				TotC += `<tr><td title="Tier ${Ritems.Tier}" class="rc${Ritems.Tier}"></td><td>${Ritems.Name}</td><td>${Ritems.InVolume}</td><td>${Ritems.OutVolume}</td></tr>`;
 				I++;
 			}
@@ -296,7 +338,6 @@ function RawResource(TarA, TarB, TarC){
 let RawBuffer = "";	let RawS = 0;	let RawL = 0; let StoreLConvert; let StoreSConvert; let StoreS = 0; let StoreL = 0; let Sstorage = 0;	let Lstorage = 0;	let Cstorage = 0;
 let ResourceSArray = SwapResources.filter(item => item.Storage === 2);
 	ResourceSArray.forEach(ResA => {
-		console.log(RawS);
 		let RawConvert = ResA.InVolume;
 		let StoreSConvert = ResA.InVolume * ResA.StorageVolume;
 		RawBuffer += `<tr><td>${ResA.Name}</td><td>${RawConvert}</td><td>${StoreSConvert}<td></td><td></td></tr>`;
@@ -317,15 +358,16 @@ let ResourceSArray = SwapResources.filter(item => item.Storage === 2);
 	$(TarB).append(RawBuffer);
 	$(TarC).slideDown(350);
 }
-function ConstrResource(TarA, TarB){
+function ConstrResource(TarA, TarB, TarC){
 let ConsBuffer = "";  const ConstrResources = SwapResources.filter((resource) => resource.ConstrVolume !== 0);
 ConstrResources.forEach(Constrfilter => {
 	ConsBuffer += `<tr id="ConsId${Constrfilter.id}" data-type="${Constrfilter.Type}" data-tier="${Constrfilter.Tier}" data-Style="${Constrfilter.Style}"><td>${Constrfilter.Name}</td><td style="display: none;" >${Constrfilter.Tier}</td><td style="display: none;">${Constrfilter.Type}</td><td style="display: none;" >${Constrfilter.Style}</td><td>${Constrfilter.ConstrVolume}</td></tr>`;
 });
-$(TarA+'tbody tr').remove();
-$(TarA+' tbody').append(ConsBuffer);
-$(TarB+' div').slideDown(350);
+$(TarA).remove();
+$(TarB).append(ConsBuffer);
+$(TarC).slideDown(350);
 }
+
 
 function CalculateModules() {
 	if($('.App02:visible').length == 0){
@@ -334,7 +376,7 @@ function CalculateModules() {
 	}
 	$('').fadeIn(500);
     let SwapArray = JSON.parse(JSON.stringify(Modules));
-	let multiplier = 0;
+	let multiplier = 0;	let ModNeed;	let SunPref = Number($("#SunPref").val());
 	let StylePref = Number($("#StylePref").val());		let ScalePref = Number($("#ScalePref").val());
 	SithPop = 0;	GenPop = 0;	TotPop = 0;	NegPop = 0;	EndPop = 0;
 	let CalcEffPref = Number($("#CalcEffPref").val()); let CalcMod;
@@ -405,19 +447,25 @@ function CalculateModules() {
 								let OupR = "OutputResource"+RQ; let OupV = "OutputVolume"+RQ;
 								let OupRVal = ModuleItem[OupR]; let OupVVal = ModuleItem[OupV] * multiplier;
 								let OupTar = SwapResources.find(item => item.id === OupRVal);
+								console.log(OupTar);
 								if(OupTar){
 									if(CalcEffPref === 1){
 										CalcMod = 1 + (1 * ModuleItem.MaxEffeciency);
 									} else {
 										CalcMod = 1;
 									}
-									OupTar.OutVolume = Math.ceil(OupTar.OutVolume + (OupVVal * CalcMod));
+									if(OupTar.id === 1){
+										OupTar.OutVolume = Math.ceil((OupTar.OutVolume + (OupVVal * CalcMod) /100) * SunPref);
+									} else {
+										OupTar.OutVolume = Math.ceil(OupTar.OutVolume + (OupVVal * CalcMod));
+									}
 								}
 							}
 						}
 					}
 				}
 			});
+		//	CalcRun(MT, SwapArray);
 			const filteredResources = SwapResources.filter((resource) => resource.Tier === MT-1 && resource.InVolume !== 0);
 			filteredResources.forEach(filter => {
 				let AdModule = SwapArray.find(item => item.OutputResource1 === filter.id && item.Style === StylePref);
@@ -433,7 +481,6 @@ function CalculateModules() {
 					CalcMod = 1;
 				}
 				if(filter.id === 1){
-					let SunPref = Number($("#SunPref").val());
 					ModNeed = Math.ceil(Modbuffer / (((AdModule.OutputVolume1 * CalcMod) / 100) * SunPref ));
 				} else {
 					ModNeed = Math.ceil(Modbuffer / AdModule.OutputVolume1 * CalcMod);
@@ -451,11 +498,10 @@ function CalculateModules() {
 		}
 	}
 	SubRoutine(1);
-	//deal with population
 	CalcPop('#PopulationContent tbody tr', '#PopulationContent tbody', '#PopulationContainer div');
 	NormalResources('#CalcContent tbody', '#rch', '#CalcContainer div');
 	RawResource('#RawContent tbody tr', '#RawContent tbody', '#RawContainer div')
-	ConstrResource('#ConstructionContent', '#ConstructionContainer');
+	ConstrResource('#ConstructionContent tbody tr', '#ConstructionContent tbody','#ConstructionContainer div');
 	SwapResources = JSON.parse(JSON.stringify(resources));
 }
 
@@ -619,7 +665,6 @@ function Render(){
 	$('.MainSwitch').remove();
 	$('#SpreadContainer').fadeIn(100);
 }
-
 //Populate spreadsheet
 let Firstcheck = 0;
 function RunOnce(){
