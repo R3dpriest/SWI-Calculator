@@ -655,10 +655,13 @@ function update(){
 			x = AResA.OutVolume + AResA.InVolume;
 			if(x < 0){
 				$('#SprdTop'+AResA.id).css({'color': '#ff7a7a', 'font-weight': 'bold'});
+				$('#SprdBot'+AResA.id).css({'color': '#ff7a7a', 'font-weight': 'bold'});
 			} else if(x === 0){
 				$('#SprdTop'+AResA.id).css({'color': '#000000', 'font-weight': 'normal'});
+				$('#SprdBot'+AResA.id).css({'color': '#000000', 'font-weight': 'normal'});
 			} else {
 				$('#SprdTop'+AResA.id).css({'color': '#4caf50', 'font-weight': 'bold'});
+				$('#SprdBot'+AResA.id).css({'color': '#4caf50', 'font-weight': 'bold'});
 			}
 			$('#SprdTop'+AResA.id).html(x);
 			$('#SprdBot'+AResA.id).html(x);
