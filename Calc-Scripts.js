@@ -1,32 +1,5 @@
 /* Globals */
-let calcManiSheet;
-
-document.addEventListener('DOMContentLoaded', () => { 
-  document.querySelectorAll('td').forEach(cell => { 
-
-    cell.addEventListener('mouseenter', () => {
-      const table = cell.closest('table');
-      const colIndex = cell.cellIndex;
-
-      Array.from(table.rows).forEach(row => {
-        row.cells[colIndex].classList.add('highlight-column');
-      });
-
-      cell.parentElement.classList.add('highlight-row');
-    });
-
-    cell.addEventListener('mouseleave', () => {
-      const table = cell.closest('table');
-      const colIndex = cell.cellIndex;
-
-      Array.from(table.rows).forEach(row => {
-        row.cells[colIndex].classList.remove('highlight-column');
-      });
-
-      cell.parentElement.classList.remove('highlight-row');
-    });
-  });
-});
+let calcManiSheet;	let current;
 
 $(document).ready(function() {
 	$('#SortContainer').on('change', '.Sort', SelectSort);
@@ -51,8 +24,6 @@ $(document).ready(function() {
 		var $cellB = $(b).find('td').eq(FuncSortIndex);
 		var valA = $cellA.text().trim();
 		var valB = $cellB.text().trim();
-      
-      // If numeric, sort numerically; otherwise, use localeCompare.
 		if ($.isNumeric(valA) && $.isNumeric(valB)) {
 			return sortOrder === "asc"
 			? parseFloat(valA) - parseFloat(valB)
@@ -66,7 +37,6 @@ $(document).ready(function() {
 		
 	$FuncTar.empty().append(sortedRows);
 	}
-	
 	$('#SimpleSorterA').on('change', function(){ const selectedValue = $(this).val(); const allowedDataSorts = ['Alphabet', 'Input', 'Options', selectedValue]; const table = $('#DataContent'); table.find('thead th').each(function(index) { const dataSort = $(this).attr('data-sort'); if(allowedDataSorts.includes(dataSort)){ $(this).show(); table.find(`tbody tr td:nth-child(${index + 1})`).show(); } else { $(this).hide(); table.find(`tbody tr td:nth-child(${index + 1})`).hide(); }});});
 	$('#SortContainer').on('change', '.Sort', filterAndSortTable);
 	Generate();
@@ -79,29 +49,9 @@ $(document).ready(function() {
 	});
 	$(document).on("change", "input[type=checkbox]", function(){const classList = $(this).attr("class").split(" "); if(classList[0] === "FilterToggle"){ const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-cell"); } else { $(combinedClass).attr("style", "display: none !important");}}
     if (classList[0] === "FilterToggleRow") {const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-row"); } else { $(combinedClass).attr("style", "display: none !important");}}});
-	$('#SpreadTable').on('mouseenter', 'td', function () {
-    const table = $(this).closest('table');
-    const colIndex = $(this).index(); // Get column index
-
-    table.find('tr').each(function () {
-      $(this).find('td').eq(colIndex).addClass('highlight-column');
-    });
-
-    $(this).parent().addClass('highlight-row'); // Highlight the row
-  });
-
-  $('#SpreadTable').on('mouseleave', 'td', function () {
-    const table = $(this).closest('table');
-    const colIndex = $(this).index();
-
-    table.find('tr').each(function () {
-      $(this).find('td').eq(colIndex).removeClass('highlight-column');
-    });
-
-    $(this).parent().removeClass('highlight-row'); // Remove row highlight
-  });
+	$('#SpreadTable').on('mouseenter', 'td', function (){	const table = $(this).closest('table'); const colIndex = $(this).index();	table.find('tr').each(function(){ $(this).find('td').eq(colIndex).addClass('highlight-column'); }); $(this).parent().addClass('highlight-row');});
+	$('#SpreadTable').on('mouseleave', 'td', function (){	const table = $(this).closest('table'); const colIndex = $(this).index(); table.find('tr').each(function(){ $(this).find('td').eq(colIndex).removeClass('highlight-column');}); $(this).parent().removeClass('highlight-row');});
 });
-
 const Tabs = $('.Tab');
 const TabData = $('.TabData');
 Tabs.each(function(index, Tab) {
@@ -110,9 +60,9 @@ Tabs.each(function(index, Tab) {
         Tabs.eq(index).addClass('active');
         TabData.removeClass('active');
         TabData.eq(index).addClass('active');
+		current = index;
     });
 });
-
 // Sort Selection
 function SelectSort(){ 
 	var SimpleSorterA = $('#SimpleSorterA').val();
@@ -123,7 +73,6 @@ function SelectSort(){
 		SelectOptions(Modules, 'SimpleModules', ' ', 'id', 'ModId', 'id', 0, SimpleSorterA, SimpleSorterB, 'Select Module');
 	}
 }
-
 // Generate Select Menu's
 function SelectOptions(TarArray, TarField, TarVal1, TarVal2, TarClassA, TarClassB, TarCatahead, TarSort, TarSId, TarExtra) {
     let SwapArray = [...TarArray];
@@ -150,13 +99,8 @@ function SelectOptions(TarArray, TarField, TarVal1, TarVal2, TarClassA, TarClass
 			if(TarVal2 == "id" || TarVal2 == "class" ){
 				if(TarVal1 === " "){
 					FuncVal = ` value="${item[TarClassB]}"`;
-				} else {
-					FuncVal = ` value="${TarVal1} ${item[TarClassB]}"`;
-				}
-				
-			} else {
-				FuncVal = ` value="${TarVal1}"`;
-			}
+				} else { FuncVal = ` value="${TarVal1} ${item[TarClassB]}"`; }
+			} else { FuncVal = ` value="${TarVal1}"`; }
 		}
 		if(TarClassA.length !== 0){
 			if(TarField === 'SimpleModules'){
@@ -166,8 +110,6 @@ function SelectOptions(TarArray, TarField, TarVal1, TarVal2, TarClassA, TarClass
 				} else { FuncClass = ` class="${TarClassA}${item[TarClassB]}"`; }
 			} else { FuncClass = ` class="${TarClassA}${item[TarClassB]}"`; }
 		}
-//        let FuncClass = TarClassA.length !== 0 ? ` class="${TarClassA}${item[TarClassB]}"` : "";
-		
 		if(TarCatahead != 0){
 			if (item[TarSort] !== currentGroup) {
 				if (currentGroup !== null) {
@@ -197,9 +139,7 @@ function SelectOptions(TarArray, TarField, TarVal1, TarVal2, TarClassA, TarClass
     if (currentGroup !== null) {OptElements += `</optgroup>`;}
     $('#' + TarField).html(OptElements);
 }
-
-// Show/Hide
-function Revealer(Tar, Option1, Option2){
+function Revealer(Tar, Option1, Option2){ // Show/Hide
 	let Extra1 = "";
 	let Extra2 = "";
 	if(Option2.length !== 0){ Extra2 = Option2; }
@@ -207,15 +147,13 @@ function Revealer(Tar, Option1, Option2){
 	if ($(Extra1+Extra2+Tar).is(':visible')) {
 		if(Extra2 === "ModId"){
 			$(Extra1+Extra2+Tar).fadeOut(500);
-			$("#Input_M_" + Tar).val(0);
+			$("#Input_M"+current+"_" + Tar).val(0);
 		}
 	} else { 
 		$(Extra1+Extra2+Tar).fadeIn(500);
 	}
 }
-
-//Generate table
-function Generate(){
+function Generate(){ //Generate table
 let G1;
 let G1label;
 	Modules.sort(function(a, b) {
@@ -228,11 +166,10 @@ let G1label;
 		const G2label = G2[value.Tier]?.Name || "Unknown Tier";
 		const G3 = Lookup["Style"];
 		const G3label = G3[value.Style-1]?.Name || "Unknown Style";
-		let FuncAddrow = `<tr title	="${value.Title}" id="ModId${value.id}" data-type="${value.Type}" data-tier="${value.Tier}" data-Style="${value.Style}" style="display: none;"><td>${value.Name}</td><td style="display: none;">`+G2label+`</td><td>`+G1label+`</td><td style="display: none;">`+G3label+`</td><td><input class="ModId${value.id} Inp-Style-${value.Style} Inp-Tier-${value.Tier} Inp-Type-${value.Type}" id="Input_M_${value.id}" type="number" value="0"></td><td><span class="SwiClean OptSpan" hover="test" title="Set value to 0">🧹</span><span class="SwiBin OptSpan" title="Set value to 0 and remove">🗑️</span></td></tr>`;		
+		let FuncAddrow = `<tr title	="${value.Title}" id="ModId${value.id}" data-type="${value.Type}" data-tier="${value.Tier}" data-Style="${value.Style}" style="display: none;"><td>${value.Name}</td><td style="display: none;">`+G2label+`</td><td>`+G1label+`</td><td style="display: none;">`+G3label+`</td><td><input class="${value.id} ModId${value.id} Inp-Style-${value.Style} Inp-Tier-${value.Tier} Inp-Type-${value.Type}" id="Input_M1_${value.id}" type="number" value="0"></td><td><span class="SwiClean OptSpan" title="Set value to 0">🧹</span><span class="SwiBin OptSpan" title="Set value to 0 and remove">🗑️</span></td></tr>`;		
 		$('#DataContent tbody').append(FuncAddrow);
 	});
 }
-
 function Resources(){
 	let SwapResources = JSON.parse(JSON.stringify(resources));
 	let FuncAddRow = "";
@@ -243,44 +180,6 @@ function Resources(){
 }
 let SwapResources = JSON.parse(JSON.stringify(resources));	//let ModNeed;
 let SithPop = 0;	let GenPop = 0;		let TotPop = 0;			let NegPop = 0;		let EndPop = 0;
-/*function Modifier(AdModule, filter){
-	let Modbuffer = Math.abs(filter.InVolume); 	
-	if(CalcEffPref === 1){
-		CalcMod = 1 + (1 * AdModule.MaxEffeciency);
-	} else {
-		CalcMod = 1;
-	}
-	if(AdModule.length > 1) {
-		
-		if(filter.id === 1){
-			ModNeed = Math.ceil(Modbuffer / (((AdModule.OutputVolume1 * CalcMod) / 100) * SunPref ));
-		} else {
-			ModNeed = Math.ceil(Modbuffer / AdModule.OutputVolume1 * CalcMod);
-		}
-	} else {
-		
-		
-	}
-	return ModNeed;
-}
-function CalcRun(MT, SwapArray){
-	const filteredResources = SwapResources.filter((resource) => resource.Tier === MT-1 && resource.InVolume !== 0);
-	filteredResources.forEach(filter => {
-	let AdModule = SwapArray.find(item => item.OutputResource1 === filter.id && item.Style === StylePref);
-	if (!AdModule) {
-		AdModule = SwapArray.find(item => item.OutputResource1 === filter.id);
-	}
-	Modifier(AdModule, filter);
-	if(ScalePref === 0){
-		let ModGrab = document.getElementById(`Input_M_`+AdModule.id).value;
-	if(ModGrab < ModNeed){
-		$(`#Input_M_${AdModule.id}`).val(ModNeed);
-		}
-	} else { 
-	$(`#Input_M_${AdModule.id}`).val(ModNeed); }
-	$(`#Input_M_${AdModule.id}`).parent().parent().slideDown(350);				
-	});
-}*/
 function CalcPop(TarA, TarB, TarC){
 	let MathFood = 0; let MathMed = 0; let BufFood = []; let BufMed = []; let PopBuffer = "";
 	BufFood.length = 0;	BufMed.length = 0;
@@ -311,7 +210,6 @@ function CalcPop(TarA, TarB, TarC){
 function NormalResources(TarA, TarB, TarC){
 const Rfilt = Type;
 	$('#CalcContent tbody tr').remove();
-	console.log(SwapResources);
 	for (let RT = 0; RT < Rfilt.length; RT++) {
 		let TotC = ""; let TempA = 0;
 		let I = 0;
@@ -367,19 +265,18 @@ $(TarA).remove();
 $(TarB).append(ConsBuffer);
 $(TarC).slideDown(350);
 }
-
-
-function CalculateModules() {
+function CalculateModules(){
+	let RawBuffer = "";	let RawS = 0;	let RawL = 0; let StoreLConvert; let StoreSConvert; let StoreS = 0; let StoreL = 0; let Sstorage = 0;	let Lstorage = 0;	let Cstorage = 0;
+	let SwapArray = JSON.parse(JSON.stringify(Modules));
+	let multiplier = 0;	let ModNeed;	let SunPref = Number($("#SunPref").val());
+	let StylePref = Number($("#StylePref").val());		let ScalePref = Number($("#ScalePref").val());
+	SithPop = 0;	GenPop = 0;	TotPop = 0;	NegPop = 0;	EndPop = 0;
+	let CalcEffPref = Number($("#CalcEffPref").val()); let CalcMod;
 	if($('.App02:visible').length == 0){
 		$('.App02').fadeIn(500);
 		$('.App03').fadeIn(500);
 	}
 	$('').fadeIn(500);
-    let SwapArray = JSON.parse(JSON.stringify(Modules));
-	let multiplier = 0;	let ModNeed;	let SunPref = Number($("#SunPref").val());
-	let StylePref = Number($("#StylePref").val());		let ScalePref = Number($("#ScalePref").val());
-	SithPop = 0;	GenPop = 0;	TotPop = 0;	NegPop = 0;	EndPop = 0;
-	let CalcEffPref = Number($("#CalcEffPref").val()); let CalcMod;
 	function SubRoutine(x){
 		if (x === 0) {
 			filteredArray = SwapArray.filter(item => item.Type === 1 || item.Type === 3);
@@ -387,14 +284,14 @@ function CalculateModules() {
 			filteredArray = SwapArray;
 		} let FFx;
 		// Cycle Through tiers
-		for (let MT = 5; MT >= -1; MT--) {
+		for(let MT = 5; MT >= -1; MT--){	
 			const Filter = SwapResources.filter((resource) => resource.Tier === MT-1);
 			filteredArray.forEach((ModuleItem, index) => {
 				FFx = SwapResources.find(resources => resources.id === ModuleItem.OutputResource1);
 				if (!FFx || FFx.OutVolume <= Math.abs(FFx.InVolume)) {
 					if (ModuleItem.Tier === MT){
-						if($(`#Input_M_${ModuleItem.id}`).val() !== "0") {
-							multiplier = $(`#Input_M_${ModuleItem.id}`).val();
+						if($(`#Input_M${current}_${ModuleItem.id}`).val() !== "0") {
+							multiplier = $(`#Input_M${current}_${ModuleItem.id}`).val();
 							//Population calculation
 							if(ModuleItem.Population > 0){
 								switch(ModuleItem.Race){
@@ -447,7 +344,6 @@ function CalculateModules() {
 								let OupR = "OutputResource"+RQ; let OupV = "OutputVolume"+RQ;
 								let OupRVal = ModuleItem[OupR]; let OupVVal = ModuleItem[OupV] * multiplier;
 								let OupTar = SwapResources.find(item => item.id === OupRVal);
-								console.log(OupTar);
 								if(OupTar){
 									if(CalcEffPref === 1){
 										CalcMod = 1 + (1 * ModuleItem.MaxEffeciency);
@@ -465,7 +361,6 @@ function CalculateModules() {
 					}
 				}
 			});
-		//	CalcRun(MT, SwapArray);
 			const filteredResources = SwapResources.filter((resource) => resource.Tier === MT-1 && resource.InVolume !== 0);
 			filteredResources.forEach(filter => {
 				let AdModule = SwapArray.find(item => item.OutputResource1 === filter.id && item.Style === StylePref);
@@ -486,13 +381,13 @@ function CalculateModules() {
 					ModNeed = Math.ceil(Modbuffer / AdModule.OutputVolume1 * CalcMod);
 				}
 				if(ScalePref === 0){
-					let ModGrab = document.getElementById(`Input_M_`+AdModule.id).value;
+					let ModGrab = document.getElementById(`Input_M${current}_`+AdModule.id).value;
 					if(ModGrab < ModNeed){
-						$(`#Input_M_${AdModule.id}`).val(ModNeed);
+						$(`#Input_M${current}_${AdModule.id}`).val(ModNeed);
 					}
 				} else { 
-				$(`#Input_M_${AdModule.id}`).val(ModNeed); }
-					$(`#Input_M_${AdModule.id}`).parent().parent().slideDown(350);				
+				$(`#Input_M${current}_${AdModule.id}`).val(ModNeed); }
+					$(`#Input_M${current}_${AdModule.id}`).parent().parent().slideDown(350);				
 				}
 			});
 		}
@@ -504,60 +399,92 @@ function CalculateModules() {
 	ConstrResource('#ConstructionContent tbody tr', '#ConstructionContent tbody','#ConstructionContainer div');
 	SwapResources = JSON.parse(JSON.stringify(resources));
 }
-
-
-
 function ExportData() {
-	var data = {};
-	$(".TabData.active").find("input, select, textarea").each(function () {
-	var firstClass = $(this).attr("class")?.split(" ")[0]; // Get the first class
-	if (firstClass) {
-		if ($(this).is(":checkbox")) {
-			data[firstClass] = $(this).prop("checked");
-		} else if ($(this).is(":radio")) {
-			if ($(this).prop("checked")) {
-				data[firstClass] = $(this).val();
-			}
-			} else {
-			data[firstClass] = $(this).val();
-			}
-		}
-	});
-	var jsonString = JSON.stringify(data);
-	var compressed = LZString.compressToBase64(jsonString);
-	$("#StringID").val(compressed);
+    var data = {};
+    
+    // Get all input fields, selects, and textareas under 'TabData.active'
+    $(".TabData.active").find("input, select, textarea").each(function () {
+        var firstClass = $(this).attr("class")?.split(" ")[0]; // Extract the first class name
+        if (firstClass) {
+            if ($(this).is(":checkbox")) {
+                data[firstClass] = $(this).prop("checked"); // Encode checkboxes
+            } else if ($(this).is(":radio")) {
+                if ($(this).prop("checked")) {
+                    data[firstClass] = $(this).val(); // Encode selected radio buttons
+                }
+            } else {
+                data[firstClass] = $(this).val(); // Encode other fields
+            }
+        }
+    });
+
+    // Get all checkboxes, selects, and inputs under class 'Op2' based on their ID
+    $(".Op2").find("input, select").each(function () {
+        var fieldId = $(this).attr("id"); // Extract the element's ID
+        if (fieldId) {
+            if ($(this).is(":checkbox")) {
+                data[fieldId] = $(this).prop("checked"); // Encode checkboxes
+            } else {
+                data[fieldId] = $(this).val(); // Encode other fields
+            }
+        }
+    });
+
+    // Compress and store the encoded data
+    var jsonString = JSON.stringify(data);
+    var compressed = LZString.compressToBase64(jsonString);
+    $("#StringID").val(compressed);
 }
 
 function ImportData() {
-	var compressed = $("#StringID").val();
-	if (!compressed) return;
-	var jsonString = LZString.decompressFromBase64(compressed);
-	if (!jsonString) {
-		alert("Decoding failed: Please select the right tab. Or invalid data.");
-		return;
-	}
-	var data = JSON.parse(jsonString);
-	$.each(data, function (className, value) {
-		var field = $("." + className);
-		if (field.length) {
-			if (field.is(":checkbox")) {
-				field.prop("checked", value);
-			} else if (field.is(":radio")) {
-				$('input[name="' + field.attr("name") + '"][value="' + value + '"]').prop("checked", true);
-			} else {
-				field.val(value);
-			}
-				if (!field.is(":checkbox") && !field.is(":radio")) {
-				var numericVal = Number(field.val());
-				if (!isNaN(numericVal) && numericVal > 0) {
-					var gp = field.parent().parent();
-					if (gp.is("tr")) {
-						gp.fadeIn(200);
-					}
-				}
-			}
-		}
-	});
+    var compressed = $("#StringID").val();
+    if (!compressed) return;
+
+    var jsonString = LZString.decompressFromBase64(compressed);
+    if (!jsonString) {
+        alert("Decoding failed: Please select the right tab. Or invalid data.");
+        return;
+    }
+
+    // Parse the JSON string back into an object
+    var data = JSON.parse(jsonString);
+
+    // Import data for 'TabData.active' fields (based on their first class name)
+    $.each(data, function (className, value) {
+        var field = $("." + className);
+        if (field.length) {
+            if (field.is(":checkbox")) {
+                field.prop("checked", value); // Import checkboxes
+            } else if (field.is(":radio")) {
+                $('input[name="' + field.attr("name") + '"][value="' + value + '"]').prop("checked", true); // Import selected radio buttons
+            } else {
+                field.val(value); // Import other fields
+            }
+
+            // Handle numeric fields for visibility logic
+            if (!field.is(":checkbox") && !field.is(":radio")) {
+                var numericVal = Number(field.val());
+                if (!isNaN(numericVal) && numericVal > 0) {
+                    var gp = field.parent().parent();
+                    if (gp.is("tr")) {
+                        gp.fadeIn(200); // Show the parent row for numeric fields
+                    }
+                }
+            }
+        }
+    });
+
+    // Import data for 'Op2' fields (based on their ID)
+    $.each(data, function (fieldId, value) {
+        var field = $("#" + fieldId);
+        if (field.length) {
+            if (field.is(":checkbox")) {
+                field.prop("checked", value); // Import checkboxes
+            } else {
+                field.val(value); // Import other fields
+            }
+        }
+    });
 }
 
 function PopulateSubmenu(TarArray, TarOpt, TarIntroA, TarIntroB, UniTar, TarClassA, TarClassB, TarLocA, TarLocB, FolLine, FolClass){
@@ -634,7 +561,7 @@ function SpreadSheet(){
 	SwapArray.forEach(moduleA => {
 		let Ex = "";
 		if(Z % 2 === 0) { Ex = " raTyn"+moduleA.Type; } else { Ex = " rbTyn"+moduleA.Type;  }
-		Buffer += `<tr class="rTyn${moduleA.Type} rStn${moduleA.Style} rTin${moduleA.Tier}${Ex}"><td>${moduleA.Name}</td><td><input class="ModId${moduleA.id}" type="number" id="Inp${moduleA.id}"></td>`;
+		Buffer += `<tr class="rTyn${moduleA.Type} rStn${moduleA.Style} rTin${moduleA.Tier}${Ex}"><td>${moduleA.Name}</td><td><input class="${moduleA.id} ModEd${moduleA.id}" type="number" onchange="update();" id="Input_M2_${moduleA.id}"></td>`;
 		SwapResources.forEach(AResC => {	let Temp = ""; 
 			if(AResC.id === moduleA.InputResource1 || AResC.id === moduleA.InputResource2 || AResC.id === moduleA.InputResource3 || AResC.id === moduleA.InputResource4 || AResC.id === moduleA.InputResource5 || AResC.id === moduleA.OutputResource1 || AResC.id === moduleA.OutputResource2){
 				Temp = "0";
@@ -679,4 +606,63 @@ function RunOnce(){
 		PopulateSubmenu(Tier, 1, 'Tier', 'dropdown-header Highlight F22', 'FilterToggle Tin ', '', '', 'SColumn', 'id', 0, '');
 		Firstcheck++;
 	}
+}
+
+function update(){
+	let SwapResources = JSON.parse(JSON.stringify(resources));	let SwapArray = JSON.parse(JSON.stringify(Modules));
+	let inp; let outp;	let CalcEffPref = Number($("#CalcEffPref").val());	let CalcMod;	let SunPref = Number($("#SunPref").val());
+	let numa = 0; let numb = 0; let ResCalcArray = []; let UpdateResa = []; let UpdateResb = []; let I = 0;
+	const InpField = document.querySelectorAll('#SpreadTable input');
+	InpField.forEach((input) => {
+		if (input.value.trim() !== '') {
+			I++;
+			const Target = input.classList.length > 0 ? input.classList[0] : null;
+			let multiplier = $(`#Input_M${current}_${Target}`).val();
+			ResCalcArray = SwapArray.find(Mitem => Mitem.id === Number(Target));
+			if(ResCalcArray){
+				for(let MT = 5; MT >= 0; MT--){
+					inp = "InputResource"+MT; outp = "OutputResource"+MT;
+					inpv = "InputVolume"+MT;	outpv = "OutputVolume"+MT;
+					numa = Math.ceil(ResCalcArray[inpv] * multiplier);
+					UpdateResa = SwapResources.find(Raitem => Raitem.id === ResCalcArray[inp]);
+					$('#Mod'+Target+'Res'+ResCalcArray[inp]).html(numa);
+					$('#Mod'+Target+'Res'+ResCalcArray[inp]).css({'color': '#ff7a7a', 'font-weight': 'bold'});
+					if(UpdateResa){
+						UpdateResa.InVolume = UpdateResa.InVolume + numa;
+					} else {}
+					if(CalcEffPref === 1){
+						CalcMod = 1 + (1 * ResCalcArray.MaxEffeciency);
+					} else {
+						CalcMod = 1;
+					}
+					if(outp === 1){
+ 						numb = Math.ceil(((ResCalcArray[outpv] * CalcMod) /100) * SunPref * multiplier);
+ 					} else {
+ 						numb = Math.ceil((ResCalcArray[outpv] * CalcMod) * multiplier);
+ 					}
+					UpdateResb = SwapResources.find(Rbitem => Rbitem.id === ResCalcArray[outp]);
+					if(UpdateResb){
+						UpdateResb.OutVolume = UpdateResb.OutVolume + numb;
+					} else {}
+					$('#Mod'+Target+'Res'+ResCalcArray[outp]).html(numb);
+					$('#Mod'+Target+'Res'+ResCalcArray[outp]).css({'color': '#4caf50', 'font-weight': 'bold'});
+				}
+			}
+		}
+	});
+	if(I > 0){
+		SwapResources.forEach(AResA => {
+			x = AResA.OutVolume + AResA.InVolume;
+			if(x < 0){
+				$('#SprdTop'+AResA.id).css({'color': '#ff7a7a', 'font-weight': 'bold'});
+			} else if(x === 0){
+				$('#SprdTop'+AResA.id).css({'color': '#000000', 'font-weight': 'normal'});
+			} else {
+				$('#SprdTop'+AResA.id).css({'color': '#4caf50', 'font-weight': 'bold'});
+			}
+			$('#SprdTop'+AResA.id).html(x);
+			$('#SprdBot'+AResA.id).html(x);
+		});
+	}
+	console.log(`The class "${classNameToCount}" appears ${count} times in the file.`);
 }

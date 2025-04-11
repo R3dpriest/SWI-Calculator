@@ -64,6 +64,7 @@ option{background-color: #edf7ee; color: #373333;}
 .dropdown-header{justify-content: center; display: flex!important;}
 
 .Highlight{color: #388e3c;}
+.Warnlight{color: #8e3838;}
 .F22{font-size: 22px;} .F16{font-size: 16px;} .InBl{display: inline-block;} .In{display: inline;} .w200{width: 200px;}
 .w100{width: 100px;} .h34{height: 34px!important;} .h40{height: 40px;} .h100{height: 100px!important;} .h100i{height: 100%;}
 .C-H{cursor: help;} .OptSpan{width: 22px; height: 22px; cursor: pointer;}
