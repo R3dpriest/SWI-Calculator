@@ -34,7 +34,7 @@ $(document).ready(function() {
 			: valB.localeCompare(valA);
 		}
 		});
-		
+	RunOnce();
 	$FuncTar.empty().append(sortedRows);
 	}
 	$('#SimpleSorterA').on('change', function(){ const selectedValue = $(this).val(); const allowedDataSorts = ['Alphabet', 'Input', 'Options', selectedValue]; const table = $('#DataContent'); table.find('thead th').each(function(index) { const dataSort = $(this).attr('data-sort'); if(allowedDataSorts.includes(dataSort)){ $(this).show(); table.find(`tbody tr td:nth-child(${index + 1})`).show(); } else { $(this).hide(); table.find(`tbody tr td:nth-child(${index + 1})`).hide(); }});});
@@ -585,14 +585,14 @@ function SpreadSheet(){
 	});
 	Buffer += `<td>Module</td></tr></tbody>`;
 	$('#SpreadTable').append(Buffer);
+	
 }
 function Render(){
 	updateCssRule('.rTyn5' ,'display', 'none');
 	updateCssRule('.rTyn6' ,'display', 'none');
 	$('.MainSwitch').remove();
-	$('#SpreadContainer').fadeIn(100);
+	$('#SpreadContainer').fadeIn(200);
 }
-//Populate spreadsheet
 let Firstcheck = 0;
 function RunOnce(){
 	if(Firstcheck === 0){
@@ -604,10 +604,10 @@ function RunOnce(){
 		PopulateSubmenu(Type, 1, 'Type', 'dropdown-header Highlight F22', 'FilterToggle Tyn ', '', '', 'SColumn', 'id', 1, '');
 		PopulateSubmenu(Style, 1, 'Faction', 'dropdown-header Highlight F22', 'FilterToggle Stn ', '', '', 'SColumn', 'id', 1, '');
 		PopulateSubmenu(Tier, 1, 'Tier', 'dropdown-header Highlight F22', 'FilterToggle Tin ', '', '', 'SColumn', 'id', 0, '');
+		Render();
 		Firstcheck++;
-	}
+	}	
 }
-
 function update(){
 	let SwapResources = JSON.parse(JSON.stringify(resources));	let SwapArray = JSON.parse(JSON.stringify(Modules));
 	let inp; let outp;	let CalcEffPref = Number($("#CalcEffPref").val());	let CalcMod;	let SunPref = Number($("#SunPref").val());
@@ -667,5 +667,4 @@ function update(){
 			$('#SprdBot'+AResA.id).html(x);
 		});
 	}
-	console.log(`The class "${classNameToCount}" appears ${count} times in the file.`);
 }

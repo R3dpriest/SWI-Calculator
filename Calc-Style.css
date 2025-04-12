@@ -10,10 +10,10 @@ h3:hover {color: #373333;}
 .ExMenu div table tbody tr td:first-child{padding-right: 10px;}
 .ExMenuA div table thead tr th{text-align: left; width: 100px;}
 #SpreadContainer{display: none;}
-#SpreadContainer table{border-collapse: collapse; table-layout: auto; width: 100%; height: auto;}
-#SpreadContainer table tbody tr td{text-align: center; vertical-align: middle;}
-#SpreadContainer table tbody tr td:nth-of-type(1){width: 100%; overflow: hidden; white-space: nowrap;}
-#SpreadContainer table tbody tr td:nth-last-of-type(1){width: 100%; overflow: hidden; white-space: nowrap;}
+#SpreadContainer table{border-collapse: collapse; width: 100%; height: auto;}
+#SpreadContainer table tbody tr td{text-align: center; vertical-align: middle; min-width: 41px;}
+#SpreadContainer table tbody tr td:nth-of-type(1){overflow: hidden; white-space: nowrap;}
+#SpreadContainer table tbody tr td:nth-last-of-type(1){overflow: hidden; white-space: nowrap;}
 #DataContent{min-width: 514px; max-width: 600px;}
 #DataContent thead tr th, #DataContent tbody tr td {text-align: left;}
 #DataContent thead tr th{border-bottom: 2px solid #388e3c;}
