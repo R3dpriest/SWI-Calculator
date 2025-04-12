@@ -398,39 +398,36 @@ function CalculateModules(){
 	RawResource('#RawContent tbody tr', '#RawContent tbody', '#RawContainer div')
 	ConstrResource('#ConstructionContent tbody tr', '#ConstructionContent tbody','#ConstructionContainer div');
 	SwapResources = JSON.parse(JSON.stringify(resources));
+	if(current === 2){
+		update();
+	}
 }
 function ExportData() {
     var data = {};
-    
-    // Get all input fields, selects, and textareas under 'TabData.active'
     $(".TabData.active").find("input, select, textarea").each(function () {
-        var firstClass = $(this).attr("class")?.split(" ")[0]; // Extract the first class name
+        var firstClass = $(this).attr("class")?.split(" ")[0];
         if (firstClass) {
             if ($(this).is(":checkbox")) {
-                data[firstClass] = $(this).prop("checked"); // Encode checkboxes
+                data[firstClass] = $(this).prop("checked");
             } else if ($(this).is(":radio")) {
                 if ($(this).prop("checked")) {
-                    data[firstClass] = $(this).val(); // Encode selected radio buttons
+                    data[firstClass] = $(this).val();
                 }
             } else {
-                data[firstClass] = $(this).val(); // Encode other fields
+                data[firstClass] = $(this).val();
             }
         }
     });
-
-    // Get all checkboxes, selects, and inputs under class 'Op2' based on their ID
     $(".Op2").find("input, select").each(function () {
-        var fieldId = $(this).attr("id"); // Extract the element's ID
+        var fieldId = $(this).attr("id");
         if (fieldId) {
             if ($(this).is(":checkbox")) {
-                data[fieldId] = $(this).prop("checked"); // Encode checkboxes
+                data[fieldId] = $(this).prop("checked");
             } else {
-                data[fieldId] = $(this).val(); // Encode other fields
+                data[fieldId] = $(this).val();
             }
         }
     });
-
-    // Compress and store the encoded data
     var jsonString = JSON.stringify(data);
     var compressed = LZString.compressToBase64(jsonString);
     $("#StringID").val(compressed);
