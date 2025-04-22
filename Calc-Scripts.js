@@ -1,6 +1,7 @@
 /* Globals */
 let calcManiSheet;	let current;
 
+
 $(document).ready(function() {
 	$('#SortContainer').on('change', '.Sort', SelectSort);
 	//note to self, dont move.
@@ -51,6 +52,27 @@ $(document).ready(function() {
     if (classList[0] === "FilterToggleRow") {const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-row"); } else { $(combinedClass).attr("style", "display: none !important");}}});
 	$('#SpreadTable').on('mouseenter', 'td', function (){	const table = $(this).closest('table'); const colIndex = $(this).index();	table.find('tr').each(function(){ $(this).find('td').eq(colIndex).addClass('highlight-column'); }); $(this).parent().addClass('highlight-row');});
 	$('#SpreadTable').on('mouseleave', 'td', function (){	const table = $(this).closest('table'); const colIndex = $(this).index(); table.find('tr').each(function(){ $(this).find('td').eq(colIndex).removeClass('highlight-column');}); $(this).parent().removeClass('highlight-row');});
+	
+const $root = $("html");
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme) {
+  $root.addClass(savedTheme);
+} else {
+  $root.addClass("light-mode"); // Default to light mode, ignoring browser preference
+}
+
+$("#theme-toggle").on("click", () => {
+  if ($root.hasClass("dark-mode")) {
+    $root.removeClass("dark-mode").addClass("light-mode");
+    localStorage.setItem("theme", "light-mode");
+  } else {
+    $root.removeClass("light-mode").addClass("dark-mode");
+    localStorage.setItem("theme", "dark-mode");
+  }
+});
+
+	
 });
 const Tabs = $('.Tab');
 const TabData = $('.TabData');
