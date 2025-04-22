@@ -8,6 +8,9 @@
     --Tx1: #EAEAEA;
     --Sh1: #4f270f33;
 	--Li1: #d9760d;
+	--sith: #4D0000;
+	--imp: #373737;
+	--rep: #00374A;
 }
 .dark-mode .raTyn1 { background: #2C2C2C;} .dark-mode .rbTyn1 { background: #242424;} .dark-mode .raTyn2 { background: #3B2D28;} .dark-mode .rbTyn2 { background: #332623;}
 .dark-mode .raTyn3 { background: #273327;} .dark-mode .rbTyn3 { background: #1F291F;} .dark-mode .raTyn4 { background: #242C33;} .dark-mode .rbTyn4 { background: #1C242A;}
@@ -27,6 +30,9 @@
     --Tx1: #020e31;
     --Sh1: #4f270f33;
 	--Li1: #00bf6e;
+	--sith: #FFBFBF;
+	--imp: #fff;
+	--rep: #DAF1F9;
 }
 .light-mode .raTyn1 { background: #F4F3F3;} .light-mode .rbTyn1 { background: #EEE9E9;} .light-mode .raTyn2 { background: #FFF8F5;} .light-mode .rbTyn2 { background: #F9EFEB;}
 .light-mode .raTyn3 { background: #F0FFF0;} .light-mode .rbTyn3 { background: #E7F9E7;} .light-mode .raTyn4 { background: #F0F8FF;} .light-mode .rbTyn4 { background: #E7F0F9;}
@@ -111,9 +117,9 @@ option{background-color: var(--Co3); color: var(--Co2);}
 .f-s20{font-size: 20px!important;}
 
 /* General identifierse */
-.O-Imperial{background: #fff!important;}
-.O-Republic{background: #DAF1F9!important;}
-.O-Sith{background: #FFBFBF!important;}
+.O-Imperial{background: var(--imp)!important;}
+.O-Republic{background: var(--rep)!important;}
+.O-Sith{background: var(--sith)!important;}
 .O-General{background: var(--Co3) !important;}
 
 /*spreadsheet layout*/
