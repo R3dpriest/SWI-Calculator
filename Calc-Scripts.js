@@ -179,34 +179,6 @@ function Resources(){
 	});
 }
 let SwapResources = JSON.parse(JSON.stringify(resources));	//let ModNeed;
-let SithPop = 0;	let GenPop = 0;		let TotPop = 0;			let NegPop = 0;		let EndPop = 0;
-function CalcPop(TarA, TarB, TarC){
-	let MathFood = 0; let MathMed = 0; let BufFood = []; let BufMed = []; let PopBuffer = "";
-	BufFood.length = 0;	BufMed.length = 0;
-	if(GenPop !== 0){
-		BufFood = SwapResources.find(resource => resource.id === 18);
-		MathFood = -Math.ceil(BufFood.InVolume+(GenPop * 2.25));
-		BufFood.InVolume = MathFood;
-		BufMed = SwapResources.find(resource => resource.id === 22);
-		MathMed = -Math.ceil(BufMed.InVolume+(GenPop * 1.35));
-		BufMed.InVolume = MathMed;
-		PopBuffer += `<tr><td>Generic housing</td><td>${GenPop}</td></tr>`;
-	}
-	if(SithPop !== 0){
-		let BufVat = SwapResources.find(resource => resource.id === 42);
-		let MathVat = -Math.ceil(BufVat.InVolume + (SithPop * 1.65));
-		BufVat.InVolume = MathVat;
-		PopBuffer += `<tr><td>Sith housing</td><td>${SithPop}</td></tr>`;
-	}
-	if(SithPop !== 0 || GenPop !== 0){
-		SubRoutine(0);
-		PopBuffer += `<tr><td>Total housing</td><td>${TotPop}</td></tr>`;
-	}
-	PopBuffer += `<tr><td>Population needed</td><td>${NegPop}</td></tr>`;
-	$(TarA).remove();
-	$(TarB).append(PopBuffer);
-	$(TarC).slideDown(350);
-}
 function NormalResources(TarA, TarB, TarC){
 const Rfilt = Type;
 	$('#CalcContent tbody tr').remove();
@@ -270,13 +242,30 @@ function CalculateModules(){
 	let SwapArray = JSON.parse(JSON.stringify(Modules));
 	let multiplier = 0;	let ModNeed;	let SunPref = Number($("#SunPref").val());
 	let StylePref = Number($("#StylePref").val());		let ScalePref = Number($("#ScalePref").val());
-	SithPop = 0;	GenPop = 0;	TotPop = 0;	NegPop = 0;	EndPop = 0;
+	let SithPop = 0;	let GenPop = 0;		let TotPop = 0;			let NegPop = 0;		let EndPop = 0;
 	let CalcEffPref = Number($("#CalcEffPref").val()); let CalcMod;
 	if($('.App02:visible').length == 0){
 		$('.App02').fadeIn(500);
 		$('.App03').fadeIn(500);
 	}
 	$('').fadeIn(500);
+	
+	
+	function CalcPop(TarA, TarB, TarC){	let MathFood = 0; let MathMed = 0; let BufFood = []; let BufMed = []; let PopBuffer = ""; BufFood.length = 0;	BufMed.length = 0;
+	if(GenPop !== 0){ BufFood = SwapResources.find(resource => resource.id === 18); MathFood = -Math.ceil(BufFood.InVolume+(GenPop * 2.25));
+		BufFood.InVolume = MathFood; BufMed = SwapResources.find(resource => resource.id === 22); MathMed = -Math.ceil(BufMed.InVolume+(GenPop * 1.35));
+		BufMed.InVolume = MathMed; PopBuffer += `<tr><td>Generic housing</td><td>${GenPop}</td></tr>`;
+	}
+	if(SithPop !== 0){ let BufVat = SwapResources.find(resource => resource.id === 42);
+		let MathVat = -Math.ceil(BufVat.InVolume + (SithPop * 1.65)); BufVat.InVolume = MathVat;
+		PopBuffer += `<tr><td>Sith housing</td><td>${SithPop}</td></tr>`;
+	}
+	if(SithPop !== 0 || GenPop !== 0){ SubRoutine(0); PopBuffer += `<tr><td>Total housing</td><td>${TotPop}</td></tr>`; }
+	PopBuffer += `<tr><td>Population needed</td><td>${NegPop}</td></tr>`;
+	$(TarA).remove();
+	$(TarB).append(PopBuffer);
+	$(TarC).slideDown(350);
+	}
 	function SubRoutine(x){
 		if (x === 0) {
 			filteredArray = SwapArray.filter(item => item.Type === 1 || item.Type === 3);
@@ -659,8 +648,8 @@ function update(){
 				$('#SprdTop'+AResA.id).css({'color': '#000000', 'font-weight': 'normal'});
 				$('#SprdBot'+AResA.id).css({'color': '#000000', 'font-weight': 'normal'});
 			} else {
-				$('#SprdTop'+AResA.id).css({'color': '#4caf50', 'font-weight': 'bold'});
-				$('#SprdBot'+AResA.id).css({'color': '#4caf50', 'font-weight': 'bold'});
+				$('#SprdTop'+AResA.id).css({'color': 'var(--Tx1)', 'font-weight': 'bold'});
+				$('#SprdBot'+AResA.id).css({'color': 'var(--Tx1)', 'font-weight': 'bold'});
 			}
 			$('#SprdTop'+AResA.id).html(x);
 			$('#SprdBot'+AResA.id).html(x);

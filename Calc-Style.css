@@ -43,7 +43,7 @@
 .light-mode .highlight-row { background: #FFCFBC!important; border-top: 1px solid #af554c; border-bottom: 1px solid #af554c; }
 
 body{margin: 1px; background-color: var(--Bg1); color: var(--Tx1);}
-
+textarea{background-color: var(--Bg1); color: var(--Tx1); border: 1px solid var(--Co1); width: 95%; min-height: 80px;}
 h1{ font-size: 2rem; font-weight: bold; color: var(--Co1); text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); letter-spacing: 2px; padding: 10px; text-transform: uppercase; background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2)); border-radius: 10px; display: inline-block; }
 h1:hover {color: var(--Co2);}
 h3 {font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: bold; color: var(--Co1); }
