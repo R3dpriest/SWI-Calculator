@@ -27,16 +27,16 @@
 </head>
 <body>
 <div class="Calc-Container">
-	<div class="Gr-item1"><h1>SWI - Station calculator V2.0005 (Beta)</h1> <button id="theme-toggle">Dark/Light Mode</button></div>
+	<div class="Gr-item1"><h1>SWI - Station calculator V2.00</h1></div>
 	<div class="Gr-item2">
 		<div class="Ta1">
 			<div class="Ta1-01">
-				<div class="Tab active">Info</div><div class="Tab">Simple</div><div class="Tab" onclick="RunOnce();">Spreadsheet</div><div class="Tab">F.A.Q</div>
+				<div class="Tab active">Info</div><div class="Tab">Simple</div><div class="Tab" onclick="RunOnce();">Spreadsheet</div><div class="Tab">F.A.Q</div><div title="Light/Dark Mode" class="f-s20" id="theme-toggle">💡</div>
 			</div>
 			<div class="Ta1-11">
 				<div class="TabData active">
 				<div><b class="Highlight F22"><u>Information</u></b><br>
-				<b class="Highlight">1.</b> I currently concider it a <b class="Highlight">Beta</b> the primary content is done and I am testing and adding some new things.<br>
+				<b class="Highlight">1.</b> This is a functional release. Most data are added by hand. So there might be a typo.<br>
 				<b class="Highlight">2.</b> Find a bug? Please let me know. If i don't know it I can't fix it.<br>
 				<b class="Highlight">3.</b> The tabs<br>
 				<b class="Highlight">-- Simple: </b> This is a fully functional calculator that is easiest on the eye.<br>
@@ -47,15 +47,15 @@
 				<b class="Highlight">6.</b> Both the default and spreadsheet calculator <b class="Highlight">need javascript</b> in order to function.<br>
 				<br>
 				<div><b class="Warnlight F22"><u>Known issue:</u></b><br>
-				<b class="Warnlight">1.</b> Importing and Exporting is a bit borked. :( it seems to skip over some fields... Thing to figure out i guess.</div><br>
+				<b class="Warnlight">N</b>one at the moment.. </div><br>
 				<div><b class="Highlight F22"><u>Code:</u></b><br>
 				<b class="Highlight">2270</b> lines of javascript functioning as a database.<br>
-				<b class="Highlight">631</b> lines of javascript most of them dynamic scripts.<br>
-				<b class="Highlight">+/- 211</b> lines of css some of them could be scrapped<br>
-				<b class="Highlight">208</b> lines of html</div>
+				<b class="Highlight">673</b> lines of javascript most of them dynamic scripts.<br>
+				<b class="Highlight">255</b> lines of css some of them could be scrapped<br>
+				<b class="Highlight">267</b> lines of html</div>
 				<br>
-				<div><b class="Highlight F22"><u>Outro</u></b><br>
-				<b class="Highlight">1.</b> This website has been coded by <b class="Highlight">Redisia</b><br>
+				<div><b class="Highlight F22"><u>Outro:</u></b><br>
+				<b class="Highlight">1.</b> This website has been coded by <b class="Highlight">Redisia</b>. I really welcome people dropping me a line if they like it or known an improvement!<br>
 				<b class="Highlight">2.</b> I do not hold any copyrights over 'x4' and 'star wars'.<br>
 				<b class="Highlight">3.</b> If you want an update or use part of my work. You can supply me or ask me.<br>
 				<b class="Highlight">4.</b> The user <u class="Highlight" title="danieboy3">dannyyyy</u> on discord is has a stand alone calculator. <b class="Highlight"><a title="SWI is a fan project, i have not inspected every line of code of this stand alone. However at the time of writing i have no reason to doubt him." href="https://www.mediafire.com/file/cxxd77aqhawd60y/X4-SWI_Station_Calculator_0_3.exe/file">Hover for info</a></b><br></div>
@@ -147,12 +147,65 @@
 				<div class="In">
 					<div class="dropdown In">
 					<button class="Drop-But dropdown-button">Row Filter</button>
-					<div class="dropdown-menu" id="SRow"></div></div>
+					<div class="dropdown-menu mw320" id="SRow"></div></div>
 				</div>
 				<div class="In">
 					<div class="dropdown In">
 					<button class="Drop-But dropdown-button">Column Filter</button>
-					<div class="dropdown-menu" id="SColumn"></div>
+					<div class="dropdown-menu mw320" id="SColumn"></div>
+					</div>
+				</div>
+				<div class="In">
+					<div class="dropdown In">
+					<button class="Drop-But dropdown-button">Details</button>
+					<div class="dropdown-menua mw400" id="SColumn">
+						<div id="CalcContainera" class="ExMenu mw400">
+								<div class="inb"><b class="Highlight">Total resources</b></div>
+								<div class="inb">
+									<table id="CalcContenta" class="DataContent">
+										<thead>
+											<tr>
+												<th></th><th>Resource</th><th><u class="Highlight">Input</u></th><th data-sort="Input"><u class="Highlight">Output</u></th>
+											</tr>
+										</thead>
+										<tbody>	
+										</tbody>
+									</table>
+								</div>
+						</div>
+						<div id="ConstructionContainera" class="ExMenu mw400" style>
+								<div class="inb"><b class="Highlight">Construction resources</b></div>
+								<div class="inb">
+									<table id="ConstructionContenta" class="DataContent">
+										<tbody>	
+										</tbody>
+									</table>
+								</div>
+						</div>
+						<div id="PopulationContainera" class="ExMenu mw400">
+							<div class="inb"><b class="Highlight">Population</b></div>
+							<div class="inb">
+								<table id="PopulationContenta" class="DataContent">
+									<tbody>	
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div id="RawContainera" class="ExMenu ExMenuA mw400">
+							<div class="inb"><b class="Highlight">Raw Resources</b></div>
+							<div class="inb">
+								<table id="RawContenta" class="DataContenta">
+									<thead>
+										<tr >
+											<th>Resource</th><th><u class="Highlight">Input</u></th><th><u class="Highlight">Storage Req</u><th><u class="Highlight">Storage Tot</u></th>
+										</tr>
+									</thead>
+									<tbody>	
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
 					</div>
 				</div>
 				</div>
@@ -193,7 +246,7 @@
 	</div>
 	<div class="Gr-item4">
 		<div class="Op1 h100i">
-			<button onclick="CalculateModules()" class="Op-But">Beta calculate button</button>
+			<button onclick="CalculateModules()" class="Op-But">Calculate</button>
 		</div>
 	</div>
 	<div class="Gr-item5">
@@ -202,7 +255,7 @@
 			<div class="Op3-11"><button class="Op-But" onclick="ExportData()">Export</button></div>
 			<div class="Op3-21"><button class="Op-But" onclick="ImportData()">Import</button></div>
 			<div class="Op3-12"><label for="StringID">Code:</label><input type="text" id="StringID" placeholder="This will hold a unique code"></div>
-			<div class="Op3-22">[ Beta ]</div>
+			<div class="Op3-22">Works with both versions!</div>
 		</div>
 	</div>
 	<div class="Gr-item6">

@@ -7,25 +7,13 @@
     --Bg1: #121212;
     --Tx1: #EAEAEA;
     --Sh1: #4f270f33;
+	--Li1: #d9760d;
 }
-.dark-mode .raTyn1 { background: #2C2C2C;} 
-.dark-mode .rbTyn1 { background: #242424;}
-.dark-mode .raTyn2 { background: #3B2D28;} 
-.dark-mode .rbTyn2 { background: #332623;}
-.dark-mode .raTyn3 { background: #273327;} 
-.dark-mode .rbTyn3 { background: #1F291F;}
-.dark-mode .raTyn4 { background: #242C33;} 
-.dark-mode .rbTyn4 { background: #1C242A;}
-.dark-mode .raTyn5 { background: #30291C;} 
-.dark-mode .rbTyn5 { background: #292216;}
-.dark-mode .raTyn6 { background: #2A2A2A;} 
-.dark-mode .rbTyn6 { background: #232323;}
-.dark-mode .caSto3 { background: #014d46;} 
-.dark-mode .cbSto3 { background: #00443e;}
-.dark-mode .caSto2 { background: #712102;} 
-.dark-mode .cbSto2 { background: #6a1e00;}
-.dark-mode .caSto1 { background: #2a2440;} 
-.dark-mode .cbSto1 { background: #26203a;}
+.dark-mode .raTyn1 { background: #2C2C2C;} .dark-mode .rbTyn1 { background: #242424;} .dark-mode .raTyn2 { background: #3B2D28;} .dark-mode .rbTyn2 { background: #332623;}
+.dark-mode .raTyn3 { background: #273327;} .dark-mode .rbTyn3 { background: #1F291F;} .dark-mode .raTyn4 { background: #242C33;} .dark-mode .rbTyn4 { background: #1C242A;}
+.dark-mode .raTyn5 { background: #30291C;} .dark-mode .rbTyn5 { background: #292216;} .dark-mode .raTyn6 { background: #2A2A2A;} .dark-mode .rbTyn6 { background: #232323;}
+.dark-mode .caSto3 { background: #014d46;} .dark-mode .cbSto3 { background: #00443e;} .dark-mode .caSto2 { background: #712102;} .dark-mode .cbSto2 { background: #6a1e00;}
+.dark-mode .caSto1 { background: #2a2440;} .dark-mode .cbSto1 { background: #26203a;}
 .dark-mode .highlight-column { background: #772918!important; border-left: 1px solid #6B3E39; border-right: 1px solid #6B3E39; }
 .dark-mode .highlight-row { background: #772918!important; border-top: 1px solid #6B3E39; border-bottom: 1px solid #6B3E39; }
 
@@ -38,34 +26,23 @@
     --Bg1: #f7f9fc;
     --Tx1: #020e31;
     --Sh1: #4f270f33;
+	--Li1: #00bf6e;
 }
-.light-mode .raTyn1 { background: #F4F3F3;} 
-.light-mode .rbTyn1 { background: #EEE9E9;}
-.light-mode .raTyn2 { background: #FFF8F5;} 
-.light-mode .rbTyn2 { background: #F9EFEB;}
-.light-mode .raTyn3 { background: #F0FFF0;} 
-.light-mode .rbTyn3 { background: #E7F9E7;}
-.light-mode .raTyn4 { background: #F0F8FF;} 
-.light-mode .rbTyn4 { background: #E7F0F9;}
-.light-mode .raTyn5 { background: #FAF3E0;} 
-.light-mode .rbTyn5 { background: #F4ECD7;}
-.light-mode .raTyn6 { background: #F2F2F2;} 
-.light-mode .rbTyn6 { background: #ECE8E8;}
-.light-mode .caSto3 { background: #e4ffff;} 
-.light-mode .cbSto3 { background: #dbf9f9;}
-.light-mode .caSto2 { background: #ffeed8;} 
-.light-mode .cbSto2 { background: #f9e6cf;}
-.light-mode .caSto1 { background: #f8f6ff;} 
-.light-mode .cbSto1 { background: #efedf9;}
+.light-mode .raTyn1 { background: #F4F3F3;} .light-mode .rbTyn1 { background: #EEE9E9;} .light-mode .raTyn2 { background: #FFF8F5;} .light-mode .rbTyn2 { background: #F9EFEB;}
+.light-mode .raTyn3 { background: #F0FFF0;} .light-mode .rbTyn3 { background: #E7F9E7;} .light-mode .raTyn4 { background: #F0F8FF;} .light-mode .rbTyn4 { background: #E7F0F9;}
+.light-mode .raTyn5 { background: #FAF3E0;} .light-mode .rbTyn5 { background: #F4ECD7;} .light-mode .raTyn6 { background: #F2F2F2;} .light-mode .rbTyn6 { background: #ECE8E8;}
+.light-mode .caSto3 { background: #e4ffff;} .light-mode .cbSto3 { background: #dbf9f9;} .light-mode .caSto2 { background: #ffeed8;} .light-mode .cbSto2 { background: #f9e6cf;}
+.light-mode .caSto1 { background: #f8f6ff;} .light-mode .cbSto1 { background: #efedf9;}
 .light-mode .highlight-column { background: #FFCFBC!important; border-left: 1px solid #af554c; border-right: 1px solid #af554c; }
 .light-mode .highlight-row { background: #FFCFBC!important; border-top: 1px solid #af554c; border-bottom: 1px solid #af554c; }
 
 body{margin: 1px; background-color: var(--Bg1); color: var(--Tx1);}
 
-h1 {font-family: 'Poppins', sans-serif; font-size: 36px; font-weight: bold; color: var(--Co1); }
+h1{ font-size: 2rem; font-weight: bold; color: var(--Co1); text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); letter-spacing: 2px; padding: 10px; text-transform: uppercase; background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2)); border-radius: 10px; display: inline-block; }
 h1:hover {color: var(--Co2);}
 h3 {font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: bold; color: var(--Co1); }
 h3:hover {color: var(--Co2);}
+a{color: var(--Li1);} a:visited{color: }
 
 .ExMenu {max-width: 375px;  padding-bottom: 5px;}
 .ExMenu div:last-child{display: none; border-radius: 5px; background: linear-gradient(to right, var(--Co3), var(--Co4)); border: 2px solid var(--Co1); box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.15);}
@@ -117,17 +94,21 @@ option{background-color: var(--Co3); color: var(--Co2);}
 .Drop-But:hover{background: linear-gradient(to bottom, var(--Co4), var(--Co3)); box-shadow: 0 3px var(--Co5); color: var(--Co1);}
 .Drop-But:active{box-shadow: 0 3px #bde4bf82; transform: translateY(2px);}
 .dropdown{position: relative;}
-.dropdown-menu{z-index: 40; position: absolute; display: none; border: 2px solid var(--Co1); background-color: #ebeff4; max-width: 320px; width: 320px; padding: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); left: 0; top: 26px;}
+.dropdown-menu{z-index: 40; position: absolute; display: none; border: 2px solid var(--Co1); background-color: var(--Co5); padding: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); left: 0; top: 26px;}
 .dropdown-menu div{align-items: center; display: inline-flex; text-align: center;}
 .dropdown-menu div label{display: flex; align-items: center;}
-.dropdown-div{border: 1px solid #95bb97; width: 100%; overflow: hidden; white-space: nowrap;}
+.dropdown-div{border: 1px solid var(--Co1); width: 100%; overflow: hidden; white-space: nowrap;}
 .dropdown-header{justify-content: center; display: flex!important;}
+.dropdown-menua{z-index: 40; position: absolute; display: none; border: 2px solid var(--Co1); background-color: var(--Co5); padding: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); left: 0; top: 26px;}
+.dropdown-menua div{align-items: center; display: inline-block; text-align: center;}
+
 
 .Highlight{color: var(--Co1);}
 .Warnlight{color: #8e3838;}
 .F22{font-size: 22px;} .F16{font-size: 16px;} .InBl{display: inline-block;} .In{display: inline;} .w200{width: 200px;}
-.w100{width: 100px;} .h34{height: 34px!important;} .h40{height: 40px;} .h100{height: 100px!important;} .h100i{height: 100%;}
+.w100{width: 100px;} .mw320{max-width: 320px; width: 320px;} .mw400{max-width: 400px; width: 400px;} .h34{height: 34px!important;} .h40{height: 40px;} .h100{height: 100px!important;} .h100i{height: 100%;}
 .C-H{cursor: help;} .OptSpan{width: 22px; height: 22px; cursor: pointer;}
+.f-s20{font-size: 20px!important;}
 
 /* General identifierse */
 .O-Imperial{background: #fff!important;}
@@ -149,13 +130,9 @@ th.Stn4::after {content: url('Sith.png');}
         "Gr-Opt-Co Gr-Opt-C1 Gr-Opt-C2 Gr-Opt-C3 Gr-Opt-So Gr-Opt-Li"
         "Gr-Opt-Ro Gr-Opt-R1 Gr-Opt-R2 Gr-Opt-R3 . ."
         "Gr-Opt-Eo Gr-Opt-Po Gr-Opt-Si . . .";
-    grid-template-columns: repeat(6, 100px);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px; /* Add spacing between buttons */
-    background-color: var(--Co5); /* Light background for the menu */
-    padding: 15px;
-    border-radius: 8px; /* Rounded corners for the container */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    grid-template-columns: repeat(6, 100px); grid-template-rows: repeat(3, 1fr);
+    gap: 10px; background-color: var(--Co5); padding: 15px;
+    border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .Dummy{display: none!important;}
@@ -260,53 +237,6 @@ th.Stn4::after {content: url('Sith.png');}
 .Gr-item5{grid-area: Gr-item5; background-color: var(--Co5);}	/*Options*/
 .Gr-item6{grid-area: Gr-item6; background-color: var(--Co5);}	/*Options*/
 .App01{grid-area:App01;}	.App02{grid-area:App02; display: none;}	.App03{grid-area:App03; display: none;}
-
-
-
-
-
-/*options1
-.Op1{
-	display: grid;
-	grid-template-areas:
-	"Op1-01	Op1-01		.		.		.		."
-	"Op1-11	Op1-12	Op1-13	Op1-14	Op1-15	Op1-16"
-	"Op1-21	Op1-22	Op1-23	Op1-24	.		."
-	"Op1-31	Op1-32	Op1-33	.		.		.";
-	grid-template-columns: repeat(6, 1fr);
-	grid-template-rows: repeat(4, 38px);
-    gap: 3px;
-    background-color: var(--Co5);
-    padding: 15px;
-}
-.Op1 div:not(:first-child){justify-content: center; align-items: center; display:flex; text-align: center;}
-.Op1 div:first-child{align-items: center; display:flex;}
-.Op1 div label{justify-content: center; align-items: center; display:flex; text-align: center;}
-.Op1-01{grid-area: Op1-01;}
-.Op1-11{grid-area: Op1-11;}	.Op1-12{grid-area: Op1-12;}	.Op1-13{grid-area: Op1-13;}	.Op1-14{grid-area: Op1-14;}	.Op1-15{grid-area: Op1-15;}	.Op1-16{grid-area: Op1-16;}
-.Op1-21{grid-area: Op1-21;}	.Op1-22{grid-area: Op1-22;}	.Op1-23{grid-area: Op1-23;}	.Op1-24{grid-area: Op1-24;}	
-.Op1-31{grid-area: Op1-31;}	.Op1-32{grid-area: Op1-32;}	.Op1-33{grid-area: Op1-33;}
-
-
-.Op2{
-	display: grid;
-	grid-template-areas:
-	"Op2-01	.		.	"
-	"Op2-11	Op2-12	Op2-12"
-	"Op2-11	Op2-22	Op2-22"
-	"Op2-11	Op2-32	Op2-33";
-	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: repeat(4, 38px);
-	gap: 3px;
-	background-color: var(--Co5);
-	padding: 15px;
-}
-.Op2 div{align-items: center; display:flex;}
-.Op2 div label{align-items: center; display:flex;}
-.Op2-01{grid-area: Op2-01;}
-.Op2-11{grid-area: Op2-11;}	.Op2-12{grid-area: Op2-12;}
-.Op2-22{grid-area: Op2-22;}
-.Op2-32{grid-area: Op2-32;}	.Op2-33{grid-area: Op2-33;}*/
 .Op3{
 	height: 100%;
 	display: grid;
@@ -325,22 +255,3 @@ th.Stn4::after {content: url('Sith.png');}
 .Op3-01{grid-area: Op3-01;}
 .Op3-11{grid-area: Op3-11;}	.Op3-12{grid-area: Op3-12;}
 .Op3-21{grid-area: Op3-21;}	.Op3-22{grid-area: Op3-22;}
-/*.Op4{
-	height: 100%;
-	display: grid;
-	grid-template-areas:
-	"Op4-01"
-	"Op4-11";
-	grid-template-columns: 1fr;
-	grid-template-rows: 38px auto;
-	gap: 3px;
-	background-color: var(--Co5);
-	padding: 15px;
-}
-.Op4 div:first-child{align-items: center; display:flex;}
-.Op4 div label{align-items: center; display:flex;}
-.Op4-01{grid-area: Op4-01;}
-.Op4-11{grid-area: Op4-11;}*/
-
-/*.rc0{background: #F0FFF0;} .rc1{background: #A6F2F2;} .rc2{background: #CCFFFF;} .rc3{background: #E6CCFF;} .rc4{background: #FFDEB3;}
-.rch{background: linear-gradient(to right, #e5eee6, #d7d7d7); border: 0px; display: none; color: var(--Co1);}

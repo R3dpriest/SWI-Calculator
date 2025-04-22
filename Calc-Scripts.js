@@ -52,37 +52,15 @@ $(document).ready(function() {
     if (classList[0] === "FilterToggleRow") {const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-row"); } else { $(combinedClass).attr("style", "display: none !important");}}});
 	$('#SpreadTable').on('mouseenter', 'td', function (){	const table = $(this).closest('table'); const colIndex = $(this).index();	table.find('tr').each(function(){ $(this).find('td').eq(colIndex).addClass('highlight-column'); }); $(this).parent().addClass('highlight-row');});
 	$('#SpreadTable').on('mouseleave', 'td', function (){	const table = $(this).closest('table'); const colIndex = $(this).index(); table.find('tr').each(function(){ $(this).find('td').eq(colIndex).removeClass('highlight-column');}); $(this).parent().removeClass('highlight-row');});
-	
-const $root = $("html");
-const savedTheme = localStorage.getItem("theme");
-
-if (savedTheme) {
-  $root.addClass(savedTheme);
-} else {
-  $root.addClass("light-mode"); // Default to light mode, ignoring browser preference
-}
-
-$("#theme-toggle").on("click", () => {
-  if ($root.hasClass("dark-mode")) {
-    $root.removeClass("dark-mode").addClass("light-mode");
-    localStorage.setItem("theme", "light-mode");
-  } else {
-    $root.removeClass("light-mode").addClass("dark-mode");
-    localStorage.setItem("theme", "dark-mode");
-  }
+	const $root = $("html"); const savedTheme = localStorage.getItem("theme"); if (savedTheme) { $root.addClass(savedTheme); } else { $root.addClass("light-mode"); }
+	$("#theme-toggle").on("click", () => { if ($root.hasClass("dark-mode")) { $root.removeClass("dark-mode").addClass("light-mode"); localStorage.setItem("theme", "light-mode"); } else { $root.removeClass("light-mode").addClass("dark-mode"); localStorage.setItem("theme", "dark-mode"); }
 });
 
 	
 });
-const Tabs = $('.Tab');
-const TabData = $('.TabData');
-Tabs.each(function(index, Tab) {
+const Tabs = $('.Tab'); const TabData = $('.TabData'); Tabs.each(function(index, Tab) {
     $(Tab).on('click', function() {
-		Tabs.removeClass('active');
-        Tabs.eq(index).addClass('active');
-        TabData.removeClass('active');
-        TabData.eq(index).addClass('active');
-		current = index;
+		Tabs.removeClass('active'); Tabs.eq(index).addClass('active'); TabData.removeClass('active'); TabData.eq(index).addClass('active'); current = index;
     });
 });
 // Sort Selection
@@ -188,7 +166,7 @@ let G1label;
 		const G2label = G2[value.Tier]?.Name || "Unknown Tier";
 		const G3 = Lookup["Style"];
 		const G3label = G3[value.Style-1]?.Name || "Unknown Style";
-		let FuncAddrow = `<tr title	="${value.Title}" id="ModId${value.id}" data-type="${value.Type}" data-tier="${value.Tier}" data-Style="${value.Style}" style="display: none;"><td>${value.Name}</td><td style="display: none;">`+G2label+`</td><td>`+G1label+`</td><td style="display: none;">`+G3label+`</td><td><input class="${value.id} ModId${value.id} Inp-Style-${value.Style} Inp-Tier-${value.Tier} Inp-Type-${value.Type}" id="Input_M1_${value.id}" type="number" value="0"></td><td><span class="SwiClean OptSpan" title="Set value to 0">🧹</span><span class="SwiBin OptSpan" title="Set value to 0 and remove">🗑️</span></td></tr>`;		
+		let FuncAddrow = `<tr title	="${value.Title}" id="ModId${value.id}" data-type="${value.Type}" data-tier="${value.Tier}" data-Style="${value.Style}" style="display: none;"><td>${value.Name}</td><td style="display: none;">`+G2label+`</td><td>`+G1label+`</td><td style="display: none;">`+G3label+`</td><td><input class="z${value.id} ModId${value.id} Inp-Style-${value.Style} Inp-Tier-${value.Tier} Inp-Type-${value.Type}" id="Input_M1_${value.id}" type="number" value="0"></td><td><span class="SwiClean OptSpan" title="Set value to 0">🧹</span><span class="SwiBin OptSpan" title="Set value to 0 and remove">🗑️</span></td></tr>`;		
 		$('#DataContent tbody').append(FuncAddrow);
 	});
 }
@@ -415,14 +393,20 @@ function CalculateModules(){
 		}
 	}
 	SubRoutine(1);
-	CalcPop('#PopulationContent tbody tr', '#PopulationContent tbody', '#PopulationContainer div');
-	NormalResources('#CalcContent tbody', '#rch', '#CalcContainer div');
-	RawResource('#RawContent tbody tr', '#RawContent tbody', '#RawContainer div')
-	ConstrResource('#ConstructionContent tbody tr', '#ConstructionContent tbody','#ConstructionContainer div');
-	SwapResources = JSON.parse(JSON.stringify(resources));
+	if(current === 1){
+		CalcPop('#PopulationContent tbody tr', '#PopulationContent tbody', '#PopulationContainer div');
+		NormalResources('#CalcContent tbody', '#rch', '#CalcContainer div');
+		RawResource('#RawContent tbody tr', '#RawContent tbody', '#RawContainer div')
+		ConstrResource('#ConstructionContent tbody tr', '#ConstructionContent tbody','#ConstructionContainer div');
+	}
 	if(current === 2){
+		CalcPop('#PopulationContenta tbody tr', '#PopulationContenta tbody', '#PopulationContainera div');
+		NormalResources('#CalcContenta tbody', '#rch', '#CalcContainera div');
+		RawResource('#RawContenta tbody tr', '#RawContenta tbody', '#RawContainera div')
+		ConstrResource('#ConstructionContenta tbody tr', '#ConstructionContenta tbody','#ConstructionContainera div');
 		update();
 	}
+	SwapResources = JSON.parse(JSON.stringify(resources));
 }
 function ExportData() {
     var data = {};
@@ -450,6 +434,7 @@ function ExportData() {
             }
         }
     });
+	console.log(data);
     var jsonString = JSON.stringify(data);
     var compressed = LZString.compressToBase64(jsonString);
     $("#StringID").val(compressed);
@@ -460,14 +445,9 @@ function ImportData() {
     if (!compressed) return;
 
     var jsonString = LZString.decompressFromBase64(compressed);
-    if (!jsonString) {
-        alert("Decoding failed: Please select the right tab. Or invalid data.");
-        return;
-    }
-
-    // Parse the JSON string back into an object
+    if (!jsonString){ alert("Decoding failed: Please select the right tab. Or invalid data."); return; }
     var data = JSON.parse(jsonString);
-
+	console.log(data);
     // Import data for 'TabData.active' fields (based on their first class name)
     $.each(data, function (className, value) {
         var field = $("." + className);
@@ -575,12 +555,12 @@ function SpreadSheet(){
 		if(c2 % 2 === 0) { E2 = " caSto"+AResB.Storage; } else { E2 = " cbSto"+AResB.Storage;}
 		Buffer += `<td class="Tyn${AResB.Type} Stn${AResB.Style} Tin${AResB.Tier} Sto${AResB.Storage}${E2}" id="SprdTop${AResB.id}">0</td>`;
 		c2++;
-	});
+	});	
 	Buffer += `</tr>`;
 	SwapArray.forEach(moduleA => {
 		let Ex = "";
 		if(Z % 2 === 0) { Ex = " raTyn"+moduleA.Type; } else { Ex = " rbTyn"+moduleA.Type;  }
-		Buffer += `<tr class="rTyn${moduleA.Type} rStn${moduleA.Style} rTin${moduleA.Tier}${Ex}"><td>${moduleA.Name}</td><td><input class="${moduleA.id} ModEd${moduleA.id}" type="number" onchange="update();" id="Input_M2_${moduleA.id}"></td>`;
+		Buffer += `<tr class="rTyn${moduleA.Type} rStn${moduleA.Style} rTin${moduleA.Tier}${Ex}"><td>${moduleA.Name}</td><td><input class="z${moduleA.id} ModEd${moduleA.id}" type="number" onchange="update();" id="Input_M2_${moduleA.id}"></td>`;
 		SwapResources.forEach(AResC => {	let Temp = ""; 
 			if(AResC.id === moduleA.InputResource1 || AResC.id === moduleA.InputResource2 || AResC.id === moduleA.InputResource3 || AResC.id === moduleA.InputResource4 || AResC.id === moduleA.InputResource5 || AResC.id === moduleA.OutputResource1 || AResC.id === moduleA.OutputResource2){
 				Temp = "0";
