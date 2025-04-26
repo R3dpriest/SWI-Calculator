@@ -38,32 +38,67 @@
 			</div>
 			<div class="Ta1-11">
 				<div class="TabData active">
-				<div><b class="Highlight F22"><u>Information</u></b><br>
-				<b class="Highlight">1.</b> This is a functional release. Most data are added by hand. So there might be a typo.<br>
-				<b class="Highlight">2.</b> Find a bug? Please let me know. If i don't know it I can't fix it.<br>
-				<b class="Highlight">3.</b> The tabs<br>
-				<b class="Highlight">-- Simple: </b> This is a fully functional calculator that is easiest on the eye.<br>
-				<b class="Highlight">-- Spreadsheet: </b> (currently being improved) A large spreadsheet like calculator. Rather chunky, but does display info more implicitly. [TIP: I have pre-hidden some modules]<br>
-				<b class="Highlight">-- F.a.q: </b> I have answered some qeustions and give some additional information!<br>
-				<b class="Highlight">4.</b> Come from the wiki and want a fullscreen version? Click <a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator.html">here</a><br>
-				<b class="Highlight">5.</b> Prefer my old calculator? Tr	y the <b class="Highlight">old legacy calculator <a class=" F22" href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator-old.html">here</a></b>.</div>
-				<b class="Highlight">6.</b> Both the default and spreadsheet calculator <b class="Highlight">need javascript</b> in order to function.<br>
-				<br>
-				<div><b class="Warnlight F22"><u>Known issue:</u></b><br>
-				<b class="Warnlight">N</b>one at the moment.. </div><br>
-				<div><b class="Highlight F22"><u>Example station:</u></b><br>
-				<textarea>N4IgygSggiBcB2BXANsgNOCBhOIoGcBjAU3gBMBLeAcxAwC8BGXABjpHoCZduGA2Pq3b0AzLmb8A7EIYAWMbBBs53Rco6zma4bJkbB2uQFY99WbsMcRJy005alwmyF5WDjhiOm336+t5AJDj4ADlMwxVd6AE5TRjZbEVjbRgc/RlVA4T5kjw0AvxCFPPojBJLZXL9ZCJKjNKdMwosSxmKo6PK/I2c/aKbhaIaGEIKnFsKq4RDa7uLC32ne4XiulZYBhnjhjmixhmipg9nBicHFg+Wtzk2ODPmVxhOGI2e7zjWtxiO7xiuOIz7X5ApiMC6/W6lcGgs5fB4vH4xeEcELlMQjTJBeh8TK6EYOKKSEGSRF8Hb+N7+WEcSTQvifGn/JgtLGSBlMZys8lgngrEFPUyydnfUwfXn8ZHY6lccmSSE3UWSzgs4ScJmcdxRESUyRKgJRPjqymcXJYkTlM0OM2ZQRbFiI1Lc+JxFjQ+KU+L8liS+JM+LSkTFM0tVxgAAuAE9kMQAAoAJ2IADNxOwwIQAIbR+NJvRgRDwbPJxSrdhYTOEACiicThZTAF8gA=</textarea></div><br>				
-				<div><b class="Highlight F22"><u>Code:</u></b><br>
-				<b class="Highlight">2270</b> lines of javascript functioning as a database.<br>
-				<b class="Highlight">673</b> lines of javascript most of them dynamic scripts.<br>
-				<b class="Highlight">255</b> lines of css some of them could be scrapped<br>
-				<b class="Highlight">267</b> lines of html</div>
+				<div class="mt-5"><b class="Highlight F22"><u>Information:</u></b><br>
+				<div class="In">
+					<div class="dropdown In">
+					<button class="Drop-But dropdown-button">General information</button>
+					<div class="dropdown-menu mw320" id="SRow">
+						<b class="Highlight">1.</b> This is a functional release. Most data are added by hand. So there might be a typo.<br>
+						<b class="Highlight">2.</b> Find a bug? Please let me know. If i don't know it I can't fix it.<br>
+						<b class="Highlight">3.</b> The tabs<br>
+						<b class="Highlight">-- Simple: </b> This is a fully functional calculator that is easiest on the eye.<br>
+						<b class="Highlight">-- Spreadsheet: </b>A large spreadsheet like calculator. Rather chunky, but does display info more implicitly.<br>
+						<b class="Highlight">-- F.a.q: </b> I have answered some qeustions and give some additional information!<br>
+						<b class="Highlight">4.</b> Come from the wiki and want a fullscreen version? Click <a href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator.html">here</a><br><br>
+						<b class="Highlight">5.</b> Came here directly? Check the <a href="https://swi.siifr.net/">wiki</a>! 
+					</div>
+					</div>
+				</div>
+				<div class="In">
+					<div class="dropdown In">
+					<button class="Drop-But dropdown-button">Example station</button>
+					<div class="dropdown-menu mw320" id="SRow">
+						<textarea>N4IgygSggiBcB2BXANsgNOCBhOIoGcBjAU3gBMBLeAcxAwC8BGXABjpHoCZduGA2Pq3b0AzLmb8A7EIYAWMbBBs53Rco6zma4bJkbB2uQFY99WbsMcRJy005alwmyF5WDjhiOm336+t5AJDj4ADlMwxVd6AE5TRjZbEVjbRgc/RlVA4T5kjw0AvxCFPPojBJLZXL9ZCJKjNKdMwosSxmKo6PK/I2c/aKbhaIaGEIKnFsKq4RDa7uLC32ne4XiulZYBhnjhjmixhmipg9nBicHFg+Wtzk2ODPmVxhOGI2e7zjWtxiO7xiuOIz7X5ApiMC6/W6lcGgs5fB4vH4xeEcELlMQjTJBeh8TK6EYOKKSEGSRF8Hb+N7+WEcSTQvifGn/JgtLGSBlMZys8lgngrEFPUyydnfUwfXn8ZHY6lccmSSE3UWSzgs4ScJmcdxRESUyRKgJRPjqymcXJYkTlM0OM2ZQRbFiI1Lc+JxFjQ+KU+L8liS+JM+LSkTFM0tVxgAAuAE9kMQAAoAJ2IADNxOwwIQAIbR+NJvRgRDwbPJxSrdhYTOEACiicThZTAF8gA=</textarea>
+					</div>
+					</div>
+				</div>
+				<div class="In">
+					<div class="dropdown In">
+					<button class="Drop-But dropdown-button">Alternatives</button>
+					<div class="dropdown-menu mw320" id="SRow">
+						<b class="Highlight">1.</b> My <b class="Highlight">old legacy calculator <a class=" F22" href="https://r3dpriest.github.io/SWI-Calculator/SWI-Stationcalculator-old.html">here</a></b>.<br>
+						<b class="Highlight">2.</b> The user <u class="Highlight" title="danieboy3">dannyyyy</u> has a stand alone calculator. <b class="Highlight"><a title="SWI is a fan project, i have not inspected every line of code of this stand alone. However at the time of writing i have no reason to doubt him." href="https://www.mediafire.com/file/basxe7817egzz29/X4-SWI_Station_Calculator_0_5.exe/file">Hover for info</a></b><br>
+					</div>
+					</div>
+				</div></div>
+				<div class="mt-5"><b class="Highlight F22 mt-5"><u>The code:</u></b><br>
+				<div class="In mt-5">
+					<div class="dropdown In">
+					<button class="Drop-But dropdown-button">Bugs</button>
+					<div class="dropdown-menu mw320" id="SRow">
+					<b class="Warnlight">N</b>one at the moment.. 
+					</div>
+					</div>
+				</div>
+				<div class="In">
+					<div class="dropdown In">
+					<button class="Drop-But dropdown-button">Code information</button>
+					<div class="dropdown-menu mw320" id="SRow">
+					<b class="Highlight">2373</b> lines of javascript functioning as a database.<br>
+					<b class="Highlight">680</b> lines of javascript most of them dynamic scripts.<br>
+					<b class="Highlight">272</b> lines of css<br>
+					<b class="Highlight">337</b> lines of html
+					</div>
+					</div>
+				</div>
+				</div>
 				<br>
 				<div><b class="Highlight F22"><u>Outro:</u></b><br>
 				<b class="Highlight">1.</b> This website has been coded by <b class="Highlight">Redisia</b>. I really welcome people dropping me a line if they like it or known an improvement!<br>
 				<b class="Highlight">2.</b> I do not hold any copyrights over 'x4' and 'star wars'.<br>
 				<b class="Highlight">3.</b> If you want an update or use part of my work. You can supply me or ask me.<br>
-				<b class="Highlight">4.</b> The user <u class="Highlight" title="danieboy3">dannyyyy</u> on discord is has a stand alone calculator. <b class="Highlight"><a title="SWI is a fan project, i have not inspected every line of code of this stand alone. However at the time of writing i have no reason to doubt him." href="https://www.mediafire.com/file/basxe7817egzz29/X4-SWI_Station_Calculator_0_5.exe/file">Hover for info</a></b><br></div>
+				<b class="Highlight">4.</b> This will not work without javascript enabled.<br>
+				</div>
 				
 				</div>
 				<div class="TabData">
