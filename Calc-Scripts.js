@@ -1,30 +1,35 @@
 /* Globals */
 let calcManiSheet;	let current;
-
-
 $(document).ready(function() {
 	$('#SortContainer').on('change', '.Sort', SelectSort);
+	SelectOptions(Ships, 'SolidMiners', ' ', 'id', 'Solid', 'id', 0, 'Alphabet', 'Ascending', 'Solid Miner', 'Storage', 2);
+	SelectOptions(Ships, 'LiquidMiners', ' ', 'id', 'Liquid', 'id', 0, 'Alphabet', 'Ascending', 'Gas Miner', 'Storage', 3);
+	SelectOptions(Modules, 'SimpleModules', ' ', 'id', 'ModId', 'id', 1, 'Type', 'Ascending', 'Select Module', '', '');
+	SelectOptions(Style, 'StylePref', ' ', 'id', 'Pref', 'id', 0, 'Alphabet', 'Ascending', '', '', '');
+	SelectOptions(Jumps, 'IceJumps', ' ', 'id', 'Ij', 'id', 0, 'Alphabet', 'Ascending', 'Ice', '', '');
+	SelectOptions(Jumps, 'OreJumps', ' ', 'id', 'Oj', 'id', 0, 'Alphabet', 'Ascending', 'Ore', '', '');
+	SelectOptions(Jumps, 'SiliconJumps', ' ', 'id', 'Sj', 'id', 0, 'Alphabet', 'Ascending', 'Sil', '', '');
+	SelectOptions(Jumps, 'RhydoniumJumps', ' ', 'id', 'Rj', 'id', 0, 'Alphabet', 'Ascending', 'Rhy', '', '');
+	SelectOptions(Jumps, 'MethaneJumps', ' ', 'id', 'Mj', 'id', 0, 'Alphabet', 'Ascending', 'Met', '', '');
+	SelectOptions(Jumps, 'HeliumJumps', ' ', 'id', 'Hj', 'id', 0, 'Alphabet', 'Ascending', 'Hel', '', '');
+	SelectOptions(Jumps, 'TibJumps', ' ', 'id', 'Tj', 'id', 0, 'Alphabet', 'Ascending', 'Tib', '', '');
+	
+	$(".Drop-But").click(function (){ const nextSibling = $(this).next();if (nextSibling.is(":visible")){nextSibling.slideUp(200);} else {nextSibling.slideDown(200);}});
 	//note to self, dont move.
 	var FuncMapping = {"Name": 0, "Tier": 1, "Type": 2, "Style": 3 };
 	function filterAndSortTable(){
-		var FuncSortA = $('#SimpleSorterA').val();
-		var FuncSortIndex = FuncMapping[FuncSortA];
-		var sortOrderRaw = $('#SimpleSorterB').val();
-		var sortOrder = (sortOrderRaw.toLowerCase() === "ascending") ? "asc" : "desc";
-		var selectedModule = $('#SimpleModules').val();
-		var $FuncTar = $('#DataContent tbody');
-		var $Funcrows  = $FuncTar.children('tr');
-		var $filteredRows = $Funcrows;
+		var FuncSortA = $('#SimpleSorterA').val(); var FuncSortIndex = FuncMapping[FuncSortA];
+		var sortOrderRaw = $('#SimpleSorterB').val(); var sortOrder = (sortOrderRaw.toLowerCase() === "ascending") ? "asc" : "desc";
+		var selectedModule = $('#SimpleModules').val(); var $FuncTar = $('#DataContent tbody');
+		var $Funcrows  = $FuncTar.children('tr'); var $filteredRows = $Funcrows;
 		if (selectedModule && selectedModule !== "Select Module") {
 			$filteredRows = $Funcrows.filter(function() {
 			return $(this).find('td').first().text().trim() === selectedModule;
 			});
 		}
 		var sortedRows = $filteredRows.toArray().sort(function(a, b) {
-		var $cellA = $(a).find('td').eq(FuncSortIndex);
-		var $cellB = $(b).find('td').eq(FuncSortIndex);
-		var valA = $cellA.text().trim();
-		var valB = $cellB.text().trim();
+		var $cellA = $(a).find('td').eq(FuncSortIndex); var $cellB = $(b).find('td').eq(FuncSortIndex);
+		var valA = $cellA.text().trim(); var valB = $cellB.text().trim();
 		if ($.isNumeric(valA) && $.isNumeric(valB)) {
 			return sortOrder === "asc"
 			? parseFloat(valA) - parseFloat(valB)
@@ -38,25 +43,21 @@ $(document).ready(function() {
 	RunOnce();
 	$FuncTar.empty().append(sortedRows);
 	}
+	Generate();
 	$('#SimpleSorterA').on('change', function(){ const selectedValue = $(this).val(); const allowedDataSorts = ['Alphabet', 'Input', 'Options', selectedValue]; const table = $('#DataContent'); table.find('thead th').each(function(index) { const dataSort = $(this).attr('data-sort'); if(allowedDataSorts.includes(dataSort)){ $(this).show(); table.find(`tbody tr td:nth-child(${index + 1})`).show(); } else { $(this).hide(); table.find(`tbody tr td:nth-child(${index + 1})`).hide(); }});});
 	$('#SortContainer').on('change', '.Sort', filterAndSortTable);
-	Generate();
-	SelectOptions(Modules, 'SimpleModules', ' ', 'id', 'ModId', 'id', 1, 'Type', 'Ascending', 'Select Module');
-	SelectOptions(Style, 'StylePref', ' ', 'id', 'Pref', 'id', 0, 'Alphabet', 'Ascending', '');
 	$('#SimpleModules').change(function(){const selectedOption = $(this).find(':selected'); const selectedValue = selectedOption.val(); const selectedClass = selectedOption.attr('class'); if (selectedValue) { Revealer(selectedValue, 'id', 'ModId'); $('#SimpleModules').prop('selectedIndex', 0);}});
     $(document).on("click",".SwiBin",function(){$(this.parentElement.parentElement).fadeOut(500);this.parentElement.parentElement.children[4].children[0].value="0";});
 	$(document).on("click",".SwiClean",function(){this.parentElement.parentElement.children[4].children[0].value = "0";});
-	$(".Drop-But").click(function (){const nextSibling = $(this).next();if (nextSibling.is(":visible")){nextSibling.slideUp(200);} else {nextSibling.slideDown(200);}
-	});
+	$(document).on("change", "#SolidMiners", () => ShipPreview(2, Number($("#SolidMiners").val())));
+	$(document).on("change", "#LiquidMiners", () => ShipPreview(3, Number($("#LiquidMiners").val())));
 	$(document).on("change", "input[type=checkbox]", function(){const classList = $(this).attr("class").split(" "); if(classList[0] === "FilterToggle"){ const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-cell"); } else { $(combinedClass).attr("style", "display: none !important");}}
-    if (classList[0] === "FilterToggleRow") {const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-row"); } else { $(combinedClass).attr("style", "display: none !important");}}});
-	$('#SpreadTable').on('mouseenter', 'td', function (){	const table = $(this).closest('table'); const colIndex = $(this).index();	table.find('tr').each(function(){ $(this).find('td').eq(colIndex).addClass('highlight-column'); }); $(this).parent().addClass('highlight-row');});
-	$('#SpreadTable').on('mouseleave', 'td', function (){	const table = $(this).closest('table'); const colIndex = $(this).index(); table.find('tr').each(function(){ $(this).find('td').eq(colIndex).removeClass('highlight-column');}); $(this).parent().removeClass('highlight-row');});
-	const $root = $("html"); const savedTheme = localStorage.getItem("theme"); if (savedTheme) { $root.addClass(savedTheme); } else { $root.addClass("light-mode"); }
-	$("#theme-toggle").on("click", () => { if ($root.hasClass("dark-mode")) { $root.removeClass("dark-mode").addClass("light-mode"); localStorage.setItem("theme", "light-mode"); } else { $root.removeClass("light-mode").addClass("dark-mode"); localStorage.setItem("theme", "dark-mode"); }
-});
-
 	
+	if (classList[0] === "FilterToggleRow") {const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-row"); } else { $(combinedClass).attr("style", "display: none !important");}}});
+	$('#SpreadTable').on('mouseenter', 'td', function (){const table = $(this).closest('table'); const colIndex = $(this).index();	table.find('tr').each(function(){ $(this).find('td').eq(colIndex).addClass('highlight-column'); }); $(this).parent().addClass('highlight-row');});
+	$('#SpreadTable').on('mouseleave', 'td', function (){const table = $(this).closest('table'); const colIndex = $(this).index(); table.find('tr').each(function(){ $(this).find('td').eq(colIndex).removeClass('highlight-column');}); $(this).parent().removeClass('highlight-row');});
+	const $root = $("html"); const savedTheme = localStorage.getItem("theme"); if (savedTheme) { $root.addClass(savedTheme); } else { $root.addClass("light-mode"); }
+	$("#theme-toggle").on("click", () => { if ($root.hasClass("dark-mode")) { $root.removeClass("dark-mode").addClass("light-mode"); localStorage.setItem("theme", "light-mode"); } else { $root.removeClass("light-mode").addClass("dark-mode"); localStorage.setItem("theme", "dark-mode");};});
 });
 const Tabs = $('.Tab'); const TabData = $('.TabData'); Tabs.each(function(index, Tab) {
     $(Tab).on('click', function() {
@@ -68,18 +69,23 @@ function SelectSort(){
 	var SimpleSorterA = $('#SimpleSorterA').val();
 	var SimpleSorterB = $('#SimpleSorterB').val();
 	if(SimpleSorterA != 'Name'){
-		SelectOptions(Modules, 'SimpleModules', ' ', 'id', 'ModId', 'id', 1, SimpleSorterA, SimpleSorterB, 'Select Module');
+		SelectOptions(Modules, 'SimpleModules', ' ', 'id', 'ModId', 'id', 1, SimpleSorterA, SimpleSorterB, 'Select Module', '', '');
 	} else {
-		SelectOptions(Modules, 'SimpleModules', ' ', 'id', 'ModId', 'id', 0, SimpleSorterA, SimpleSorterB, 'Select Module');
+		SelectOptions(Modules, 'SimpleModules', ' ', 'id', 'ModId', 'id', 0, SimpleSorterA, SimpleSorterB, 'Select Module', '', '');
 	}
-}
-// Generate Select Menu's
-function SelectOptions(TarArray, TarField, TarVal1, TarVal2, TarClassA, TarClassB, TarCatahead, TarSort, TarSId, TarExtra) {
-    let SwapArray = [...TarArray];
+}// Generate Select Menu's
+function SelectOptions(TarArray, TarField, TarVal1, TarVal2, TarClassA, TarClassB, TarCatahead, TarSort, TarSId, TarExtra, TarFilta, TarFiltb) {
+    let TempArray = [...TarArray];
     let OptElements = "";
 	let FuncGrabArray; let FuncClass = "";
 	let FuncVal; let FuncTitle;
     let currentGroup = null;
+	let SwapArray;
+	if (TarFilta && TarFilta.length > 0) {
+		SwapArray = TempArray.filter(item => item[TarFilta] === TarFiltb);
+	} else {
+		SwapArray = TempArray;
+	}
 	const G3 = Lookup["Style"];
     if (TarSId.length > 0) {
         SwapArray = SwapArray.sort((a, b) => {
@@ -146,12 +152,24 @@ function Revealer(Tar, Option1, Option2){ // Show/Hide
 	if(Option1 === "id"){ Extra1 = "#"; } else if(Option1 === "class"){ Extra1 = "Class"; } else { return; }
 	if ($(Extra1+Extra2+Tar).is(':visible')) {
 		if(Extra2 === "ModId"){
-			$(Extra1+Extra2+Tar).fadeOut(500);
 			$("#Input_M"+current+"_" + Tar).val(0);
 		}
-	} else { 
+		$(Extra1+Extra2+Tar).fadeOut(500);
+	} else {
 		$(Extra1+Extra2+Tar).fadeIn(500);
 	}
+	console.log(Extra1+Extra2+Tar);
+}
+function ShipPreview(TarStorage, TarValue){
+	let Iz = Lookup["Size"];
+	let Buffer = ""; let TarTarget = "";
+	let SwapArray = Ships.find(Item => Item.id === TarValue);
+	if(TarStorage === 2){
+		Buffer += `<td class="Sol">Solid</td>`; TarTarget = "#PreSolid";
+	} else { Buffer += `<td class="Liq">Liquid</td>`; TarTarget = "#PreLiquid"; }
+	Buffer += `<td>${SwapArray.Name}</td><td>`+Iz[SwapArray.Size].Name+`</td><td>${SwapArray.Population}</td><td>${SwapArray.StorageVolume}</td><td>${SwapArray.Supply}</td><td>${SwapArray.SpNorm}</td><td>${SwapArray.SpTrav}</td>`;
+	$(TarTarget).empty();
+	$(TarTarget).append(Buffer);
 }
 function Generate(){ //Generate table
 let G1;
@@ -423,12 +441,10 @@ function ExportData() {
             }
         }
     });
-	console.log(data);
     var jsonString = JSON.stringify(data);
     var compressed = LZString.compressToBase64(jsonString);
     $("#StringID").val(compressed);
 }
-
 function ImportData() {
     var compressed = $("#StringID").val();
     if (!compressed) return;
@@ -436,45 +452,38 @@ function ImportData() {
     var jsonString = LZString.decompressFromBase64(compressed);
     if (!jsonString){ alert("Decoding failed: Please select the right tab. Or invalid data."); return; }
     var data = JSON.parse(jsonString);
-	console.log(data);
-    // Import data for 'TabData.active' fields (based on their first class name)
     $.each(data, function (className, value) {
         var field = $("." + className);
         if (field.length) {
             if (field.is(":checkbox")) {
-                field.prop("checked", value); // Import checkboxes
+                field.prop("checked", value);
             } else if (field.is(":radio")) {
                 $('input[name="' + field.attr("name") + '"][value="' + value + '"]').prop("checked", true); // Import selected radio buttons
             } else {
-                field.val(value); // Import other fields
+                field.val(value);
             }
-
-            // Handle numeric fields for visibility logic
             if (!field.is(":checkbox") && !field.is(":radio")) {
                 var numericVal = Number(field.val());
                 if (!isNaN(numericVal) && numericVal > 0) {
                     var gp = field.parent().parent();
                     if (gp.is("tr")) {
-                        gp.fadeIn(200); // Show the parent row for numeric fields
+                        gp.fadeIn(200);
                     }
                 }
             }
         }
     });
-
-    // Import data for 'Op2' fields (based on their ID)
     $.each(data, function (fieldId, value) {
         var field = $("#" + fieldId);
         if (field.length) {
             if (field.is(":checkbox")) {
-                field.prop("checked", value); // Import checkboxes
+                field.prop("checked", value);
             } else {
-                field.val(value); // Import other fields
+                field.val(value);
             }
         }
     });
 }
-
 function PopulateSubmenu(TarArray, TarOpt, TarIntroA, TarIntroB, UniTar, TarClassA, TarClassB, TarLocA, TarLocB, FolLine, FolClass){
 	if(TarLocA && UniTar){
 		let SwapArray = JSON.parse(JSON.stringify(TarArray));
@@ -514,8 +523,6 @@ function PopulateSubmenu(TarArray, TarOpt, TarIntroA, TarIntroB, UniTar, TarClas
 		
 	} else { console.log('Critical error. No menu location or unique target selected.'); }
 }
-
-//Note to self dump values inside html page to bypass safety
 function updateCssRule(selector, property, value) {
     const styleElement = document.querySelector("style"); // Find the <style> element
 	if (!styleElement){console.error("<Style> Not Found"); return;}
@@ -527,7 +534,6 @@ function updateCssRule(selector, property, value) {
 		}
 	});
 }
-
 function SpreadSheet(){
 	let SwapResources = JSON.parse(JSON.stringify(resources));	let SwapArray = JSON.parse(JSON.stringify(Modules));
 	let Z = 0;	let c1 = 0; let E1 =  ""; let c2 = 0; let E2 =  ""; let c3 = 0; let E3 =  ""; let c4 = 0; let E4 =  "";

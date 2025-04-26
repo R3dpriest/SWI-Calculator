@@ -29,6 +29,23 @@ const Tier = [
 	{id: 4, Name: "Tier 4", Check: 1}
 ];
 
+const Size = [
+	{id: 0, Name: "S", Check: 0},
+	{id: 1, Name: "M", Check: 0},
+	{id: 2, Name: "L", Check: 0},
+	{id: 3, Name: "XL", Check: 0},
+	{id: 4, Name: "XXL", Check: 0}
+];
+
+const Jumps = [
+	{id: 0, Name: "0"}, 
+	{id: 1, Name: "1"}, 
+	{id: 2, Name: "2"}, 
+	{id: 3, Name: "3"}, 
+	{id: 4, Name: "4"}, 
+	{id: 5, Name: "5"}, 
+]
+
 const resources = [
 	{id: 1, Name: "Energy Cells", Tier: 0, Type: 1, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 1},
 	{id: 2, Name: "Ice", Tier: 0, Type: 1, Style: 1, Storage: 2, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 8},
@@ -79,7 +96,27 @@ const resources = [
 	{id: 47, Name: "Hutt Chemicals", Tier: 2, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 6},
 	{id: 48, Name: "Contraband Alchol", Tier: 3, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 2}
 ];
-
+	//DATA ~ Mining Ships
+	const Ships = [
+	{id: 0, Name: "TUG-b13 Quad Jumper Miner", Size: 0, Storage: 2, StorageVolume: 3400, Population: 6, SpNorm: 395, SpTrav: 8693, Supply: 1},
+	{id: 1, Name: "Sarthas-Class Miner", Size: 1, Storage: 2, StorageVolume: 12500, Population: 19, SpNorm: 270, SpTrav: 7281, Supply: 3},
+	{id: 2, Name: "Sarthas-Class Gas Collector", Size: 1, Storage: 3, StorageVolume: 8500, Population: 19, SpNorm: 270, SpTrav: 7281, Supply: 3},
+	{id: 3, Name: "Gozanti-class Miner", Size: 1, Storage: 2, StorageVolume: 14000, Population: 18, SpNorm: 225, SpTrav: 4635, Supply: 3},
+	{id: 4, Name: "CK-Class Miner", Size: 1, Storage: 2, StorageVolume: 12500, Population: 11, SpNorm: 219, SpTrav: 5278, Supply: 3},
+	{id: 5, Name: "CK-Class Gas Collector", Size: 1, Storage: 3, StorageVolume: 12000	, Population: 11, SpNorm: 219, SpTrav: 5278, Supply: 3},
+	{id: 6, Name: "Burea Mining Shuttle", Size: 1, Storage: 2, StorageVolume: 7500, Population: 5, SpNorm: 262, SpTrav: 6310, Supply: 3},
+	{id: 7, Name: "Burea Gas Collector", Size: 1, Storage: 3, StorageVolume: 7000, Population: 5, SpNorm: 262, SpTrav: 6310, Supply: 3},
+	{id: 8, Name: "Action-IV Miner Refit", Size: 1, Storage: 2, StorageVolume: 11500, Population: 8, SpNorm: 238, SpTrav: 6422, Supply: 3},
+	{id: 9, Name: "Action-IV Gas Collection Refit", Size: 1, Storage: 3, StorageVolume: 9500, Population: 8, SpNorm: 238, SpTrav: 6422, Supply: 3},	
+	{id: 10, Name: "Haklore Ore Miner", Size: 2, Storage: 2, StorageVolume: 47000, Population: 48, SpNorm: 142, SpTrav: 10792, Supply: 15},
+	{id: 11, Name: "Haklore Gas Collector", Size: 2, Storage: 3, StorageVolume: 47000, Population: 48, SpNorm: 142, SpTrav: 10792, Supply: 15},
+	{id: 12, Name: "Hardcell Miner Refit", Size: 2, Storage: 2, StorageVolume: 35000, Population: 40, SpNorm: 165, SpTrav: 9883, Supply: 15},
+	{id: 13, Name: "Hardcell Gas Collector Refit", Size: 3, Storage: 2, StorageVolume: 34000, Population: 39, SpNorm: 165, SpTrav: 9883, Supply: 15},	
+	{id: 14, Name: "GR-500 Miner", Size: 2, Storage: 2, StorageVolume: 47000, Population: 91, SpNorm: 174, SpTrav: 11548, Supply: 15},
+	{id: 15, Name: "GR-500 Gas Collector", Size: 2, Storage: 3, StorageVolume: 47000, Population: 91, SpNorm: 174, SpTrav: 11548, Supply: 15},
+	{id: 16, Name: "AA-9 Miner", Size: 2, Storage: 2, StorageVolume: 42000, Population: 26, SpNorm: 174, SpTrav: 12657, Supply: 15},
+	{id: 17, Name: "AA-9 Gas Collector", Size: 2, Storage: 3, StorageVolume: 42000, Population: 33, SpNorm: 174, SpTrav: 12657, Supply: 15}
+];
 	//DATA ~ Modules
 	const Modules = [
 	{	id: 1,
@@ -2333,4 +2370,4 @@ const resources = [
  ];
  
  //Lookup array:
- const Lookup = {Type: Type, Style: Style, Tier: Tier, Race: Race, Storage: Storage};
+ const Lookup = {Type: Type, Style: Style, Tier: Tier, Race: Race, Storage: Storage, Size: Size, Jumps: Jumps};

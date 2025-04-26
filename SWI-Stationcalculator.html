@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta Name="viewport" content="width=device-width, initial-scale=1.0">
 	<script type="text/javascript" src="Calc-Scripts.js" defer></script>
+	<script type="text/javascript" src="Basic-Scripts.js" defer></script>
 	<script type="text/javascript" src="Array-DB.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v2.0005">
     <title>SWI - Station calculator V2.0005 (Beta)</title>
@@ -26,6 +28,7 @@
 </style>
 </head>
 <body>
+<div id="ShipDisclaimer" Class="MsgBox DisNon z99"></div>
 <div class="Calc-Container">
 	<div class="Gr-item1"><h1>SWI - Station calculator V2.00</h1></div>
 	<div class="Gr-item2">
@@ -60,7 +63,7 @@
 				<b class="Highlight">1.</b> This website has been coded by <b class="Highlight">Redisia</b>. I really welcome people dropping me a line if they like it or known an improvement!<br>
 				<b class="Highlight">2.</b> I do not hold any copyrights over 'x4' and 'star wars'.<br>
 				<b class="Highlight">3.</b> If you want an update or use part of my work. You can supply me or ask me.<br>
-				<b class="Highlight">4.</b> The user <u class="Highlight" title="danieboy3">dannyyyy</u> on discord is has a stand alone calculator. <b class="Highlight"><a title="SWI is a fan project, i have not inspected every line of code of this stand alone. However at the time of writing i have no reason to doubt him." href="https://www.mediafire.com/file/cxxd77aqhawd60y/X4-SWI_Station_Calculator_0_3.exe/file">Hover for info</a></b><br></div>
+				<b class="Highlight">4.</b> The user <u class="Highlight" title="danieboy3">dannyyyy</u> on discord is has a stand alone calculator. <b class="Highlight"><a title="SWI is a fan project, i have not inspected every line of code of this stand alone. However at the time of writing i have no reason to doubt him." href="https://www.mediafire.com/file/basxe7817egzz29/X4-SWI_Station_Calculator_0_5.exe/file">Hover for info</a></b><br></div>
 				
 				</div>
 				<div class="TabData">
@@ -93,7 +96,7 @@
 							</div>
 						</div>
 						<div class="App02">
-							<div id="CalcContainer" class="ExMenu">
+							<div id="CalcContainer" class="ExMenu DisNonC mw375">
 								<div><b class="Highlight">Total resources</b></div>
 								<div>
 									<table id="CalcContent" class="DataContent">
@@ -109,7 +112,7 @@
 							</div>
 						</div>
 						<div class="App03">
-							<div id="ConstructionContainer" class="ExMenu" style>
+							<div id="ConstructionContainer" class="ExMenu DisNonC mw375" style>
 								<div><b class="Highlight">Construction resources</b></div>
 								<div>
 									<table id="ConstructionContent" class="DataContent">
@@ -118,7 +121,7 @@
 									</table>
 								</div>
 							</div>
-							<div id="PopulationContainer" class="ExMenu">
+							<div id="PopulationContainer" class="ExMenu DisNonC mw375">
 								<div><b class="Highlight">Population</b></div>
 								<div>
 									<table id="PopulationContent" class="DataContent">
@@ -127,7 +130,7 @@
 									</table>
 								</div>
 							</div>
-							<div id="RawContainer" class="ExMenu ExMenuA">
+							<div id="RawContainer" class="ExMenu DisNonC mw375 ExMenu DisNonC mw375A">
 								<div><b class="Highlight">Raw Resources</b></div>
 								<div>
 									<table id="RawContent" class="DataContent">
@@ -161,7 +164,7 @@
 					<div class="dropdown In">
 					<button class="Drop-But dropdown-button">Details</button>
 					<div class="dropdown-menua mw400" id="SColumn">
-						<div id="CalcContainera" class="ExMenu mw400">
+						<div id="CalcContainera" class="ExMenu DisNonC mw375 mw400">
 								<div class="inb"><b class="Highlight">Total resources</b></div>
 								<div class="inb">
 									<table id="CalcContenta" class="DataContent">
@@ -175,7 +178,7 @@
 									</table>
 								</div>
 						</div>
-						<div id="ConstructionContainera" class="ExMenu mw400" style>
+						<div id="ConstructionContainera" class="ExMenu DisNonC mw375 mw400" style>
 								<div class="inb"><b class="Highlight">Construction resources</b></div>
 								<div class="inb">
 									<table id="ConstructionContenta" class="DataContent">
@@ -184,7 +187,7 @@
 									</table>
 								</div>
 						</div>
-						<div id="PopulationContainera" class="ExMenu mw400">
+						<div id="PopulationContainera" class="ExMenu DisNonC mw375 mw400">
 							<div class="inb"><b class="Highlight">Population</b></div>
 							<div class="inb">
 								<table id="PopulationContenta" class="DataContent">
@@ -193,7 +196,7 @@
 								</table>
 							</div>
 						</div>
-						<div id="RawContainera" class="ExMenu ExMenuA mw400">
+						<div id="RawContainera" class="ExMenu DisNonC mw375 ExMenuA mw400">
 							<div class="inb"><b class="Highlight">Raw Resources</b></div>
 							<div class="inb">
 								<table id="RawContenta" class="DataContenta">
@@ -244,6 +247,7 @@
 			<div Class="OpCon"><div class="C-H" title="Can I downscale your own input if calculations suggest you need less?">Downscaling allowed: </div><div><select class="h40 w100" id="ScalePref"><option value="0" selected>No keep it</option><option value="1">Downscale</option></select></div></div>
 			<div Class="OpCon"><div class="C-H" title="Every sector has a % of sunlight. Usually between (0-400%)">Sunlight (%): </div><div><input id="SunPref" class="h34 w100" type="number" value="100"></div></div>
 			<div Class="OpCon"><div class="C-H" title="This will give you lower modulese, because it assumes each module runs on peak effeciency. If you select this and do not meet population requirements... your station will be ineffecient.">Adjust for max effenciency?</div><div><select id="CalcEffPref" class="h40 w100"><option value="0">No</option><option value="1">Yes</option></select></div></div>
+			<div Class="OpCon"><div class="C-H" title="Partially implemented">[Experimental] Mining Ships</div><div><select class="h40 w100"><option value="0" onclick="Revealer('', 'id', 'ShipContainer', );">No</option><option value="1" onclick="ShipDisclaimer(); Revealer('', 'id', 'ShipContainer', '1');">Yes</option></select></div></div>
 		</div>
 	</div>
 	<div class="Gr-item4">
@@ -262,6 +266,35 @@
 	</div>
 	<div class="Gr-item6">
 		<div class="Op4 h100i">
+		<div class="DisNon" id="ShipContainer">
+			<div> # sectors away
+			<div id="" class="InBl mt-5"><select title="How many jumpgates to the ice fields." id="IceJumps" class="GrJumps2"></select></div><div id="" class="InBl mt-5"><select id="OreJumps" class="GrJumps3"></select></div><div id="" class="InBl mt-5"><select title="How many jumpgates to the Silicon fields." id="SiliconJumps" class="GrJumps4"></select></div><div id="" class="InBl mt-5"><select title="How many jumpgates to the Rhydonium fields." id="RhydoniumJumps" class="GrJumps5"></select></div>
+			<div id="" class="InBl mt-5"><select title="How many jumpgates to the Methane fields." id="MethaneJumps" class="GrJumps7"></select></div><div id="" class="InBl mt-5"><select title="How many jumpgates to the Helium fields." id="HeliumJumps" class="GrJumps6"></select></div><div id="" class="InBl mt-5"><select title="How many jumpgates to the Tibina fields." id="TibJumps" class="GrJumps8"></select></div>
+			</div>
+			<div id="" class="InBl mt-5"><select id="SolidMiners" class=""></select></div><div id="" class="InBl"><select id="LiquidMiners" class=""></select></div>
+			<div class="ShMenu mt-5" id="ShipPreview" >
+				<table>
+					<thead>
+						<tr>
+							<th></th>
+							<th>Name</th>
+							<th>Size</th>
+							<th>Crew</th>
+							<th>Storage</th>
+							<th>Supply</th>
+							<th>Speed</th>
+							<th>Travel</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr id="PreSolid">
+						</tr>
+						<tr id="PreLiquid">
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 		</div>		
 	</div>
 </div>
