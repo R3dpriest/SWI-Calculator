@@ -44,6 +44,7 @@ $(document).ready(function() {
 	$FuncTar.empty().append(sortedRows);
 	}
 	Generate();
+	$(document).on("change", "#MiningOpt", function(){ let xm = $('#MiningOpt').val(); if (xm === "1") { ShipDisclaimer(); Revealer('', 'id', 'ShipContainer', '1'); } else { Revealer('', 'id', 'ShipContainer'); }});
 	$('#SimpleSorterA').on('change', function(){ const selectedValue = $(this).val(); const allowedDataSorts = ['Alphabet', 'Input', 'Options', selectedValue]; const table = $('#DataContent'); table.find('thead th').each(function(index) { const dataSort = $(this).attr('data-sort'); if(allowedDataSorts.includes(dataSort)){ $(this).show(); table.find(`tbody tr td:nth-child(${index + 1})`).show(); } else { $(this).hide(); table.find(`tbody tr td:nth-child(${index + 1})`).hide(); }});});
 	$('#SortContainer').on('change', '.Sort', filterAndSortTable);
 	$('#SimpleModules').change(function(){const selectedOption = $(this).find(':selected'); const selectedValue = selectedOption.val(); const selectedClass = selectedOption.attr('class'); if (selectedValue) { Revealer(selectedValue, 'id', 'ModId'); $('#SimpleModules').prop('selectedIndex', 0);}});
@@ -52,6 +53,8 @@ $(document).ready(function() {
 	$(document).on("change", "#SolidMiners", () => ShipPreview(2, Number($("#SolidMiners").val())));
 	$(document).on("change", "#LiquidMiners", () => ShipPreview(3, Number($("#LiquidMiners").val())));
 	$(document).on("change", "input[type=checkbox]", function(){const classList = $(this).attr("class").split(" "); if(classList[0] === "FilterToggle"){ const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-cell"); } else { $(combinedClass).attr("style", "display: none !important");}}
+	
+	
 	
 	if (classList[0] === "FilterToggleRow") {const combinedClass = `.${classList[1]}${classList[2]}`; if (this.checked) { $(combinedClass).css("display", "table-row"); } else { $(combinedClass).attr("style", "display: none !important");}}});
 	$('#SpreadTable').on('mouseenter', 'td', function (){const table = $(this).closest('table'); const colIndex = $(this).index();	table.find('tr').each(function(){ $(this).find('td').eq(colIndex).addClass('highlight-column'); }); $(this).parent().addClass('highlight-row');});
@@ -145,7 +148,7 @@ function SelectOptions(TarArray, TarField, TarVal1, TarVal2, TarClassA, TarClass
     if (currentGroup !== null) {OptElements += `</optgroup>`;}
     $('#' + TarField).html(OptElements);
 }
-function Revealer(Tar, Option1, Option2){ // Show/Hide
+function Revealer(Tar, Option1, Option2){
 	let Extra1 = "";
 	let Extra2 = "";
 	if(Option2.length !== 0){ Extra2 = Option2; }
@@ -158,7 +161,6 @@ function Revealer(Tar, Option1, Option2){ // Show/Hide
 	} else {
 		$(Extra1+Extra2+Tar).fadeIn(500);
 	}
-	console.log(Extra1+Extra2+Tar);
 }
 function ShipPreview(TarStorage, TarValue){
 	let Iz = Lookup["Size"];
@@ -167,7 +169,7 @@ function ShipPreview(TarStorage, TarValue){
 	if(TarStorage === 2){
 		Buffer += `<td class="Sol">Solid</td>`; TarTarget = "#PreSolid";
 	} else { Buffer += `<td class="Liq">Liquid</td>`; TarTarget = "#PreLiquid"; }
-	Buffer += `<td>${SwapArray.Name}</td><td>`+Iz[SwapArray.Size].Name+`</td><td>${SwapArray.Population}</td><td>${SwapArray.StorageVolume}</td><td>${SwapArray.Supply}</td><td>${SwapArray.SpNorm}</td><td>${SwapArray.SpTrav}</td>`;
+	Buffer += `<td>${SwapArray.Name}</td><td>`+Iz[SwapArray.Size].Name+`</td><td>${SwapArray.Population}</td><td>${SwapArray.StorageVolume}</td><td>${SwapArray.Supply}</td><td>${SwapArray.SpNorm}</td><td><u class="C-H Highlight" title="Spool up time: ${SwapArray.Spool} seconds">${SwapArray.SpTrav}</u></td>`;
 	$(TarTarget).empty();
 	$(TarTarget).append(Buffer);
 }
@@ -267,8 +269,7 @@ function CalculateModules(){
 		$('.App03').fadeIn(500);
 	}
 	$('').fadeIn(500);
-	
-	
+
 	function CalcPop(TarA, TarB, TarC){	let MathFood = 0; let MathMed = 0; let BufFood = []; let BufMed = []; let PopBuffer = ""; BufFood.length = 0;	BufMed.length = 0;
 	if(GenPop !== 0){ BufFood = SwapResources.find(resource => resource.id === 18); MathFood = -Math.ceil(BufFood.InVolume+(GenPop * 2.25));
 		BufFood.InVolume = MathFood; BufMed = SwapResources.find(resource => resource.id === 22); MathMed = -Math.ceil(BufMed.InVolume+(GenPop * 1.35));

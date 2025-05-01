@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta Name="viewport" content="width=device-width, initial-scale=1.0">
-	<script type="text/javascript" src="Calc-Scripts.js" defer></script>
-	<script type="text/javascript" src="Basic-Scripts.js" defer></script>
-	<script type="text/javascript" src="Array-DB.js"></script>
+	<script type="text/javascript" src="Calc-Scripts.js?v2.0006" defer></script>
+	<script type="text/javascript" src="Basic-Scripts.js?v2.0006" defer></script>
+	<script type="text/javascript" src="Ship-Scripts.js?v2.0006" defer></script>
+	<script type="text/javascript" src="Array-DB.js?v2.0006"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v2.0005">
+	<link rel="stylesheet" type="text/css" href="Calc-Style.css?v2.0006">
     <title>SWI - Station calculator V2.0005 (Beta)</title>
 	<style>
 		
@@ -94,7 +95,7 @@
 				</div>
 				<br>
 				<div><b class="Highlight F22"><u>Outro:</u></b><br>
-				<b class="Highlight">1.</b> This website has been coded by <b class="Highlight">Redisia</b>. I really welcome people dropping me a line if they like it or known an improvement!<br>
+				<b class="Highlight">1.</b> This website has been coded by <b class="Highlight C-H" title="I live in the EU, been sick for many years, but recovering finally. Have a broad IT knowledge and programming is just a side hobby.">Redisia</b>. I really welcome people dropping me a line if they like it or known an improvement!<br>
 				<b class="Highlight">2.</b> I do not hold any copyrights over 'x4' and 'star wars'.<br>
 				<b class="Highlight">3.</b> If you want an update or use part of my work. You can supply me or ask me.<br>
 				<b class="Highlight">4.</b> This will not work without javascript enabled.<br>
@@ -253,23 +254,23 @@
 				</div>
 				<div class="TabData">
 					<h3>Explenation</h3>
-					<div><b class="Highlight">Q: </b>Does effeciency work in the calculations?<br>
+					<div><b class="Highlight">Q: </b>Does <u class="C-H Highlight" title="Effeciency is brought by population and boosts production.">effeciency</u> work in the calculations?<br>
 					<b class="Highlight">A: </b> yes set 'Adjust for max effenciency?' to 'Yes'</div>
-					<div><b class="Highlight">Q: </b>What is this <u class="Highlight">downscaling</u>?<br>
+					<div><b class="Highlight">Q: </b>What is this <u class="C-H Highlight" title="Reduction of the modules needed.">downscaling</u>?<br>
 					<b class="Highlight">A: </b>Long story short, the calculator works its way down from most difficult to simplest resource and suggests modules. If you toggle this to <u class="Highlight">'Downscale'</u> it is allowed to reduce your represet values.</div>
-					<div><b class="Highlight">Q: </b>Why select a <u class="Highlight">module preference</u>? Wont this just clog the UI?<br>
+					<div><b class="Highlight">Q: </b>Why select a <u class="C-H Highlight" title="The prefered faction that your module needs to be. Example sith or imperial">module preference</u>? Wont this just clog the UI?<br>
 					<b class="Highlight">A: </b>Yes, it does, but with building materials taken into concideration i noticed significant resource differences for building. So if i want to keep those accurate i have to accomodate for it.</div>
-					<div><b class="Highlight">Q: </b>How accurate is the <u class="Highlight">in & export</u>?<br>
+					<div><b class="Highlight">Q: </b>How accurate is the <u class="C-H Highlight" title="Save the text string on your pc and you can load the station back into the calculator.">in & export</u>?<br>
 					<b class="Highlight">A: </b>Relatively accurate... as long as i dont change anything. It reads all the fields converts that into a string and encodes it for shortening this makes it vunerable for change.</div>
 					<div><b class="Highlight">Q: </b>I have a suggestion.<br>
 					<b class="Highlight">A: </b>You can tag me in discord or find the tread, but please note I am not a proffesional programmer. I work with the tools I know.</div>
 					<div><b class="Highlight">Q: </b>Will you add suggestion.<br>
 					<b class="Highlight">A: </b>I have added a fair bith of suggestions already. Infact v2 is basically a suggestion of people saying 'We like this UI'. And the spreadsheet is rebuild under the same guise.</div>
 					<div><b class="Highlight">Q: </b>How did you build this website?<br>
-					<b class="Highlight">A: </b> I currently do not have a payed host. So this kept me from using backend calculations and data storage. Everything has been build with <u class="Highlight">.css</u> <u class="Highlight">.js</u>. and <u class="Highlight">.html</u>. This has the added bonus that you can see how i structure the data and <b class="Warnlight">suggest new modules or resources to me</b>.</div>
+					<b class="Highlight">A: </b> I currently do not have a payed host. So this kept me from using backend calculations and data storage. Everything has been build with <u class="Highlight C-H" title="CSS is the language that controls style.">.css</u> <u class="Highlight C-H" title="Is the language that controls interactivity. You click something and something happens? This is languages like JS that do this. (there are many alternatives)">.js</u>. and <u class="Highlight C-H" title="The building blocks of the web page.">.html</u>. This has the added bonus that you can see how i structure the data and <b class="Warnlight">suggest new modules or resources to me</b>.</div>
 					<div><b class="Highlight">Q: </b>I want to give you some data! Where do i find it and how do i structure it?<br>
 					<b class="Highlight">A-1: </b> You can if you want to go through the hassle, unpack the mod files. Or you can check the ingame encyclopedia.<br>
-					<b class="Highlight">A-2: </b> As for how i  set up my data? Check out <a class="Warnlight" href="https://github.com/R3dpriest/SWI-Calculator/blob/main/Array-DB.js">on this page</a>. Once you see how modules and resources are tied together it become easy.<br>
+					<b class="Highlight">A-2: </b> As for how i  set up my data? Check out <a class="Warnlight C-H" title="Github is something most coders both amateur and proffesional are familiar with. You can there see the guts of my website :)" href="https://github.com/R3dpriest/SWI-Calculator/blob/main/Array-DB.js">on this page</a>. Once you see how modules and resources are tied together it become easy.<br>
 					</div>
 					
 				</div>
@@ -282,7 +283,7 @@
 			<div Class="OpCon"><div class="C-H" title="Can I downscale your own input if calculations suggest you need less?">Downscaling allowed: </div><div><select class="h40 w100" id="ScalePref"><option value="0" selected>No keep it</option><option value="1">Downscale</option></select></div></div>
 			<div Class="OpCon"><div class="C-H" title="Every sector has a % of sunlight. Usually between (0-400%)">Sunlight (%): </div><div><input id="SunPref" class="h34 w100" type="number" value="100"></div></div>
 			<div Class="OpCon"><div class="C-H" title="This will give you lower modulese, because it assumes each module runs on peak effeciency. If you select this and do not meet population requirements... your station will be ineffecient.">Adjust for max effenciency?</div><div><select id="CalcEffPref" class="h40 w100"><option value="0">No</option><option value="1">Yes</option></select></div></div>
-			<div Class="OpCon"><div class="C-H" title="Partially implemented">[Experimental] Mining Ships</div><div><select class="h40 w100"><option value="0" onclick="Revealer('', 'id', 'ShipContainer', );">No</option><option value="1" onclick="ShipDisclaimer(); Revealer('', 'id', 'ShipContainer', '1');">Yes</option></select></div></div>
+			<div Class="OpCon"><div class="C-H" title="Partially implemented">[Experimental] Mining Ships</div><div><select class="h40 w100" id="MiningOpt"><option value="0">No</option><option value="1">Yes</option></select></div></div>
 		</div>
 	</div>
 	<div class="Gr-item4">
@@ -329,6 +330,7 @@
 					</tbody>
 				</table>
 			</div>
+			<button type="button" onclick="ShipRequirement();">Test</button>
 		</div>
 		</div>		
 	</div>
