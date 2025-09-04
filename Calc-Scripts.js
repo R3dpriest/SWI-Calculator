@@ -337,6 +337,8 @@ function CalculateModules(){
 								//adds resources for next tier of modules to be added
 								let InpR = "InputResource"+RQ; let InpV = "InputVolume"+RQ;
 								let InpRVal = ModuleItem[InpR]; InpVVal = ModuleItem[InpV] * multiplier;
+								var Temp = SwapResources.find(item => item.id === 18);
+								console.log(Temp.InVolume);
 								let InpTar = SwapResources.find(item => item.id === InpRVal);
 								if(InpTar){
 									InpTar.InVolume = InpTar.InVolume + InpVVal;
