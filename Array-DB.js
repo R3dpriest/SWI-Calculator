@@ -2397,9 +2397,49 @@ const Engines = [
 		ConstResource3: 24,
 		ConstVolume3: 639,
 		Type: 3
+	},{	id: 124,
+		Name: "Sith S Habitat",
+		Race: 2, Title: "Sith Habitat",
+		Population: 300,
+		Style: 4,
+		Tier: 1,
+		ConstResource1: 1,
+		ConstVolume1: 296,
+		ConstResource2: 45,
+		ConstVolume2: 83,
+		ConstResource3: 43,
+		ConstVolume3: 40,
+		Type: 6
+	},{	id: 125,
+		Name: "Sith M Habitat",
+		Race: 2, Title: "Sith Habitat",
+		Population: 650,
+		Style: 4,
+		Tier: 2,
+		ConstResource1: 1,
+		ConstVolume1: 419,
+		ConstResource2: 45,
+		ConstVolume2: 117,
+		ConstResource3: 43,
+		ConstVolume3: 57,
+		Type: 6
+	},{	id: 126,
+		Name: "Sith L Habitat",
+		Race: 2, Title: "Sith Habitat",
+		Population: 1250,
+		Style: 4,
+		Tier: 3,
+		ConstResource1: 1,
+		ConstVolume1: 593,
+		ConstResource2: 45,
+		ConstVolume2: 165,
+		ConstResource3: 43,
+		ConstVolume3: 80,
+		Type: 6
 	}
  ];
  let xabz = JSON.stringify(resources);
  //console.log(xabz);
  //Lookup array:
  const Lookup = {Type: Type, Style: Style, Tier: Tier, Race: Race, Storage: Storage, Size: Size, Jumps: Jumps};
+
