@@ -2402,4 +2402,5 @@ const Engines = [
  let xabz = JSON.stringify(resources);
  //console.log(xabz);
  //Lookup array:
+
  const Lookup = {Type: Type, Style: Style, Tier: Tier, Race: Race, Storage: Storage, Size: Size, Jumps: Jumps};
