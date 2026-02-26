@@ -2436,10 +2436,55 @@ const Engines = [
 		ConstResource3: 43,
 		ConstVolume3: 80,
 		Type: 6
+	},{	id: 127,
+		Name: "Sith Scrap Processor",
+		Title: "Sith Scrap Processor, turns wreck chunks into scrap",
+	 	InputResource1: 1,
+	 	InputVolume1: -90000,
+	 	InputResource2: 26,
+	 	InputVolume2: -9000,
+		OutputResource1: 29,
+		OutputVolume1: 9000,
+		Population: -0,
+		MaxEffeciency: 0.00,
+		Style: 4,
+		Tier: 2,
+		ConstResource1: 1,
+		ConstVolume1: 162,
+		ConstResource2: 43,
+		ConstVolume2: 12,
+		ConstResource3: 44,
+		ConstVolume3: 3983,
+	   	ConstReaource4: 45,
+	   	ConstVolume4: 334,
+		Type: 2
+	},{	id: 128,
+		Name: "Sith Scrap Recycler", 
+		Title: "Sith Scrap Recycler, turns scrap into usuable materials.",
+	 	InputResource1: 1,
+	 	InputVolume1: -99000,
+	 	InputResource2: 29,
+	 	InputVolume2: -7500,
+		OutputResource1: 43,
+		OutputVolume1: 300,
+		OutputResource2: 45,
+		OutputVolume2: 360,
+		Population: -1250,
+		MaxEffeciency: 0.00,
+		Style: 4,
+		Tier: 3,
+		ConstResource1: 1,
+		ConstVolume1: 131,
+		ConstResource2: 43,
+		ConstVolume2: 99,
+		ConstResource3: 45,
+		ConstVolume3: 21,
+		Type: 4
 	}
  ];
  let xabz = JSON.stringify(resources);
  //console.log(xabz);
  //Lookup array:
  const Lookup = {Type: Type, Style: Style, Tier: Tier, Race: Race, Storage: Storage, Size: Size, Jumps: Jumps};
+
 
