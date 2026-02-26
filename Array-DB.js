@@ -54,7 +54,7 @@ const resources = [
 	{id: 5, Name: "Rhydonium", Tier: 0, Type: 1, Style: 1, Storage: 2, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 60},
 	{id: 6, Name: "Helium", Tier: 0, Type: 1, Style: 1, Storage: 3, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 6},
 	{id: 7, Name: "Methane", Tier: 0, Type: 1, Style: 1, Storage: 3, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 6},
-	{id: 8, Name: "Tibana", Tier: 0, Type: 1, Style: 1, Storage: 3, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 6},
+	{id: 8, Name: "Tibanna", Tier: 0, Type: 1, Style: 1, Storage: 3, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 6},
 	{id: 9, Name: "Advanced Composites", Tier: 2, Type: 2, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 21},
 	{id: 10, Name: "Advanced Electronics", Tier: 3, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 30},
 	{id: 11, Name: "Agricultural Goods", Tier: 2, Type: 3, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 4},
@@ -92,9 +92,9 @@ const resources = [
 	{id: 43, Name: "Dark Fusion Cell", Tier: 2, Type: 2, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0},
 	{id: 44, Name: "Fibersteel", Tier: 2, Type: 2, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 1},
 	{id: 45, Name: "Obsidian Composite", Tier: 2, Type: 4, Style: 4, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 20},
-	{id: 46, Name: "Hutt spice", Tier: 3, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 3},
+	{id: 46, Name: "Hutt Spice", Tier: 3, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 3},
 	{id: 47, Name: "Hutt Chemicals", Tier: 2, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 6},
-	{id: 48, Name: "Contraband Alchol", Tier: 3, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 2}
+	{id: 48, Name: "Contraband Alcohol", Tier: 3, Type: 4, Style: 1, Storage: 1, InVolume: 0, OutVolume: 0, ConstrVolume: 0, StorageVolume: 2}
 ];
 //DATA ~ Mining Ships
 const Ships = [
@@ -1007,8 +1007,8 @@ const Engines = [
 		Type: 3
 	},				
 	{	id: 39,
-		Name: "Fibresteel", 
-		Title: "Sith Fibresteel module",
+		Name: "Fibersteel", 
+		Title: "Sith Fibersteel module",
 	 	InputResource1: 1,
 	 	InputVolume1: -2000,
 	 	InputResource2: 6,
@@ -1393,7 +1393,7 @@ const Engines = [
 	{	id: 65,
 		Name: "Sith XL habitat",
 		Race: 2, Title: "Sith Habitat",
-		Population: 2500,
+		Population: 3500,
 		Style: 4,
 		Tier: 4,
 		ConstResource1: 1,
@@ -1401,7 +1401,7 @@ const Engines = [
 		ConstResource2: 45,
 		ConstVolume2: 7107,
 		ConstResource3: 43,
-		ConstVolume3: 1827,
+		ConstVolume3: 1821,
 		Type: 6
 	},{	id: 66,
 		Name: "Advanced Electronics", 
@@ -2335,7 +2335,7 @@ const Engines = [
 		Type: 5
 	},{	id: 121,
 		Name: "Brewery", 
-		Title: "Produces controband alchol",
+		Title: "Produces controband Alcohol",
 	 	InputResource1: 1,
 	 	InputVolume1: -900,
 	 	InputResource2: 39,
@@ -2404,3 +2404,4 @@ const Engines = [
  //Lookup array:
 
  const Lookup = {Type: Type, Style: Style, Tier: Tier, Race: Race, Storage: Storage, Size: Size, Jumps: Jumps};
+
