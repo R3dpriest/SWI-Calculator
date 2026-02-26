@@ -356,7 +356,7 @@ function CalculateModules(){
 								let OupTar = SwapResources.find(item => item.id === OupRVal);
 								if(OupTar){
 									if(CalcEffPref === 1){
-										CalcMod = 1 + (1 * ModuleItem.MaxEffeciency);
+										CalcMod = 1 + (1 * ModuleItem.MaxEfficiency);
 									} else {
 										CalcMod = 1;
 									}
@@ -381,7 +381,7 @@ function CalculateModules(){
 				let Modbuffer = Math.abs(filter.InVolume);
 				let ModNeed;
 				if(CalcEffPref === 1){
-					CalcMod = 1 + (1 * AdModule.MaxEffeciency);
+					CalcMod = 1 + (1 * AdModule.MaxEfficiency);
 				} else {
 					CalcMod = 1;
 				}
@@ -628,7 +628,7 @@ function update(){
 						UpdateResa.InVolume = UpdateResa.InVolume + numa;
 					} else {}
 					if(CalcEffPref === 1){
-						CalcMod = 1 + (1 * ResCalcArray.MaxEffeciency);
+						CalcMod = 1 + (1 * ResCalcArray.MaxEfficiency);
 					} else {
 						CalcMod = 1;
 					}
@@ -664,4 +664,5 @@ function update(){
 			$('#SprdBot'+AResA.id).html(x);
 		});
 	}
+
 }
